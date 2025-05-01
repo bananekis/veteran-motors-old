@@ -3,633 +3,238 @@
 @tailwind utilities;
 
 :root {
-  --cream: 43, 39, 4, 0.02;
-  --cream-darker: 43, 39, 4, 0.05;
-  --brown-light: 76, 57, 34;
-  --brown: 56, 37, 14;
-  --brown-dark: 36, 17, 4;
-  --gold: 184, 134, 11;
-  --gold-light: 212, 175, 55;
-  --black: 20, 20, 20;
-  --white: 255, 255, 255;
-  --border-decorative: url("data:image/svg+xml,%3Csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='100%25' height='100%25' fill='none' stroke='%23B8860B' stroke-width='2' stroke-dasharray='8, 8' stroke-dashoffset='0' stroke-linecap='square'/%3E%3C/svg%3E");
-
-  /* New colors from image */
-  --neon-purple-rgb: 107, 33, 168; /* rgb(107, 33, 168) */
-  --neon-pink-rgb: 236, 72, 153; /* rgb(236, 72, 153) */
-  --neon-blue-rgb: 59, 130, 246; /* rgb(59, 130, 246) */
-  --neon-teal-rgb: 20, 184, 166; /* rgb(20, 184, 166) */
-  --spark-orange-rgb: 249, 115, 22; /* rgb(249, 115, 22) */
-  --deep-indigo-rgb: 49, 46, 129; /* rgb(49, 46, 129) */
-
-  --neon-purple: 275, 69%, 39%;
-  --neon-pink: 327, 82%, 60%;
-  --neon-blue: 217, 91%, 60%;
-  --neon-teal: 172, 82%, 40%;
-  --spark-orange: 25, 95%, 53%;
-  --deep-indigo: 242, 47%, 35%;
-
-  /* Cyberpunk/Synthwave Colors from the image */
-  --nfs-blue: 0, 191, 255; /* Electric cyan blue */
-  --nfs-cyan: 0, 255, 255; /* Bright cyan */
-  --nfs-neon: 57, 255, 20; /* Electric green (keeping original) */
-  --nfs-orange: 255, 140, 0; /* Bright orange from flames */
-  --nfs-yellow: 255, 215, 0; /* Electric yellow */
-  --nfs-red: 255, 20, 147; /* Hot pink/magenta */
-  --nfs-purple: 138, 43, 226; /* Deep electric purple */
-  --nfs-pink: 255, 20, 147; /* Hot pink/magenta */
-  --racing-black: 10, 10, 20; /* Deep dark purple-black */
-  --racing-white: 240, 240, 255; /* Slightly blue-tinted white */
-  --racing-dark: 20, 15, 35; /* Dark purple */
-
-  /* New Cyberpunk specific colors */
-  --cyber-purple: 138, 43, 226; /* Main purple from background */
-  --cyber-magenta: 255, 20, 147; /* Hot magenta/pink */
-  --cyber-cyan: 0, 255, 255; /* Electric cyan */
-  --cyber-blue: 0, 191, 255; /* Electric blue */
-  --cyber-violet: 75, 0, 130; /* Deep violet */
-  --cyber-flame: 255, 140, 0; /* Orange flame color */
+	--cream: 43, 39, 4, 0.02;
+	--cream-darker: 43, 39, 4, 0.05;
+	--brown-light: 76, 57, 34;
+	--brown: 56, 37, 14;
+	--brown-dark: 36, 17, 4;
+	--gold: 184, 134, 11;
+	--gold-light: 212, 175, 55;
+	--black: 20, 20, 20;
+	--white: 255, 255, 255;
+	--border-decorative: url("data:image/svg+xml,%3Csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='100%25' height='100%25' fill='none' stroke='%23B8860B' stroke-width='2' stroke-dasharray='8, 8' stroke-dashoffset='0' stroke-linecap='square'/%3E%3C/svg%3E");
 }
 
 @layer base {
-  body {
-    @apply text-white;
-  }
+	body {
+		@apply bg-cream text-brown-dark;
+	}
 
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6 {
-    @apply font-marcellus;
-  }
+	h1,
+	h2,
+	h3,
+	h4,
+	h5,
+	h6 {
+		@apply font-marcellus;
+	}
 
-  p {
-    @apply font-montserrat;
-  }
-
-  /* Add home page specific styling */
-  .home-page {
-    position: relative;
-  }
-
-  .home-page::before {
-    content: "";
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-image: url("/nfs-city.png");
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-    z-index: -2;
-  }
-
-  .home-page::after {
-    content: "";
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(10, 10, 20, 0.7);
-    pointer-events: none;
-    z-index: -1;
-  }
+	p {
+		@apply font-montserrat;
+	}
 }
 
 @layer components {
-  /* Vintage Components */
-  .art-deco-divider {
-    @apply relative flex items-center justify-center my-8;
-  }
+	.art-deco-divider {
+		@apply relative flex items-center justify-center my-8;
+	}
 
-  .art-deco-divider::before,
-  .art-deco-divider::after {
-    @apply content-[''] flex-1 border-t border-gold;
-  }
+	.art-deco-divider::before,
+	.art-deco-divider::after {
+		@apply content-[''] flex-1 border-t border-gold;
+	}
 
-  .art-deco-divider::before {
-    @apply mr-4;
-  }
+	.art-deco-divider::before {
+		@apply mr-4;
+	}
 
-  .art-deco-divider::after {
-    @apply ml-4;
-  }
+	.art-deco-divider::after {
+		@apply ml-4;
+	}
 
-  .art-deco-divider span {
-    @apply text-gold text-2xl;
-  }
+	.art-deco-divider span {
+		@apply text-gold text-2xl;
+	}
 
-  .vintage-heading {
-    @apply relative inline-block font-marcellus text-brown-dark;
-  }
+	.vintage-heading {
+		@apply relative inline-block font-marcellus text-brown-dark;
+	}
 
-  .vintage-heading::after {
-    @apply content-[''] absolute left-0 -bottom-2 w-1/2 h-0.5 bg-gold;
-  }
+	.vintage-heading::after {
+		@apply content-[''] absolute left-0 -bottom-2 w-1/2 h-0.5 bg-gold;
+	}
 
-  .vintage-button {
-    @apply relative inline-flex items-center justify-center px-8 py-3 font-marcellus text-lg tracking-wider text-brown-dark bg-cream border border-gold transition-all duration-300 hover:bg-gold/10 hover:border-gold/80;
-  }
+	.vintage-button {
+		@apply relative inline-flex items-center justify-center px-8 py-3 overflow-hidden font-marcellus text-lg tracking-wider text-brown-dark bg-cream border border-gold transition-all duration-300;
+	}
 
-  .vintage-card {
-    @apply relative p-6 bg-cream-darker border border-gold/30 transition-all duration-300 hover:border-gold/60;
-  }
+	.vintage-button::before {
+		@apply content-[''] absolute top-0 left-0 w-full h-full bg-gold/10 transform scale-x-0 origin-top-right transition-transform duration-300 ease-out;
+	}
 
-  .vintage-input {
-    @apply w-full px-4 py-3 bg-cream border border-gold/30 focus:border-gold/60 focus:outline-none transition-all duration-300 font-montserrat;
-  }
+	.vintage-button:hover::before {
+		@apply transform scale-x-100 origin-top-left;
+	}
 
-  .art-deco-border {
-    @apply relative border border-gold/40;
-  }
+	.vintage-button:hover {
+		@apply border-gold/80 text-brown;
+	}
 
-  /* NFS Buttons with New Colors */
-  .nfs-button-primary {
-    position: relative;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    padding: 1rem 2rem;
-    font-family: var(--font-racing-sans);
-    font-size: 1.125rem;
-    font-weight: 700;
-    letter-spacing: 0.1em;
-    color: white;
-    background: linear-gradient(135deg, rgb(var(--neon-purple-rgb)), rgb(var(--neon-pink-rgb)));
-    border: 2px solid rgb(var(--neon-teal-rgb));
-    border-radius: 0.5rem;
-    transition: all 0.3s ease;
-    overflow: hidden;
-    text-transform: uppercase;
-  }
+	.vintage-card {
+		@apply relative p-6 bg-cream-darker border border-gold/30 transition-all duration-300;
+	}
 
-  .nfs-button-primary::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-    transition: left 0.5s;
-  }
+	.vintage-card:hover {
+		@apply border-gold/60;
+	}
 
-  .nfs-button-primary:hover::before {
-    left: 100%;
-  }
+	.vintage-input {
+		@apply w-full px-4 py-3 bg-cream border border-gold/30 focus:border-gold/60 focus:outline-none transition-all duration-300 font-montserrat;
+	}
 
-  .nfs-button-primary:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 0 20px rgba(var(--neon-purple-rgb), 0.5), 0 0 40px rgba(var(--neon-pink-rgb), 0.3);
-    border-color: rgb(var(--spark-orange-rgb));
-  }
+	.art-deco-border {
+		@apply relative p-0.5;
+	}
 
-  .nfs-button-secondary {
-    position: relative;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    padding: 1rem 2rem;
-    font-family: var(--font-racing-sans);
-    font-size: 1.125rem;
-    font-weight: 700;
-    letter-spacing: 0.1em;
-    color: white;
-    background: linear-gradient(135deg, rgb(var(--neon-blue-rgb)), rgb(var(--neon-teal-rgb)));
-    border: 2px solid rgb(var(--neon-blue-rgb));
-    border-radius: 0.5rem;
-    transition: all 0.3s ease;
-    overflow: hidden;
-    text-transform: uppercase;
-  }
+	.art-deco-border::before {
+		@apply content-[''] absolute inset-0 border border-gold/40 pointer-events-none;
+		background-image: var(--border-decorative);
+	}
 
-  .nfs-button-secondary::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-    transition: left 0.5s;
-  }
+	.art-deco-pattern {
+		background-color: rgba(255, 253, 240, 1);
+		background-image: radial-gradient(
+				rgba(184, 134, 11, 0.1) 2px,
+				transparent 2px
+			),
+			radial-gradient(rgba(184, 134, 11, 0.1) 2px, transparent 2px);
+		background-size: 40px 40px;
+		background-position: 0 0, 20px 20px;
+	}
 
-  .nfs-button-secondary:hover::before {
-    left: 100%;
-  }
+	.hero-overlay {
+		@apply absolute inset-0 bg-gradient-to-b from-brown-dark/70 to-brown-dark/30;
+	}
 
-  .nfs-button-secondary:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 0 20px rgba(var(--neon-blue-rgb), 0.5), 0 0 40px rgba(var(--neon-teal-rgb), 0.3);
-    border-color: rgb(var(--spark-orange-rgb));
-  }
+	.section-padding {
+		@apply py-16 md:py-24;
+	}
 
-  .nfs-button-accent {
-    position: relative;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    padding: 1rem 2rem;
-    font-family: var(--font-racing-sans);
-    font-size: 1.125rem;
-    font-weight: 700;
-    letter-spacing: 0.1em;
-    color: rgb(var(--deep-indigo-rgb));
-    background: linear-gradient(135deg, rgb(var(--spark-orange-rgb)), rgb(var(--neon-pink-rgb)));
-    border: 2px solid rgb(var(--spark-orange-rgb));
-    border-radius: 0.5rem;
-    transition: all 0.3s ease;
-    overflow: hidden;
-    text-transform: uppercase;
-  }
+	.container-vintage {
+		@apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+	}
 
-  .nfs-button-accent::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-    transition: left 0.5s;
-  }
+	.text-shadow {
+		text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+	}
 
-  .nfs-button-accent:hover::before {
-    left: 100%;
-  }
-
-  .nfs-button-accent:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 0 20px rgba(var(--spark-orange-rgb), 0.6), 0 0 40px rgba(var(--neon-pink-rgb), 0.4);
-    border-color: rgb(var(--neon-purple-rgb));
-    color: white;
-  }
-
-  .nfs-button-outline {
-    position: relative;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    padding: 1rem 2rem;
-    font-family: var(--font-racing-sans);
-    font-size: 1.125rem;
-    font-weight: 700;
-    letter-spacing: 0.1em;
-    color: rgb(var(--neon-teal-rgb));
-    background: transparent;
-    border: 2px solid rgb(var(--neon-teal-rgb));
-    border-radius: 0.5rem;
-    transition: all 0.3s ease;
-    overflow: hidden;
-    text-transform: uppercase;
-  }
-
-  .nfs-button-outline::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 0;
-    height: 100%;
-    background: linear-gradient(135deg, rgb(var(--neon-teal-rgb)), rgb(var(--neon-blue-rgb)));
-    transition: width 0.3s ease;
-    z-index: -1;
-  }
-
-  .nfs-button-outline:hover::before {
-    width: 100%;
-  }
-
-  .nfs-button-outline:hover {
-    color: white;
-    transform: translateY(-2px);
-    box-shadow: 0 0 20px rgba(var(--neon-teal-rgb), 0.5);
-  }
-
-  /* Cyberpunk Racing/NFS Components - Using CSS custom properties directly */
-  .racing-text-glow {
-    animation: cyber-text-glow 2s infinite alternate;
-  }
-
-  .racing-button {
-    position: relative;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    padding: 1rem 2rem;
-    font-family: var(--font-racing-sans);
-    font-size: 1.125rem;
-    letter-spacing: 0.1em;
-    color: white;
-    background: linear-gradient(to right, rgb(var(--cyber-purple)), rgb(var(--cyber-magenta)));
-    border: 2px solid rgb(var(--cyber-cyan));
-    transition: all 0.3s ease;
-  }
-
-  .racing-button:hover {
-    transform: scale(1.05);
-    box-shadow: 0 0 15px rgba(0, 255, 255, 0.5), 0 0 30px rgba(138, 43, 226, 0.3), 0 0 45px rgba(255, 20, 147, 0.2);
-  }
-
-  .racing-border {
-    position: relative;
-    border: 1px solid rgba(138, 43, 226, 0.3);
-    border-radius: 4px;
-    overflow: hidden;
-    transition: all 0.3s ease;
-  }
-
-  .racing-border:hover {
-    border-color: rgba(0, 255, 255, 0.7);
-    box-shadow: 0 0 15px rgba(0, 255, 255, 0.3);
-  }
-
-  .racing-card {
-    position: relative;
-    padding: 1.5rem;
-    background: white;
-    border: 2px solid rgba(var(--cyber-purple), 0.3);
-    transition: all 0.3s ease;
-  }
-
-  .racing-card:hover {
-    border-color: rgb(var(--cyber-cyan));
-    transform: scale(1.05);
-    box-shadow: 0 0 15px rgba(0, 255, 255, 0.5), 0 0 30px rgba(138, 43, 226, 0.3);
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.98) 0%, rgba(240, 240, 255, 0.98) 100%);
-  }
-
-  .racing-input {
-    @apply w-full px-4 py-3 bg-white focus:outline-none transition-all duration-300 font-montserrat;
-    border: 2px solid rgba(var(--cyber-purple), 0.3);
-  }
-
-  .racing-input:focus {
-    border-color: rgb(var(--cyber-cyan));
-  }
-
-  /* Grid pattern for Cyberpunk background */
-  .grid-pattern {
-    background-size: 50px 50px;
-    background-image: linear-gradient(to right, rgba(138, 43, 226, 0.1) 1px, transparent 1px),
-      linear-gradient(to bottom, rgba(0, 255, 255, 0.1) 1px, transparent 1px);
-    animation: cyber-grid-pulse 4s infinite alternate;
-  }
-
-  /* Cyberpunk neon pattern */
-  .cyber-neon-pattern {
-    background:
-      linear-gradient(27deg, rgba(138, 43, 226, 0.1) 5px, transparent 5px) 0 5px,
-      linear-gradient(207deg, rgba(0, 255, 255, 0.1) 5px, transparent 5px) 10px 0px,
-      linear-gradient(27deg, rgba(255, 20, 147, 0.1) 5px, transparent 5px) 0px 10px,
-      linear-gradient(207deg, rgba(0, 191, 255, 0.1) 5px, transparent 5px) 10px 5px,
-      linear-gradient(90deg, rgba(138, 43, 226, 0.05) 10px, transparent 10px),
-      linear-gradient(
-        rgba(20, 15, 35, 0.8) 25%,
-        rgba(10, 10, 20, 0.8) 25%,
-        rgba(10, 10, 20, 0.8) 50%,
-        transparent 50%,
-        transparent 75%,
-        rgba(30, 20, 40, 0.8) 75%,
-        rgba(30, 20, 40, 0.8)
-      );
-    background-color: rgba(10, 10, 20, 0.9);
-    background-size: 20px 20px;
-  }
-
-  /* Holographic scanline effect */
-  .holographic-scanline {
-    background: linear-gradient(to bottom, transparent 50%, rgba(0, 255, 255, 0.1) 50%);
-    background-size: 100% 4px;
-    animation: scanline 8s linear infinite;
-    pointer-events: none;
-  }
-
-  /* City silhouette */
-  .city-silhouette {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 30%;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1000 200'%3E%3Cpath fill='%23000' d='M0,200 L0,110 L15,110 L15,90 L30,90 L30,70 L45,70 L45,80 L60,80 L60,50 L75,50 L75,60 L90,60 L90,30 L105,30 L105,70 L120,70 L120,60 L135,60 L135,50 L150,50 L150,70 L165,70 L165,90 L180,90 L180,60 L195,60 L195,80 L210,80 L210,110 L225,110 L225,70 L240,70 L240,40 L255,40 L255,60 L270,60 L270,90 L285,90 L285,70 L300,70 L300,50 L315,50 L315,20 L330,20 L330,40 L345,40 L345,60 L360,60 L360,80 L375,80 L375,100 L390,100 L390,60 L405,60 L405,30 L420,30 L420,50 L435,50 L435,70 L450,70 L450,90 L465,90 L465,110 L480,110 L480,80 L495,80 L495,60 L510,60 L510,30 L525,30 L525,50 L540,50 L540,70 L555,70 L555,90 L570,90 L570,60 L585,60 L585,40 L600,40 L600,20 L615,20 L615,40 L630,40 L630,60 L645,60 L645,80 L660,80 L660,100 L675,100 L675,80 L690,80 L690,60 L705,60 L705,40 L720,40 L720,20 L735,20 L735,40 L750,40 L750,60 L765,60 L765,80 L780,80 L780,100 L795,100 L795,80 L810,80 L810,60 L825,60 L825,40 L840,40 L840,20 L855,20 L855,40 L870,40 L870,60 L885,60 L885,80 L900,80 L900,100 L915,100 L915,80 L930,80 L930,60 L945,60 L945,40 L960,40 L960,20 L975,20 L975,40 L990,40 L990,60 L1000,60 L1000,200 Z'/%3E%3C/svg%3E");
-    background-size: cover;
-    background-position: center bottom;
-    opacity: 0.8;
-  }
-
-  /* Effects */
-  .shadow-cyber-glow {
-    box-shadow: 0 0 15px rgba(0, 255, 255, 0.5), 0 0 30px rgba(138, 43, 226, 0.3), 0 0 45px rgba(255, 20, 147, 0.2);
-  }
-
-  .shadow-glow {
-    box-shadow: 0 0 15px rgba(0, 255, 255, 0.5), 0 0 30px rgba(138, 43, 226, 0.3);
-  }
-
-  .text-shadow {
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-  }
-
-  .text-racing {
-    text-shadow: 0 0 5px rgba(0, 255, 255, 0.7);
-  }
-
-  .neon-glow {
-    text-shadow: 0 0 10px rgba(0, 255, 255, 0.8), 0 0 20px rgba(138, 43, 226, 0.6), 0 0 30px rgba(255, 20, 147, 0.4);
-  }
-
-  /* Layout */
-  .section-padding {
-    @apply py-16 md:py-24;
-  }
-
-  .container-vintage {
-    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
-  }
-
-  /* Cyberpunk Racing Backgrounds */
-  .racing-bg-pattern {
-    background-color: rgba(10, 10, 20, 0.95);
-    background-image: linear-gradient(45deg, rgba(138, 43, 226, 0.1) 25%, transparent 25%),
-      linear-gradient(-45deg, rgba(0, 255, 255, 0.1) 25%, transparent 25%),
-      linear-gradient(45deg, transparent 75%, rgba(255, 20, 147, 0.05) 75%),
-      linear-gradient(-45deg, transparent 75%, rgba(0, 191, 255, 0.05) 75%);
-    background-size: 60px 60px;
-    background-position: 0 0, 0 30px, 30px -30px, -30px 0px;
-  }
-
-  .racing-card-bg {
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(240, 240, 255, 0.95) 100%);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(138, 43, 226, 0.2);
-  }
+	.gold-gradient {
+		background: linear-gradient(to right, #d4af37, #b8860b, #d4af37);
+		-webkit-background-clip: text;
+		-webkit-text-fill-color: transparent;
+	}
 }
 
-/* Essential Animations */
-@keyframes cyber-text-glow {
-  0% {
-    text-shadow: 0 0 8px rgba(0, 255, 255, 0.7);
-  }
-  100% {
-    text-shadow: 0 0 15px rgba(0, 255, 255, 0.9), 0 0 30px rgba(138, 43, 226, 0.7), 0 0 45px rgba(255, 20, 147, 0.5);
-  }
+/* Art Deco Patterns */
+.art-deco-hero {
+	background-color: #fffdf0;
+	background-image: linear-gradient(
+			30deg,
+			rgba(184, 134, 11, 0.1) 12%,
+			transparent 12.5%,
+			transparent 87%,
+			rgba(184, 134, 11, 0.1) 87.5%,
+			rgba(184, 134, 11, 0.1)
+		),
+		linear-gradient(
+			150deg,
+			rgba(184, 134, 11, 0.1) 12%,
+			transparent 12.5%,
+			transparent 87%,
+			rgba(184, 134, 11, 0.1) 87.5%,
+			rgba(184, 134, 11, 0.1)
+		),
+		linear-gradient(
+			30deg,
+			rgba(184, 134, 11, 0.1) 12%,
+			transparent 12.5%,
+			transparent 87%,
+			rgba(184, 134, 11, 0.1) 87.5%,
+			rgba(184, 134, 11, 0.1)
+		),
+		linear-gradient(
+			150deg,
+			rgba(184, 134, 11, 0.1) 12%,
+			transparent 12.5%,
+			transparent 87%,
+			rgba(184, 134, 11, 0.1) 87.5%,
+			rgba(184, 134, 11, 0.1)
+		),
+		linear-gradient(
+			60deg,
+			rgba(184, 134, 11, 0.1) 25%,
+			transparent 25.5%,
+			transparent 75%,
+			rgba(184, 134, 11, 0.1) 75%,
+			rgba(184, 134, 11, 0.1)
+		),
+		linear-gradient(
+			60deg,
+			rgba(184, 134, 11, 0.1) 25%,
+			transparent 25.5%,
+			transparent 75%,
+			rgba(184, 134, 11, 0.1) 75%,
+			rgba(184, 134, 11, 0.1)
+		);
+	background-size: 40px 70px;
+	background-position: 0 0, 0 0, 20px 35px, 20px 35px, 0 0, 20px 35px;
 }
 
-@keyframes speed-line {
-  0% {
-    transform: translateX(-100%) skewX(-15deg);
-    opacity: 0.7;
-  }
-  100% {
-    transform: translateX(300%) skewX(-15deg);
-    opacity: 0;
-  }
+/* Animations */
+@keyframes fadeIn {
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
 }
 
-@keyframes slide-x {
-  0% {
-    transform: translateX(-50%);
-  }
-  100% {
-    transform: translateX(0%);
-  }
+@keyframes slideUp {
+	from {
+		transform: translateY(20px);
+		opacity: 0;
+	}
+	to {
+		transform: translateY(0);
+		opacity: 1;
+	}
 }
 
-@keyframes slide-x-reverse {
-  0% {
-    transform: translateX(0%);
-  }
-  100% {
-    transform: translateX(-50%);
-  }
+.animate-fade-in {
+	animation: fadeIn 1s ease-out forwards;
 }
 
-@keyframes cyber-grid-pulse {
-  0% {
-    opacity: 0.05;
-    background-size: 50px 50px;
-  }
-  50% {
-    opacity: 0.15;
-  }
-  100% {
-    opacity: 0.05;
-    background-size: 52px 52px;
-  }
+.animate-slide-up {
+	animation: slideUp 0.8s ease-out forwards;
 }
 
-@keyframes text-glow {
-  0% {
-    text-shadow: 0 0 5px rgba(0, 255, 255, 0.5);
-  }
-  50% {
-    text-shadow: 0 0 10px rgba(0, 255, 255, 0.7), 0 0 15px rgba(138, 43, 226, 0.5);
-  }
-  100% {
-    text-shadow: 0 0 5px rgba(0, 255, 255, 0.5);
-  }
+.animate-delay-100 {
+	animation-delay: 100ms;
 }
 
-@keyframes speed-line-bg {
-  0% {
-    transform: translateX(-100%) skewX(-15deg);
-    opacity: 0;
-  }
-  50% {
-    opacity: 0.3;
-  }
-  100% {
-    transform: translateX(100vw) skewX(-15deg);
-    opacity: 0;
-  }
+.animate-delay-200 {
+	animation-delay: 200ms;
 }
 
-@keyframes neon-pulse {
-  0%,
-  100% {
-    text-shadow: 0 0 5px rgba(0, 255, 255, 0.7);
-  }
-  50% {
-    text-shadow: 0 0 15px rgba(0, 255, 255, 0.9), 0 0 20px rgba(138, 43, 226, 0.7), 0 0 25px rgba(255, 20, 147, 0.5);
-  }
+.animate-delay-300 {
+	animation-delay: 300ms;
 }
 
-@keyframes scanline {
-  0% {
-    background-position: 0 0;
-  }
-  100% {
-    background-position: 0 100%;
-  }
+.animate-delay-400 {
+	animation-delay: 400ms;
 }
 
-/* Animation Classes */
-.animate-speed-line {
-  animation: speed-line 0.8s ease-out infinite;
-}
-
-.animate-speed-line-delayed {
-  animation: speed-line 0.8s ease-out infinite 0.2s;
-}
-
-.animate-speed-line-delayed-2 {
-  animation: speed-line 0.8s ease-out infinite 0.4s;
-}
-
-.animate-pulse {
-  animation: pulse 2s infinite;
-}
-
-.animate-text-glow {
-  animation: cyber-text-glow 2s infinite alternate;
-}
-
-.animate-slide-x {
-  animation: slide-x 20s linear infinite;
-}
-
-.animate-slide-x-reverse {
-  animation: slide-x-reverse 20s linear infinite;
-}
-
-.animate-neon-pulse {
-  animation: neon-pulse 2s infinite;
-}
-
-.speed-lines-bg {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  overflow: hidden;
-  pointer-events: none;
-}
-
-.speed-lines-bg::before,
-.speed-lines-bg::after {
-  content: "";
-  position: absolute;
-  height: 2px;
-  width: 200px;
-  background: linear-gradient(90deg, transparent, rgba(0, 255, 255, 0.6), transparent);
-  animation: speed-line-bg 3s linear infinite;
-}
-
-.speed-lines-bg::before {
-  top: 20%;
-  animation-delay: 0s;
-}
-
-.speed-lines-bg::after {
-  top: 80%;
-  animation-delay: 1.5s;
-  background: linear-gradient(90deg, transparent, rgba(255, 20, 147, 0.6), transparent);
+.animate-delay-500 {
+	animation-delay: 500ms;
 }

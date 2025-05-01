@@ -37,11 +37,9 @@ export default function FeaturedCars({ cars }: FeaturedCarsProps) {
           transition={{ duration: 0.5, delay: 0.6 }}
           className="text-center mt-12"
         >
-          <motion.div whileHover={{ y: -2, scale: 1.02 }} transition={{ duration: 0.2, ease: "easeOut" }}>
-            <Link href="/prodej" className="vintage-button">
-              Zobrazit všechny vozy
-            </Link>
-          </motion.div>
+          <Link href="/prodej" className="vintage-button">
+            Zobrazit všechny vozy
+          </Link>
         </motion.div>
       </div>
     </section>
