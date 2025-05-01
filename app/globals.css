@@ -1,0 +1,240 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+	--cream: 43, 39, 4, 0.02;
+	--cream-darker: 43, 39, 4, 0.05;
+	--brown-light: 76, 57, 34;
+	--brown: 56, 37, 14;
+	--brown-dark: 36, 17, 4;
+	--gold: 184, 134, 11;
+	--gold-light: 212, 175, 55;
+	--black: 20, 20, 20;
+	--white: 255, 255, 255;
+	--border-decorative: url("data:image/svg+xml,%3Csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='100%25' height='100%25' fill='none' stroke='%23B8860B' stroke-width='2' stroke-dasharray='8, 8' stroke-dashoffset='0' stroke-linecap='square'/%3E%3C/svg%3E");
+}
+
+@layer base {
+	body {
+		@apply bg-cream text-brown-dark;
+	}
+
+	h1,
+	h2,
+	h3,
+	h4,
+	h5,
+	h6 {
+		@apply font-marcellus;
+	}
+
+	p {
+		@apply font-montserrat;
+	}
+}
+
+@layer components {
+	.art-deco-divider {
+		@apply relative flex items-center justify-center my-8;
+	}
+
+	.art-deco-divider::before,
+	.art-deco-divider::after {
+		@apply content-[''] flex-1 border-t border-gold;
+	}
+
+	.art-deco-divider::before {
+		@apply mr-4;
+	}
+
+	.art-deco-divider::after {
+		@apply ml-4;
+	}
+
+	.art-deco-divider span {
+		@apply text-gold text-2xl;
+	}
+
+	.vintage-heading {
+		@apply relative inline-block font-marcellus text-brown-dark;
+	}
+
+	.vintage-heading::after {
+		@apply content-[''] absolute left-0 -bottom-2 w-1/2 h-0.5 bg-gold;
+	}
+
+	.vintage-button {
+		@apply relative inline-flex items-center justify-center px-8 py-3 overflow-hidden font-marcellus text-lg tracking-wider text-brown-dark bg-cream border border-gold transition-all duration-300;
+	}
+
+	.vintage-button::before {
+		@apply content-[''] absolute top-0 left-0 w-full h-full bg-gold/10 transform scale-x-0 origin-top-right transition-transform duration-300 ease-out;
+	}
+
+	.vintage-button:hover::before {
+		@apply transform scale-x-100 origin-top-left;
+	}
+
+	.vintage-button:hover {
+		@apply border-gold/80 text-brown;
+	}
+
+	.vintage-card {
+		@apply relative p-6 bg-cream-darker border border-gold/30 transition-all duration-300;
+	}
+
+	.vintage-card:hover {
+		@apply border-gold/60;
+	}
+
+	.vintage-input {
+		@apply w-full px-4 py-3 bg-cream border border-gold/30 focus:border-gold/60 focus:outline-none transition-all duration-300 font-montserrat;
+	}
+
+	.art-deco-border {
+		@apply relative p-0.5;
+	}
+
+	.art-deco-border::before {
+		@apply content-[''] absolute inset-0 border border-gold/40 pointer-events-none;
+		background-image: var(--border-decorative);
+	}
+
+	.art-deco-pattern {
+		background-color: rgba(255, 253, 240, 1);
+		background-image: radial-gradient(
+				rgba(184, 134, 11, 0.1) 2px,
+				transparent 2px
+			),
+			radial-gradient(rgba(184, 134, 11, 0.1) 2px, transparent 2px);
+		background-size: 40px 40px;
+		background-position: 0 0, 20px 20px;
+	}
+
+	.hero-overlay {
+		@apply absolute inset-0 bg-gradient-to-b from-brown-dark/70 to-brown-dark/30;
+	}
+
+	.section-padding {
+		@apply py-16 md:py-24;
+	}
+
+	.container-vintage {
+		@apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+	}
+
+	.text-shadow {
+		text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+	}
+
+	.gold-gradient {
+		background: linear-gradient(to right, #d4af37, #b8860b, #d4af37);
+		-webkit-background-clip: text;
+		-webkit-text-fill-color: transparent;
+	}
+}
+
+/* Art Deco Patterns */
+.art-deco-hero {
+	background-color: #fffdf0;
+	background-image: linear-gradient(
+			30deg,
+			rgba(184, 134, 11, 0.1) 12%,
+			transparent 12.5%,
+			transparent 87%,
+			rgba(184, 134, 11, 0.1) 87.5%,
+			rgba(184, 134, 11, 0.1)
+		),
+		linear-gradient(
+			150deg,
+			rgba(184, 134, 11, 0.1) 12%,
+			transparent 12.5%,
+			transparent 87%,
+			rgba(184, 134, 11, 0.1) 87.5%,
+			rgba(184, 134, 11, 0.1)
+		),
+		linear-gradient(
+			30deg,
+			rgba(184, 134, 11, 0.1) 12%,
+			transparent 12.5%,
+			transparent 87%,
+			rgba(184, 134, 11, 0.1) 87.5%,
+			rgba(184, 134, 11, 0.1)
+		),
+		linear-gradient(
+			150deg,
+			rgba(184, 134, 11, 0.1) 12%,
+			transparent 12.5%,
+			transparent 87%,
+			rgba(184, 134, 11, 0.1) 87.5%,
+			rgba(184, 134, 11, 0.1)
+		),
+		linear-gradient(
+			60deg,
+			rgba(184, 134, 11, 0.1) 25%,
+			transparent 25.5%,
+			transparent 75%,
+			rgba(184, 134, 11, 0.1) 75%,
+			rgba(184, 134, 11, 0.1)
+		),
+		linear-gradient(
+			60deg,
+			rgba(184, 134, 11, 0.1) 25%,
+			transparent 25.5%,
+			transparent 75%,
+			rgba(184, 134, 11, 0.1) 75%,
+			rgba(184, 134, 11, 0.1)
+		);
+	background-size: 40px 70px;
+	background-position: 0 0, 0 0, 20px 35px, 20px 35px, 0 0, 20px 35px;
+}
+
+/* Animations */
+@keyframes fadeIn {
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
+}
+
+@keyframes slideUp {
+	from {
+		transform: translateY(20px);
+		opacity: 0;
+	}
+	to {
+		transform: translateY(0);
+		opacity: 1;
+	}
+}
+
+.animate-fade-in {
+	animation: fadeIn 1s ease-out forwards;
+}
+
+.animate-slide-up {
+	animation: slideUp 0.8s ease-out forwards;
+}
+
+.animate-delay-100 {
+	animation-delay: 100ms;
+}
+
+.animate-delay-200 {
+	animation-delay: 200ms;
+}
+
+.animate-delay-300 {
+	animation-delay: 300ms;
+}
+
+.animate-delay-400 {
+	animation-delay: 400ms;
+}
+
+.animate-delay-500 {
+	animation-delay: 500ms;
+}
