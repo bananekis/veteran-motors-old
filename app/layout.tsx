@@ -6,6 +6,8 @@ import Navbar from "@/components/navbar";
 import Footer from "@/components/footer";
 import { ThemeProvider } from "@/components/theme-provider";
 
+export const dynamic = "force-dynamic"; // Ensures the layout is always re-rendered
+
 const cormorant = Cormorant({
 	subsets: ["latin"],
 	display: "swap",
