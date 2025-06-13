@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { Menu, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import ArtDecoLogo from "./art-deco-logo";
@@ -9,6 +10,8 @@ import ArtDecoLogo from "./art-deco-logo";
 export default function Navbar() {
 	const [isMenuOpen, setIsMenuOpen] = useState(false);
 	const [scrolled, setScrolled] = useState(false);
+	const pathname = usePathname();
+	const isHomePage = pathname === "/";
 
 	useEffect(() => {
 		const handleScroll = () => {
@@ -31,22 +34,32 @@ export default function Navbar() {
 		};
 	}, [isMenuOpen]);
 
+	const getHeaderStyles = () => {
+		if (isHomePage) {
+			return scrolled ? "bg-white py-2 shadow-md" : "bg-transparent py-4";
+		} else {
+			return scrolled ? "bg-white py-2 shadow-md" : "bg-black py-4";
+		}
+	};
+
+	const getTextColor = () => {
+		if (isHomePage) {
+			return scrolled ? "text-black" : "text-white";
+		} else {
+			return scrolled ? "text-black" : "text-white";
+		}
+	};
+
 	return (
 		<header
-			className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-				scrolled ? "bg-cream py-2 shadow-md" : "bg-transparent py-4"
-			}`}
+			className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${getHeaderStyles()}`}
 		>
 			<div className="container-vintage">
 				<div className="flex items-center justify-between">
 					<Link href="/" className="flex items-center space-x-2">
 						<ArtDecoLogo size={scrolled ? 40 : 50} />
 						<span
-							className={`font-marcellus text-2xl md:text-3xl tracking-wider transition-all duration-300 ${
-								scrolled
-									? "text-brown-dark"
-									: "text-white text-shadow"
-							}`}
+							className={`font-marcellus text-2xl md:text-3xl tracking-wider transition-all duration-300 ${getTextColor()}`}
 						>
 							VETERAN MOTORS
 						</span>
@@ -61,12 +74,7 @@ export default function Navbar() {
 						{isMenuOpen ? (
 							<X size={24} className="text-white" />
 						) : (
-							<Menu
-								size={24}
-								className={
-									scrolled ? "text-brown-dark" : "text-white"
-								}
-							/>
+							<Menu size={24} className={getTextColor()} />
 						)}
 					</button>
 
@@ -77,13 +85,9 @@ export default function Navbar() {
 								<Link
 									key={item}
 									href={`/${item}`}
-									className={`relative group font-marcellus text-lg uppercase tracking-wider transition-all duration-300 ${
-										scrolled
-											? "text-brown-dark"
-											: "text-white text-shadow"
-									}`}
+									className={`relative group font-marcellus text-lg uppercase tracking-wider transition-all duration-300 ${getTextColor()}`}
 								>
-									<span className="relative z-10 hover:text-gold-light transition-colors duration-300">
+									<span className="relative z-10 hover:text-gold transition-colors duration-300">
 										{item === "prodej"
 											? "Prodej"
 											: item === "pronajem"
@@ -111,7 +115,7 @@ export default function Navbar() {
 						>
 							{/* Backdrop overlay */}
 							<motion.div
-								className="absolute inset-0 bg-brown-dark/80 backdrop-blur-sm"
+								className="absolute inset-0 bg-black/95 backdrop-blur-sm"
 								initial={{ opacity: 0 }}
 								animate={{ opacity: 1 }}
 								exit={{ opacity: 0 }}
@@ -124,7 +128,7 @@ export default function Navbar() {
 								animate={{ x: 0 }}
 								exit={{ x: "-100%" }}
 								transition={{ type: "tween", duration: 0.3 }}
-								className="absolute top-0 left-0 w-4/5 max-w-sm h-full bg-brown-dark border-r border-gold/30 overflow-y-auto"
+								className="absolute top-0 left-0 w-4/5 max-w-sm h-full bg-black border-r border-gold/30 overflow-y-auto"
 							>
 								<div className="p-6 pt-20">
 									<div className="art-deco-divider mb-8">

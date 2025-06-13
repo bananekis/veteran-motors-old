@@ -34,33 +34,30 @@ export default function CarCard({ car, type, index = 0 }: CarCardProps) {
 			onMouseEnter={() => setIsHovered(true)}
 			onMouseLeave={() => setIsHovered(false)}
 		>
-			<div className="art-deco-border overflow-hidden">
-				<div className="relative overflow-hidden">
-					<div className="relative h-64 w-full overflow-hidden">
-						<Image
-							src={car.mainImage || "/placeholder.svg"}
-							alt={car.name}
-							fill
-							className="object-cover transition-transform duration-700 group-hover:scale-110"
-						/>
-						<div className="absolute inset-0 bg-gradient-to-t from-brown-dark/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-					</div>
-
+			<div className="art-deco-border overflow-hidden h-full flex flex-col">
+				<div className="relative overflow-hidden h-64">
+					<Image
+						src={car.mainImage || "/placeholder.svg"}
+						alt={car.name}
+						fill
+						className="object-cover transition-transform duration-500 group-hover:scale-105"
+					/>
+					<div className="absolute inset-0 bg-gradient-to-t from-brown-dark/80 via-brown-dark/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
 					<div className="absolute bottom-0 left-0 right-0 p-4 transform translate-y-full group-hover:translate-y-0 transition-transform duration-300">
 						<Link
 							href={href}
-							className="vintage-button w-full flex justify-center bg-cream/90"
+							className="vintage-button w-full flex justify-center bg-cream hover:bg-cream-darker"
 						>
 							Zobrazit detail
 						</Link>
 					</div>
 				</div>
 
-				<div className="p-6 bg-cream-darker">
-					<h3 className="font-marcellus text-xl mb-2 text-brown-dark">
+				<div className="p-6 bg-cream-darker flex-1 flex flex-col min-h-[120px]">
+					<h3 className="font-marcellus text-xl mb-2 text-brown-dark line-clamp-2 h-[56px]">
 						{car.name}
 					</h3>
-					<div className="flex justify-between items-center">
+					<div className="flex justify-between items-center mt-auto">
 						<p className="font-montserrat text-sm text-brown">
 							Rok: {car.year}
 						</p>

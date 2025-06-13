@@ -1,6 +1,53 @@
+"use client";
+
+import { useRef } from "react";
+import { motion, useInView } from "framer-motion";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { contactFormSchema } from "@/lib/validations";
+import type { z } from "zod";
+import {
+	Form,
+	FormControl,
+	FormField,
+	FormItem,
+	FormLabel,
+	FormMessage,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import {
+	Select,
+	SelectContent,
+	SelectItem,
+	SelectTrigger,
+	SelectValue,
+} from "@/components/ui/select";
 import Image from "next/image";
 
+type ContactFormValues = z.infer<typeof contactFormSchema>;
+
 export default function ContactPage() {
+	const formRef = useRef<HTMLDivElement>(null);
+	const isFormInView = useInView(formRef, { once: true, amount: 0.1 });
+
+	const form = useForm<ContactFormValues>({
+		resolver: zodResolver(contactFormSchema),
+		defaultValues: {
+			name: "",
+			email: "",
+			phone: "",
+			inquiryType: "",
+			subject: "",
+			message: "",
+		},
+	});
+
+	async function onSubmit(data: ContactFormValues) {
+		console.log(data);
+		// TODO: Implement form submission
+	}
+
 	return (
 		<div className="pt-32 pb-16">
 			<div className="container-vintage">
@@ -22,8 +69,8 @@ export default function ContactPage() {
 									</h3>
 									<address className="not-italic">
 										<p>Veteran Motors s.r.o.</p>
-										<p>Klasická 123</p>
-										<p>110 00 Praha</p>
+										<p>Bílý Kostel nad Nisou 509</p>
+										<p>463 31 Bílý Kostel nad Nisou</p>
 										<p>Česká republika</p>
 									</address>
 								</div>
@@ -32,7 +79,7 @@ export default function ContactPage() {
 									<h3 className="text-xl font-medium mb-2 text-gold">
 										Telefon
 									</h3>
-									<p>+420 123 456 789</p>
+									<p>+420 735 705 601</p>
 								</div>
 
 								<div>
@@ -81,7 +128,9 @@ export default function ContactPage() {
 									</svg>
 								</a>
 								<a
-									href="#"
+									href="https://www.instagram.com/veteran.motors?igsh=a2F6ZHlzb3BvaTgx&utm_source=qr"
+									target="_blank"
+									rel="noopener noreferrer"
 									className="text-brown hover:text-gold transition-colors duration-300"
 								>
 									<span className="sr-only">Instagram</span>
@@ -125,142 +174,156 @@ export default function ContactPage() {
 							Napište nám
 						</h2>
 
-						<form className="space-y-6">
-							<div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-								<div>
-									<label
-										htmlFor="name"
-										className="block mb-2 font-medium"
-									>
-										Jméno a příjmení
-									</label>
-									<input
-										type="text"
-										id="name"
-										className="vintage-input w-full"
-										required
+						<Form {...form}>
+							<form
+								onSubmit={form.handleSubmit(onSubmit)}
+								className="space-y-6"
+							>
+								<div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+									<FormField
+										control={form.control}
+										name="name"
+										render={({ field }) => (
+											<FormItem>
+												<FormLabel>
+													Jméno a příjmení
+												</FormLabel>
+												<FormControl>
+													<Input
+														{...field}
+														className="vintage-input w-full"
+													/>
+												</FormControl>
+												<FormMessage className="text-red-500" />
+											</FormItem>
+										)}
+									/>
+
+									<FormField
+										control={form.control}
+										name="email"
+										render={({ field }) => (
+											<FormItem>
+												<FormLabel>Email</FormLabel>
+												<FormControl>
+													<Input
+														type="email"
+														{...field}
+														className="vintage-input w-full"
+													/>
+												</FormControl>
+												<FormMessage className="text-red-500" />
+											</FormItem>
+										)}
 									/>
 								</div>
 
-								<div>
-									<label
-										htmlFor="email"
-										className="block mb-2 font-medium"
-									>
-										Email
-									</label>
-									<input
-										type="email"
-										id="email"
-										className="vintage-input w-full"
-										required
+								<div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+									<FormField
+										control={form.control}
+										name="phone"
+										render={({ field }) => (
+											<FormItem>
+												<FormLabel>Telefon</FormLabel>
+												<FormControl>
+													<Input
+														type="tel"
+														{...field}
+														className="vintage-input w-full"
+													/>
+												</FormControl>
+												<FormMessage className="text-red-500" />
+											</FormItem>
+										)}
+									/>
+
+									<FormField
+										control={form.control}
+										name="inquiryType"
+										render={({ field }) => (
+											<FormItem>
+												<FormLabel>
+													Typ dotazu
+												</FormLabel>
+												<Select
+													onValueChange={
+														field.onChange
+													}
+													defaultValue={field.value}
+												>
+													<FormControl>
+														<SelectTrigger className="vintage-input w-full">
+															<SelectValue placeholder="Vyberte typ dotazu" />
+														</SelectTrigger>
+													</FormControl>
+													<SelectContent className="bg-white">
+														<SelectItem value="prodej">
+															Prodej vozů
+														</SelectItem>
+														<SelectItem value="pronajem">
+															Pronájem vozů
+														</SelectItem>
+														<SelectItem value="svatby">
+															Svatební služby
+														</SelectItem>
+														<SelectItem value="servis">
+															Servis a opravy
+														</SelectItem>
+														<SelectItem value="jine">
+															Jiné
+														</SelectItem>
+													</SelectContent>
+												</Select>
+												<FormMessage className="text-red-500" />
+											</FormItem>
+										)}
 									/>
 								</div>
-							</div>
 
-							<div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-								<div>
-									<label
-										htmlFor="phone"
-										className="block mb-2 font-medium"
-									>
-										Telefon
-									</label>
-									<input
-										type="tel"
-										id="phone"
-										className="vintage-input w-full"
-									/>
-								</div>
-
-								<div className="relative">
-									<label
-										htmlFor="inquiry-type"
-										className="block mb-2 font-medium"
-									>
-										Typ dotazu
-									</label>
-									<div className="relative">
-										<select
-											id="inquiry-type"
-											className="vintage-input w-full appearance-none pr-10"
-											required
-										>
-											<option value="">
-												Vyberte typ dotazu
-											</option>
-											<option value="prodej">
-												Prodej vozů
-											</option>
-											<option value="pronajem">
-												Pronájem vozů
-											</option>
-											<option value="svatby">
-												Svatební služby
-											</option>
-											<option value="servis">
-												Servis a opravy
-											</option>
-											<option value="jine">Jiné</option>
-										</select>
-										<div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-gold">
-											<svg
-												className="h-5 w-5"
-												xmlns="http://www.w3.org/2000/svg"
-												viewBox="0 0 20 20"
-												fill="currentColor"
-												aria-hidden="true"
-											>
-												<path
-													fillRule="evenodd"
-													d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-													clipRule="evenodd"
+								<FormField
+									control={form.control}
+									name="subject"
+									render={({ field }) => (
+										<FormItem>
+											<FormLabel>Předmět</FormLabel>
+											<FormControl>
+												<Input
+													{...field}
+													className="vintage-input w-full"
 												/>
-											</svg>
-										</div>
-									</div>
-								</div>
-							</div>
-
-							<div>
-								<label
-									htmlFor="subject"
-									className="block mb-2 font-medium"
-								>
-									Předmět
-								</label>
-								<input
-									type="text"
-									id="subject"
-									className="vintage-input w-full"
-									required
+											</FormControl>
+											<FormMessage className="text-red-500" />
+										</FormItem>
+									)}
 								/>
-							</div>
 
-							<div>
-								<label
-									htmlFor="message"
-									className="block mb-2 font-medium"
-								>
-									Zpráva
-								</label>
-								<textarea
-									id="message"
-									rows={6}
-									className="vintage-input w-full"
-									required
-								></textarea>
-							</div>
+								<FormField
+									control={form.control}
+									name="message"
+									render={({ field }) => (
+										<FormItem>
+											<FormLabel>Zpráva</FormLabel>
+											<FormControl>
+												<Textarea
+													{...field}
+													className="vintage-input w-full"
+												/>
+											</FormControl>
+											<FormMessage className="text-red-500" />
+										</FormItem>
+									)}
+								/>
 
-							<div className="text-center md:text-left">
-								<button
-									type="submit"
-									className="vintage-button"
-								>
-									Odeslat zprávu
-								</button>
-							</div>
-						</form>
+								<div className="text-center md:text-left">
+									<button
+										type="submit"
+										className="vintage-button"
+									>
+										Odeslat zprávu
+									</button>
+								</div>
+							</form>
+						</Form>
 					</div>
 				</div>
 

@@ -22,8 +22,8 @@ export default function Footer() {
 						</h3>
 						<address className="not-italic font-montserrat">
 							<p className="mb-2">Veteran Motors s.r.o.</p>
-							<p className="mb-2">Klasická 123</p>
-							<p className="mb-2">110 00 Praha</p>
+							<p className="mb-2">Bílý Kostel nad Nisou 509</p>
+							<p className="mb-2">463 31 Bílý Kostel nad Nisou</p>
 							<p className="mb-2">Česká republika</p>
 						</address>
 					</div>
@@ -33,17 +33,26 @@ export default function Footer() {
 							SPOJENÍ
 						</h3>
 						<p className="mb-2 font-montserrat">
-							Tel: +420 123 456 789
+							<a
+								href="tel:+420735705601"
+								className="hover:text-gold transition-colors"
+							>
+								Tel: +420 735 705 601
+							</a>
 						</p>
 						<p className="mb-2 font-montserrat">
-							Email: info@veteranmotors.cz
+							<a
+								href="mailto:info@veteranmotors.cz"
+								className="hover:text-gold transition-colors"
+							>
+								Email: info@veteranmotors.cz
+							</a>
 						</p>
 						<div className="flex justify-center space-x-6 mt-6">
 							<a
 								href="#"
-								className="text-white hover:text-gold transition-colors duration-300"
+								className="hover:text-gold transition-colors"
 							>
-								<span className="sr-only">Facebook</span>
 								<svg
 									className="h-6 w-6"
 									fill="currentColor"
@@ -58,10 +67,11 @@ export default function Footer() {
 								</svg>
 							</a>
 							<a
-								href="#"
-								className="text-white hover:text-gold transition-colors duration-300"
+								href="https://www.instagram.com/veteran.motors?igsh=a2F6ZHlzb3BvaTgx&utm_source=qr"
+								target="_blank"
+								rel="noopener noreferrer"
+								className="hover:text-gold transition-colors"
 							>
-								<span className="sr-only">Instagram</span>
 								<svg
 									className="h-6 w-6"
 									fill="currentColor"

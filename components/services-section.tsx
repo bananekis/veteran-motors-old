@@ -39,7 +39,7 @@ export default function ServicesSection() {
 			<div className="container-vintage">
 				<ArtDecoHeading centered>NAŠE SLUŽBY</ArtDecoHeading>
 
-				<div className="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-12">
+				<div className="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-12 max-w-7xl mx-auto">
 					{services.map((service, index) => (
 						<motion.div
 							key={service.title}
@@ -50,17 +50,17 @@ export default function ServicesSection() {
 									: { opacity: 0, y: 50 }
 							}
 							transition={{ duration: 0.5, delay: index * 0.2 }}
-							className="group"
+							className="group flex flex-col h-full"
 						>
-							<div className="art-deco-border overflow-hidden">
-								<div className="relative h-64 overflow-hidden">
+							<div className="art-deco-border overflow-hidden flex flex-col h-full">
+								<div className="relative h-72 overflow-hidden">
 									<Image
 										src={
 											service.image || "/placeholder.svg"
 										}
 										alt={service.title}
 										fill
-										className="object-cover"
+										className="object-cover transition-transform duration-500 group-hover:scale-105"
 									/>
 									<div className="absolute inset-0 bg-gradient-to-t from-brown-dark/70 to-transparent"></div>
 									<div className="absolute inset-0 flex items-center justify-center">
@@ -70,13 +70,13 @@ export default function ServicesSection() {
 									</div>
 								</div>
 
-								<div className="p-6 bg-cream">
-									<p className="font-montserrat text-brown mb-6">
+								<div className="p-6 bg-cream flex flex-col flex-grow">
+									<p className="font-montserrat text-brown mb-6 flex-grow">
 										{service.description}
 									</p>
 									<Link
 										href={service.link}
-										className="vintage-button"
+										className="vintage-button w-full text-center"
 									>
 										Zjistit více
 									</Link>
