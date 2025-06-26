@@ -213,6 +213,28 @@ Nová zpráva z webu Veteran Motors - {{subject}}
 				</div>
 				{{/brand}}
 
+				<!-- Vehicle Interest Form Specific Info (Detailní stránka vozu) -->
+				{{#vehicle_name}}
+				<div class="info-section">
+					<h3>🚗 Zájem o vozidlo</h3>
+					<div class="info-row">
+						<span class="info-label">Vozidlo:</span>
+						<span class="info-value">{{vehicle_name}}</span>
+					</div>
+					{{#viewing_date}}
+					<div class="info-row">
+						<span class="info-label">Termín prohlídky:</span>
+						<span class="info-value">{{viewing_date}}</span>
+					</div>
+					{{/viewing_date}} {{#offered_price}}
+					<div class="info-row">
+						<span class="info-label">Nabízená cena:</span>
+						<span class="info-value">{{offered_price}}</span>
+					</div>
+					{{/offered_price}}
+				</div>
+				{{/vehicle_name}}
+
 				<!-- Message Section -->
 				<div class="message-section">
 					<h3>💬 Zpráva</h3>
@@ -310,6 +332,7 @@ Tato zpráva byla odeslána prostřednictvím kontaktního formuláře na webu v
     - 📞 **General Contact Form** (Kontakt page) - Shows inquiry type and contact details
     - 🚙 **Rental Forms** (Pronájem/Svatby pages) - Shows car reservation details
     - 🏪 **Sale Inquiry Form** (Prodej page) - Shows car purchase specifications
+    - 🚗 **Vehicle Interest Form** (Car detail pages) - Shows specific vehicle interest with viewing date and offer
 
 4. **Variables Used:**
 
@@ -317,6 +340,7 @@ Tato zpráva byla odeslána prostřednictvím kontaktního formuláře na webu v
     - **Contact:** `{{inquiry_type}}`
     - **Rental:** `{{car_type}}`, `{{date_from}}`, `{{date_to}}`, `{{purpose}}`, `{{location}}`
     - **Sale:** `{{brand}}`, `{{type}}`, `{{price}}`, `{{transmission}}`, `{{engine}}`, `{{condition}}`
+    - **Vehicle Interest:** `{{vehicle_name}}`, `{{viewing_date}}`, `{{offered_price}}`
     - Conditional rendering using `{{#variable}}` syntax
 
 5. **Styling:**
@@ -340,3 +364,7 @@ Shows: Contact details + car reservation info (dates, location, purpose) + messa
 ### 🏪 **Sale Inquiry Form** (Prodej page)
 
 Shows: Contact details + car specifications (brand, type, price, etc.) + message
+
+### 🚗 **Vehicle Interest Form** (Car detail pages)
+
+Shows: Contact details + specific vehicle interest (vehicle name, viewing date, offered price) + message

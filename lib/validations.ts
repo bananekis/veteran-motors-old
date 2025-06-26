@@ -46,3 +46,13 @@ export const saleFormSchema = z.object({
 	phone: phoneSchema,
 	email: emailSchema,
 });
+
+// Vehicle Interest Form Schema
+export const vehicleInterestFormSchema = z.object({
+	name: z.string().min(1, "Jméno je povinné"),
+	phone: phoneSchema,
+	email: emailSchema,
+	viewingDate: z.string().optional(),
+	offeredPrice: z.string().optional(),
+	message: z.string().min(10, "Zpráva musí mít alespoň 10 znaků"),
+});

@@ -28,6 +28,10 @@ export interface EmailData {
 	transmission?: string;
 	engine?: string;
 	condition?: string;
+	// Vehicle interest form fields
+	vehicle_name?: string;
+	viewing_date?: string;
+	offered_price?: string;
 	// Index signature for EmailJS compatibility
 	[key: string]: unknown;
 }
@@ -129,5 +133,34 @@ ${data.description ? `\nDoplňující popis: ${data.description}` : ""}
 		transmission: data.transmission,
 		engine: data.engine,
 		condition: data.condition,
+	};
+};
+
+// Helper function to format vehicle interest form data for email
+export const formatVehicleInterestFormData = (
+	data: any,
+	vehicleName: string
+): EmailData => {
+	return {
+		from_name: data.name,
+		from_email: data.email,
+		from_phone: data.phone,
+		subject: `Zájem o vozidlo - ${vehicleName}`,
+		message: `
+Zájem o vozidlo:
+
+Vozidlo: ${vehicleName}
+Jméno: ${data.name}
+Telefon: ${data.phone}
+Email: ${data.email}
+${data.viewingDate ? `Termín prohlídky: ${data.viewingDate}` : ""}
+${data.offeredPrice ? `Nabízená cena: ${data.offeredPrice}` : ""}
+
+Zpráva:
+${data.message}
+    `.trim(),
+		vehicle_name: vehicleName,
+		viewing_date: data.viewingDate,
+		offered_price: data.offeredPrice,
 	};
 };
