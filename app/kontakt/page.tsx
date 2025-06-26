@@ -1,10 +1,11 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { motion, useInView } from "framer-motion";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { contactFormSchema } from "@/lib/validations";
+import { sendEmail, formatContactFormData } from "@/lib/emailjs";
 import type { z } from "zod";
 import {
 	Form,
@@ -23,13 +24,16 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from "@/components/ui/select";
-import Image from "next/image";
 
 type ContactFormValues = z.infer<typeof contactFormSchema>;
 
 export default function ContactPage() {
 	const formRef = useRef<HTMLDivElement>(null);
 	const isFormInView = useInView(formRef, { once: true, amount: 0.1 });
+	const [isSubmitting, setIsSubmitting] = useState(false);
+	const [submitStatus, setSubmitStatus] = useState<
+		"idle" | "success" | "error"
+	>("idle");
 
 	const form = useForm<ContactFormValues>({
 		resolver: zodResolver(contactFormSchema),
@@ -44,8 +48,25 @@ export default function ContactPage() {
 	});
 
 	async function onSubmit(data: ContactFormValues) {
-		console.log(data);
-		// TODO: Implement form submission
+		setIsSubmitting(true);
+		setSubmitStatus("idle");
+
+		try {
+			const emailData = formatContactFormData(data);
+			const success = await sendEmail(emailData);
+
+			if (success) {
+				setSubmitStatus("success");
+				form.reset();
+			} else {
+				setSubmitStatus("error");
+			}
+		} catch (error) {
+			console.error("Error submitting form:", error);
+			setSubmitStatus("error");
+		} finally {
+			setIsSubmitting(false);
+		}
 	}
 
 	return (
@@ -317,11 +338,28 @@ export default function ContactPage() {
 								<div className="text-center md:text-left">
 									<button
 										type="submit"
-										className="vintage-button"
+										disabled={isSubmitting}
+										className="vintage-button disabled:opacity-50 disabled:cursor-not-allowed"
 									>
-										Odeslat zprávu
+										{isSubmitting
+											? "Odesílání..."
+											: "Odeslat zprávu"}
 									</button>
 								</div>
+
+								{submitStatus === "success" && (
+									<div className="mt-4 p-4 bg-green-100 border border-green-400 text-green-700 rounded">
+										Vaše zpráva byla úspěšně odeslána. Brzy
+										se vám ozveme!
+									</div>
+								)}
+
+								{submitStatus === "error" && (
+									<div className="mt-4 p-4 bg-red-100 border border-red-400 text-red-700 rounded">
+										Při odesílání došlo k chybě. Zkuste to
+										prosím znovu nebo nás kontaktujte přímo.
+									</div>
+								)}
 							</form>
 						</Form>
 					</div>
@@ -333,12 +371,62 @@ export default function ContactPage() {
 					</h2>
 
 					<div className="vintage-card p-0 h-96 relative overflow-hidden">
-						<Image
-							src="/vintage-prague-map-pin.png"
-							alt="Mapa - Veteran Motors"
-							fill
-							className="object-cover"
-						/>
+						<iframe
+							src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2596.0475946876894!2d14.888862776254385!3d50.77024617166832!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x470e6e9c8e8c4b8d%3A0x8b7f8c7d6e5f4a3b!2zQsOtbMO9IEtvc3RlbCBuYWQgTmlzb3UgNTA5LCA0NjMgMzEgQsOtbMO9IEtvc3RlbCBuYWQgTmlzb3U!5e0!3m2!1scs!2scz!4v1735739200000!5m2!1scs!2scz"
+							width="100%"
+							height="100%"
+							style={{ border: 0 }}
+							allowFullScreen
+							loading="lazy"
+							referrerPolicy="no-referrer-when-downgrade"
+							title="Mapa - Veteran Motors"
+							className="absolute inset-0"
+						></iframe>
+
+						{/* Overlay with company info */}
+						<div className="absolute top-4 left-4 bg-white/95 backdrop-blur-sm p-4 rounded-lg shadow-lg max-w-xs">
+							<h3 className="font-marcellus text-lg font-semibold text-brown mb-2">
+								Veteran Motors s.r.o.
+							</h3>
+							<p className="text-sm text-brown-dark">
+								Bílý Kostel nad Nisou 509
+								<br />
+								463 31 Bílý Kostel nad Nisou
+								<br />
+								Česká republika
+							</p>
+							<div className="mt-3 pt-3 border-t border-gold/30">
+								<p className="text-xs text-brown font-medium">
+									📞 +420 735 705 601
+								</p>
+								<p className="text-xs text-brown">
+									✉️ info@veteranmotors.cz
+								</p>
+							</div>
+						</div>
+
+						{/* Navigation button */}
+						<div className="absolute bottom-4 right-4">
+							<a
+								href="https://maps.google.com/maps?q=Bílý+Kostel+nad+Nisou+509,+463+31+Bílý+Kostel+nad+Nisou,+Česká+republika"
+								target="_blank"
+								rel="noopener noreferrer"
+								className="bg-brown hover:bg-brown-dark text-white px-4 py-2 rounded-lg shadow-lg text-sm font-medium transition-colors duration-300 flex items-center gap-2"
+							>
+								<svg
+									className="w-4 h-4"
+									fill="currentColor"
+									viewBox="0 0 20 20"
+								>
+									<path
+										fillRule="evenodd"
+										d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z"
+										clipRule="evenodd"
+									/>
+								</svg>
+								Navigovat
+							</a>
+						</div>
 					</div>
 				</div>
 			</div>

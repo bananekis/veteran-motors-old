@@ -1,12 +1,29 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { motion, useInView } from "framer-motion";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { saleFormSchema } from "@/lib/validations";
+import { sendEmail, formatSaleFormData } from "@/lib/emailjs";
+import {
+	Form,
+	FormControl,
+	FormField,
+	FormItem,
+	FormLabel,
+	FormMessage,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 import Image from "next/image";
 import Link from "next/link";
 import { cars } from "@/lib/data";
 import ArtDecoHeading from "@/components/art-deco-heading";
 import CarCard from "@/components/car-card";
+import type { z } from "zod";
+
+type SaleFormValues = z.infer<typeof saleFormSchema>;
 
 export default function SalePage() {
 	const carsForSale = cars.filter((car) => car.category === "sale");
@@ -23,6 +40,48 @@ export default function SalePage() {
 	const isFormInView = useInView(formRef, { once: true, amount: 0.1 });
 	const isInfoInView = useInView(infoRef, { once: true, amount: 0.1 });
 	const isGalleryInView = useInView(galleryRef, { once: true, amount: 0.1 });
+
+	const [isSubmitting, setIsSubmitting] = useState(false);
+	const [submitStatus, setSubmitStatus] = useState<
+		"idle" | "success" | "error"
+	>("idle");
+
+	const form = useForm<SaleFormValues>({
+		resolver: zodResolver(saleFormSchema),
+		defaultValues: {
+			brand: "",
+			type: "",
+			price: "",
+			transmission: "",
+			engine: "",
+			condition: "",
+			description: "",
+			phone: "",
+			email: "",
+		},
+	});
+
+	async function onSubmit(data: SaleFormValues) {
+		setIsSubmitting(true);
+		setSubmitStatus("idle");
+
+		try {
+			const emailData = formatSaleFormData(data);
+			const success = await sendEmail(emailData);
+
+			if (success) {
+				setSubmitStatus("success");
+				form.reset();
+			} else {
+				setSubmitStatus("error");
+			}
+		} catch (error) {
+			console.error("Error submitting form:", error);
+			setSubmitStatus("error");
+		} finally {
+			setIsSubmitting(false);
+		}
+	}
 
 	return (
 		<div className="pt-32 pb-16">
@@ -213,150 +272,217 @@ export default function SalePage() {
 								ozveme s nabídkou vozů dle Vašich představ.
 							</p>
 
-							<form className="grid grid-cols-1 md:grid-cols-2 gap-6">
-								<div className="space-y-4">
-									<div>
-										<label
-											htmlFor="brand"
-											className="block mb-2 font-medium"
-										>
-											Značka
-										</label>
-										<input
-											type="text"
-											id="brand"
-											className="vintage-input"
+							<Form {...form}>
+								<form
+									onSubmit={form.handleSubmit(onSubmit)}
+									className="grid grid-cols-1 md:grid-cols-2 gap-6"
+								>
+									<div className="space-y-4">
+										<FormField
+											control={form.control}
+											name="brand"
+											render={({ field }) => (
+												<FormItem>
+													<FormLabel>
+														Značka
+													</FormLabel>
+													<FormControl>
+														<Input
+															{...field}
+															className="vintage-input w-full"
+														/>
+													</FormControl>
+													<FormMessage className="text-red-500" />
+												</FormItem>
+											)}
+										/>
+
+										<FormField
+											control={form.control}
+											name="type"
+											render={({ field }) => (
+												<FormItem>
+													<FormLabel>Typ</FormLabel>
+													<FormControl>
+														<Input
+															{...field}
+															className="vintage-input w-full"
+														/>
+													</FormControl>
+													<FormMessage className="text-red-500" />
+												</FormItem>
+											)}
+										/>
+
+										<FormField
+											control={form.control}
+											name="price"
+											render={({ field }) => (
+												<FormItem>
+													<FormLabel>
+														Cenová představa
+													</FormLabel>
+													<FormControl>
+														<Input
+															{...field}
+															className="vintage-input w-full"
+														/>
+													</FormControl>
+													<FormMessage className="text-red-500" />
+												</FormItem>
+											)}
 										/>
 									</div>
 
-									<div>
-										<label
-											htmlFor="type"
-											className="block mb-2 font-medium"
-										>
-											Typ
-										</label>
-										<input
-											type="text"
-											id="type"
-											className="vintage-input"
+									<div className="space-y-4">
+										<FormField
+											control={form.control}
+											name="transmission"
+											render={({ field }) => (
+												<FormItem>
+													<FormLabel>
+														Převodovka
+													</FormLabel>
+													<FormControl>
+														<Input
+															{...field}
+															className="vintage-input w-full"
+														/>
+													</FormControl>
+													<FormMessage className="text-red-500" />
+												</FormItem>
+											)}
+										/>
+
+										<FormField
+											control={form.control}
+											name="engine"
+											render={({ field }) => (
+												<FormItem>
+													<FormLabel>Motor</FormLabel>
+													<FormControl>
+														<Input
+															{...field}
+															className="vintage-input w-full"
+														/>
+													</FormControl>
+													<FormMessage className="text-red-500" />
+												</FormItem>
+											)}
+										/>
+
+										<FormField
+											control={form.control}
+											name="condition"
+											render={({ field }) => (
+												<FormItem>
+													<FormLabel>Stav</FormLabel>
+													<FormControl>
+														<Input
+															{...field}
+															className="vintage-input w-full"
+														/>
+													</FormControl>
+													<FormMessage className="text-red-500" />
+												</FormItem>
+											)}
 										/>
 									</div>
 
-									<div>
-										<label
-											htmlFor="price"
-											className="block mb-2 font-medium"
-										>
-											Cenová představa
-										</label>
-										<input
-											type="text"
-											id="price"
-											className="vintage-input"
-										/>
-									</div>
-								</div>
-
-								<div className="space-y-4">
-									<div>
-										<label
-											htmlFor="transmission"
-											className="block mb-2 font-medium"
-										>
-											Převodovka
-										</label>
-										<input
-											type="text"
-											id="transmission"
-											className="vintage-input"
+									<div className="md:col-span-2">
+										<FormField
+											control={form.control}
+											name="description"
+											render={({ field }) => (
+												<FormItem>
+													<FormLabel>
+														Doplňující popis
+													</FormLabel>
+													<FormControl>
+														<Textarea
+															{...field}
+															rows={4}
+															className="vintage-input w-full"
+														/>
+													</FormControl>
+													<FormMessage className="text-red-500" />
+												</FormItem>
+											)}
 										/>
 									</div>
 
-									<div>
-										<label
-											htmlFor="engine"
-											className="block mb-2 font-medium"
-										>
-											Motor
-										</label>
-										<input
-											type="text"
-											id="engine"
-											className="vintage-input"
+									<div className="space-y-4">
+										<FormField
+											control={form.control}
+											name="phone"
+											render={({ field }) => (
+												<FormItem>
+													<FormLabel>
+														Váš tel.
+													</FormLabel>
+													<FormControl>
+														<Input
+															type="tel"
+															{...field}
+															className="vintage-input w-full"
+														/>
+													</FormControl>
+													<FormMessage className="text-red-500" />
+												</FormItem>
+											)}
 										/>
 									</div>
 
-									<div>
-										<label
-											htmlFor="condition"
-											className="block mb-2 font-medium"
-										>
-											Stav
-										</label>
-										<input
-											type="text"
-											id="condition"
-											className="vintage-input"
+									<div className="space-y-4">
+										<FormField
+											control={form.control}
+											name="email"
+											render={({ field }) => (
+												<FormItem>
+													<FormLabel>
+														Váš email
+													</FormLabel>
+													<FormControl>
+														<Input
+															type="email"
+															{...field}
+															className="vintage-input w-full"
+														/>
+													</FormControl>
+													<FormMessage className="text-red-500" />
+												</FormItem>
+											)}
 										/>
 									</div>
-								</div>
 
-								<div className="md:col-span-2">
-									<label
-										htmlFor="description"
-										className="block mb-2 font-medium"
-									>
-										Doplňující popis
-									</label>
-									<textarea
-										id="description"
-										rows={4}
-										className="vintage-input"
-									></textarea>
-								</div>
-
-								<div className="space-y-4">
-									<div>
-										<label
-											htmlFor="phone"
-											className="block mb-2 font-medium"
+									<div className="md:col-span-2 text-center mt-4">
+										<button
+											type="submit"
+											disabled={isSubmitting}
+											className="vintage-button disabled:opacity-50 disabled:cursor-not-allowed"
 										>
-											Váš tel.
-										</label>
-										<input
-											type="tel"
-											id="phone"
-											className="vintage-input"
-										/>
+											{isSubmitting
+												? "Odesílání..."
+												: "ODESLAT"}
+										</button>
 									</div>
-								</div>
 
-								<div className="space-y-4">
-									<div>
-										<label
-											htmlFor="email"
-											className="block mb-2 font-medium"
-										>
-											Váš email
-										</label>
-										<input
-											type="email"
-											id="email"
-											className="vintage-input"
-										/>
-									</div>
-								</div>
+									{submitStatus === "success" && (
+										<div className="md:col-span-2 mt-4 p-4 bg-green-100 border border-green-400 text-green-700 rounded">
+											Vaše poptávka byla úspěšně odeslána.
+											Brzy se vám ozveme!
+										</div>
+									)}
 
-								<div className="md:col-span-2 text-center mt-4">
-									<button
-										type="submit"
-										className="vintage-button"
-									>
-										ODESLAT
-									</button>
-								</div>
-							</form>
+									{submitStatus === "error" && (
+										<div className="md:col-span-2 mt-4 p-4 bg-red-100 border border-red-400 text-red-700 rounded">
+											Při odesílání došlo k chybě. Zkuste
+											to prosím znovu nebo nás kontaktujte
+											přímo.
+										</div>
+									)}
+								</form>
+							</Form>
 						</div>
 					</motion.div>
 				</section>

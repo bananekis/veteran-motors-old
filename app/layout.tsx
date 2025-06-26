@@ -32,6 +32,11 @@ export const metadata: Metadata = {
 	description:
 		"Veteran Motors - Classic and vintage cars for sale, rent, and special occasions",
 	generator: "v0.dev",
+	icons: {
+		icon: "/icon.svg",
+		shortcut: "/icon.svg",
+		apple: "/icon.svg",
+	},
 };
 
 export default function RootLayout({

@@ -1,10 +1,11 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { motion, useInView } from "framer-motion";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { rentalFormSchema } from "@/lib/validations";
+import { sendEmail, formatRentalFormData } from "@/lib/emailjs";
 import type { z } from "zod";
 import {
 	Form,
@@ -34,6 +35,10 @@ type RentalFormValues = z.infer<typeof rentalFormSchema>;
 export default function RentalForm({ title, description }: RentalFormProps) {
 	const formRef = useRef<HTMLDivElement>(null);
 	const isFormInView = useInView(formRef, { once: true, amount: 0.1 });
+	const [isSubmitting, setIsSubmitting] = useState(false);
+	const [submitStatus, setSubmitStatus] = useState<
+		"idle" | "success" | "error"
+	>("idle");
 
 	const form = useForm<RentalFormValues>({
 		resolver: zodResolver(rentalFormSchema),
@@ -50,8 +55,25 @@ export default function RentalForm({ title, description }: RentalFormProps) {
 	});
 
 	async function onSubmit(data: RentalFormValues) {
-		console.log(data);
-		// TODO: Implement form submission
+		setIsSubmitting(true);
+		setSubmitStatus("idle");
+
+		try {
+			const emailData = formatRentalFormData(data);
+			const success = await sendEmail(emailData);
+
+			if (success) {
+				setSubmitStatus("success");
+				form.reset();
+			} else {
+				setSubmitStatus("error");
+			}
+		} catch (error) {
+			console.error("Error submitting form:", error);
+			setSubmitStatus("error");
+		} finally {
+			setIsSubmitting(false);
+		}
 	}
 
 	return (
@@ -306,11 +328,28 @@ export default function RentalForm({ title, description }: RentalFormProps) {
 							<div className="text-center">
 								<button
 									type="submit"
-									className="vintage-button"
+									disabled={isSubmitting}
+									className="vintage-button disabled:opacity-50 disabled:cursor-not-allowed"
 								>
-									Odeslat poptávku
+									{isSubmitting
+										? "Odesílání..."
+										: "Odeslat poptávku"}
 								</button>
 							</div>
+
+							{submitStatus === "success" && (
+								<div className="mt-4 p-4 bg-green-100 border border-green-400 text-green-700 rounded">
+									Vaše poptávka byla úspěšně odeslána. Brzy se
+									vám ozveme!
+								</div>
+							)}
+
+							{submitStatus === "error" && (
+								<div className="mt-4 p-4 bg-red-100 border border-red-400 text-red-700 rounded">
+									Při odesílání došlo k chybě. Zkuste to
+									prosím znovu nebo nás kontaktujte přímo.
+								</div>
+							)}
 						</form>
 					</Form>
 				</div>

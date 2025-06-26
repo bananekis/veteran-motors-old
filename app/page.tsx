@@ -5,7 +5,7 @@ import { cars } from "@/lib/data";
 import CarCard from "@/components/car-card";
 import Link from "next/link";
 import Image from "next/image";
-import { Trophy, Users, Clock } from "lucide-react";
+import { Trophy, Users, Clock, Car, Heart } from "lucide-react";
 
 export default function Home() {
 	const featuredCars = cars.filter((car) => car.featured).slice(0, 5);
@@ -72,21 +72,45 @@ export default function Home() {
 
 			<section className="section-padding">
 				<div className="container-vintage">
-					<div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-7xl mx-auto">
-						<div className="text-center p-8 art-deco-border">
-							<Trophy className="w-16 h-16 mx-auto mb-4 text-nfs-cyan" />
-							<h3 className="text-2xl font-bold mb-2">100+</h3>
-							<p className="text-lg">Prodaných vozů</p>
+					<div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-6 max-w-7xl mx-auto">
+						<div className="text-center p-6 art-deco-border">
+							<Trophy className="w-12 h-12 md:w-16 md:h-16 mx-auto mb-4 text-nfs-cyan" />
+							<h3 className="text-xl md:text-2xl font-bold mb-2">
+								100+
+							</h3>
+							<p className="text-sm md:text-lg">Prodaných vozů</p>
 						</div>
-						<div className="text-center p-8 art-deco-border">
-							<Clock className="w-16 h-16 mx-auto mb-4 text-nfs-cyan" />
-							<h3 className="text-2xl font-bold mb-2">10+</h3>
-							<p className="text-lg">Let zkušeností</p>
+						<div className="text-center p-6 art-deco-border">
+							<Car className="w-12 h-12 md:w-16 md:h-16 mx-auto mb-4 text-nfs-cyan" />
+							<h3 className="text-xl md:text-2xl font-bold mb-2">
+								50+
+							</h3>
+							<p className="text-sm md:text-lg">
+								Pronajatých vozů
+							</p>
 						</div>
-						<div className="text-center p-8 art-deco-border">
-							<Users className="w-16 h-16 mx-auto mb-4 text-nfs-cyan" />
-							<h3 className="text-2xl font-bold mb-2">100+</h3>
-							<p className="text-lg">Spokojených klientů</p>
+						<div className="text-center p-6 art-deco-border">
+							<Heart className="w-12 h-12 md:w-16 md:h-16 mx-auto mb-4 text-nfs-cyan" />
+							<h3 className="text-xl md:text-2xl font-bold mb-2">
+								50+
+							</h3>
+							<p className="text-sm md:text-lg">Svateb</p>
+						</div>
+						<div className="text-center p-6 art-deco-border">
+							<Clock className="w-12 h-12 md:w-16 md:h-16 mx-auto mb-4 text-nfs-cyan" />
+							<h3 className="text-xl md:text-2xl font-bold mb-2">
+								10+
+							</h3>
+							<p className="text-sm md:text-lg">Let zkušeností</p>
+						</div>
+						<div className="text-center p-6 art-deco-border">
+							<Users className="w-12 h-12 md:w-16 md:h-16 mx-auto mb-4 text-nfs-cyan" />
+							<h3 className="text-xl md:text-2xl font-bold mb-2">
+								100+
+							</h3>
+							<p className="text-sm md:text-lg">
+								Spokojených klientů
+							</p>
 						</div>
 					</div>
 				</div>
