@@ -131,6 +131,168 @@ export default function CarDetailPage({ params }: CarDetailPageProps) {
 								</motion.div>
 							))}
 						</div>
+
+						<motion.div
+							ref={formRef}
+							initial={{ opacity: 0, y: 50 }}
+							animate={
+								isFormInView
+									? { opacity: 1, y: 0 }
+									: { opacity: 0, y: 50 }
+							}
+							transition={{ duration: 0.6 }}
+							className="mt-8 lg:mt-6 max-w-xl mx-auto"
+						>
+							<div className="art-deco-border">
+								<div className="p-4 sm:p-6 bg-cream text-sm">
+									<h2 className="font-marcellus text-xl mb-4 vintage-heading text-center">
+										Mám zájem o vozidlo
+									</h2>
+									<form
+										onSubmit={handleSubmit(onSubmit)}
+										className="space-y-4"
+									>
+										<div>
+											<label className="block text-xs font-medium mb-1 font-montserrat">
+												Jméno *
+											</label>
+											<input
+												{...register("name")}
+												type="text"
+												className="vintage-input text-sm px-3 py-2"
+												placeholder="Vaše jméno"
+											/>
+											{errors.name && (
+												<p className="text-red-600 text-xs mt-1">
+													{errors.name.message}
+												</p>
+											)}
+										</div>
+
+										<div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+											<div>
+												<label className="block text-xs font-medium mb-1 font-montserrat">
+													Telefon *
+												</label>
+												<input
+													{...register("phone")}
+													type="tel"
+													className="vintage-input text-sm px-3 py-2"
+													placeholder="+420 123 456 789"
+												/>
+												{errors.phone && (
+													<p className="text-red-600 text-xs mt-1">
+														{errors.phone.message}
+													</p>
+												)}
+											</div>
+
+											<div>
+												<label className="block text-xs font-medium mb-1 font-montserrat">
+													Email *
+												</label>
+												<input
+													{...register("email")}
+													type="email"
+													className="vintage-input text-sm px-3 py-2"
+													placeholder="vas@email.cz"
+												/>
+												{errors.email && (
+													<p className="text-red-600 text-xs mt-1">
+														{errors.email.message}
+													</p>
+												)}
+											</div>
+										</div>
+
+										<div>
+											<label className="block text-xs font-medium mb-1 font-montserrat">
+												Termín prohlídky, v případě, že
+												se chcete přijet podívat
+											</label>
+											<input
+												{...register("viewingDate")}
+												type="text"
+												className="vintage-input text-sm px-3 py-2"
+												placeholder="např. 15.1.2024 odpoledne"
+											/>
+											{errors.viewingDate && (
+												<p className="text-red-600 text-xs mt-1">
+													{errors.viewingDate.message}
+												</p>
+											)}
+										</div>
+
+										<div>
+											<label className="block text-xs font-medium mb-1 font-montserrat">
+												Nabízená cena
+											</label>
+											<input
+												{...register("offeredPrice")}
+												type="text"
+												className="vintage-input text-sm px-3 py-2"
+												placeholder="např. 500 000 Kč"
+											/>
+											{errors.offeredPrice && (
+												<p className="text-red-600 text-xs mt-1">
+													{
+														errors.offeredPrice
+															.message
+													}
+												</p>
+											)}
+										</div>
+
+										<div>
+											<label className="block text-xs font-medium mb-1 font-montserrat">
+												Zpráva *
+											</label>
+											<textarea
+												{...register("message")}
+												rows={3}
+												className="vintage-input resize-none text-sm px-3 py-2"
+												placeholder="Vaše zpráva..."
+											/>
+											{errors.message && (
+												<p className="text-red-600 text-xs mt-1">
+													{errors.message.message}
+												</p>
+											)}
+										</div>
+
+										{submitMessage && (
+											<div className="p-3 bg-green-100 border border-green-400 text-green-700 rounded text-xs">
+												{submitMessage}
+											</div>
+										)}
+
+										{submitError && (
+											<div className="p-3 bg-red-100 border border-red-400 text-red-700 rounded text-xs">
+												{submitError}
+											</div>
+										)}
+
+										<div className="text-center">
+											<button
+												type="submit"
+												disabled={isSubmitting}
+												className="vintage-button disabled:opacity-50 disabled:cursor-not-allowed text-sm px-6 py-2"
+											>
+												{isSubmitting
+													? "Odesílám..."
+													: "Odeslat"}
+											</button>
+										</div>
+										<div
+											className="text-xs text-gray-500 mt-3"
+											style={{ fontSize: "0.85rem" }}
+										>
+											Pole označená * jsou povinná.
+										</div>
+									</form>
+								</div>
+							</div>
+						</motion.div>
 					</motion.div>
 
 					<motion.div
@@ -147,7 +309,7 @@ export default function CarDetailPage({ params }: CarDetailPageProps) {
 						<div className="art-deco-border">
 							<div className="p-6 bg-cream">
 								<h2 className="font-marcellus text-2xl mb-4 vintage-heading">
-									CENA
+									cena k jednání
 								</h2>
 								<p className="text-3xl font-bold text-gold font-marcellus">
 									{car.price.toLocaleString()} Kč
@@ -182,6 +344,12 @@ export default function CarDetailPage({ params }: CarDetailPageProps) {
 									</li>
 									<li className="flex justify-between">
 										<span className="font-medium">
+											Karoserie:
+										</span>
+										<span>Sedan</span>
+									</li>
+									<li className="flex justify-between">
+										<span className="font-medium">
 											Motor:
 										</span>
 										<span>{car.specifications.engine}</span>
@@ -213,16 +381,6 @@ export default function CarDetailPage({ params }: CarDetailPageProps) {
 											</span>
 										</li>
 									)}
-									{car.specifications.color && (
-										<li className="flex justify-between">
-											<span className="font-medium">
-												Barva:
-											</span>
-											<span>
-												{car.specifications.color}
-											</span>
-										</li>
-									)}
 								</ul>
 							</div>
 						</div>
@@ -239,161 +397,6 @@ export default function CarDetailPage({ params }: CarDetailPageProps) {
 						</div>
 					</motion.div>
 				</div>
-
-				{/* Vehicle Interest Form */}
-				<motion.div
-					ref={formRef}
-					initial={{ opacity: 0, y: 50 }}
-					animate={
-						isFormInView
-							? { opacity: 1, y: 0 }
-							: { opacity: 0, y: 50 }
-					}
-					transition={{ duration: 0.6 }}
-					className="mb-16"
-				>
-					<div className="art-deco-border">
-						<div className="p-8 bg-cream">
-							<h2 className="font-marcellus text-2xl mb-6 vintage-heading text-center">
-								Mám zájem o vozidlo
-							</h2>
-
-							<form
-								onSubmit={handleSubmit(onSubmit)}
-								className="space-y-6"
-							>
-								<div>
-									<label className="block text-sm font-medium mb-2 font-montserrat">
-										Jméno *
-									</label>
-									<input
-										{...register("name")}
-										type="text"
-										className="vintage-input"
-										placeholder="Vaše jméno"
-									/>
-									{errors.name && (
-										<p className="text-red-600 text-sm mt-1">
-											{errors.name.message}
-										</p>
-									)}
-								</div>
-
-								<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-									<div>
-										<label className="block text-sm font-medium mb-2 font-montserrat">
-											Telefon *
-										</label>
-										<input
-											{...register("phone")}
-											type="tel"
-											className="vintage-input"
-											placeholder="+420 123 456 789"
-										/>
-										{errors.phone && (
-											<p className="text-red-600 text-sm mt-1">
-												{errors.phone.message}
-											</p>
-										)}
-									</div>
-
-									<div>
-										<label className="block text-sm font-medium mb-2 font-montserrat">
-											Email *
-										</label>
-										<input
-											{...register("email")}
-											type="email"
-											className="vintage-input"
-											placeholder="vas@email.cz"
-										/>
-										{errors.email && (
-											<p className="text-red-600 text-sm mt-1">
-												{errors.email.message}
-											</p>
-										)}
-									</div>
-								</div>
-
-								<div>
-									<label className="block text-sm font-medium mb-2 font-montserrat">
-										Termín prohlídky v případě že se chcete
-										přijet podívat
-									</label>
-									<input
-										{...register("viewingDate")}
-										type="text"
-										className="vintage-input"
-										placeholder="např. 15.1.2024 odpoledne"
-									/>
-									{errors.viewingDate && (
-										<p className="text-red-600 text-sm mt-1">
-											{errors.viewingDate.message}
-										</p>
-									)}
-								</div>
-
-								<div>
-									<label className="block text-sm font-medium mb-2 font-montserrat">
-										Nabízená cena
-									</label>
-									<input
-										{...register("offeredPrice")}
-										type="text"
-										className="vintage-input"
-										placeholder="např. 500 000 Kč"
-									/>
-									{errors.offeredPrice && (
-										<p className="text-red-600 text-sm mt-1">
-											{errors.offeredPrice.message}
-										</p>
-									)}
-								</div>
-
-								<div>
-									<label className="block text-sm font-medium mb-2 font-montserrat">
-										Zpráva *
-									</label>
-									<textarea
-										{...register("message")}
-										rows={4}
-										className="vintage-input resize-none"
-										placeholder="Vaše zpráva..."
-									/>
-									{errors.message && (
-										<p className="text-red-600 text-sm mt-1">
-											{errors.message.message}
-										</p>
-									)}
-								</div>
-
-								{submitMessage && (
-									<div className="p-4 bg-green-100 border border-green-400 text-green-700 rounded">
-										{submitMessage}
-									</div>
-								)}
-
-								{submitError && (
-									<div className="p-4 bg-red-100 border border-red-400 text-red-700 rounded">
-										{submitError}
-									</div>
-								)}
-
-								<div className="text-center">
-									<button
-										type="submit"
-										disabled={isSubmitting}
-										className="vintage-button disabled:opacity-50 disabled:cursor-not-allowed"
-									>
-										{isSubmitting
-											? "Odesílám..."
-											: "Odeslat"}
-									</button>
-								</div>
-							</form>
-						</div>
-					</div>
-				</motion.div>
 
 				<div className="text-center">
 					<Link href="/prodej" className="vintage-button">

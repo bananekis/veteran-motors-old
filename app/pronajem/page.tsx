@@ -31,8 +31,8 @@ export default function RentalPage() {
 
 				<div className="mb-16 text-center">
 					<p className="font-cormorant text-2xl text-brown">
-						Půjčte si auta do filmů, klipů na narozeniny nebo třeba
-						jen tak na projížďku
+						Půjčte si auta na focení, do filmů, klipů na akce a
+						eventy či jen na na projížďku nebo výlet
 					</p>
 				</div>
 
@@ -50,7 +50,7 @@ export default function RentalPage() {
 						Půjčovaná auta
 					</motion.h2>
 
-					<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+					<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
 						{rentalCars.slice(0, 4).map((car, index) => (
 							<div key={car.id} className="h-full">
 								<CarCard
@@ -83,6 +83,11 @@ export default function RentalPage() {
 						Orientační ceník
 					</motion.h2>
 
+					<p className="mb-6 font-montserrat">
+						Finální cena je vždy stanovena individuálně podle
+						parametrů účelu pronájmu.
+					</p>
+
 					<motion.div
 						initial={{ opacity: 0, y: 30 }}
 						animate={
@@ -101,63 +106,66 @@ export default function RentalPage() {
 											Vůz
 										</th>
 										<th className="py-4 px-4 text-left font-marcellus">
-											4 hodiny
+											hodina
 										</th>
 										<th className="py-4 px-4 text-left font-marcellus">
-											8 hodin
+											půl den
 										</th>
 										<th className="py-4 px-4 text-left font-marcellus">
-											24 hodin
+											den
 										</th>
 										<th className="py-4 px-4 text-left font-marcellus">
-											Víkend
+											víkenední
 										</th>
 										<th className="py-4 px-4 text-left font-marcellus">
-											Kauce
+											po domluvě
 										</th>
 									</tr>
 								</thead>
 								<tbody>
-									{rentalCars.map((car) => {
-										const prices = rentalPrices[car.id];
-										if (!prices) return null;
-
-										return (
-											<tr
-												key={car.id}
-												className="border-b border-gold/20"
-											>
-												<td className="py-4 px-4 font-montserrat">
-													{car.name}
-												</td>
-												<td className="py-4 px-4 font-montserrat">
-													{prices[0].price.toLocaleString()}{" "}
-													Kč
-												</td>
-												<td className="py-4 px-4 font-montserrat">
-													{prices[1].price.toLocaleString()}{" "}
-													Kč
-												</td>
-												<td className="py-4 px-4 font-montserrat">
-													{prices[2].price.toLocaleString()}{" "}
-													Kč
-												</td>
-												<td className="py-4 px-4 font-montserrat">
-													{prices[3].price.toLocaleString()}{" "}
-													Kč
-												</td>
-												<td className="py-4 px-4 font-montserrat">
-													{prices[0].deposit.toLocaleString()}{" "}
-													Kč
-												</td>
-											</tr>
-										);
-									})}
+									<tr className="border-b border-gold/20">
+										<td className="py-4 px-4 font-montserrat">
+											...
+										</td>
+										<td className="py-4 px-4 font-montserrat">
+											499,- Kč
+										</td>
+										<td className="py-4 px-4 font-montserrat">
+											999,- Kč
+										</td>
+										<td className="py-4 px-4 font-montserrat">
+											1.999,- Kč
+										</td>
+										<td className="py-4 px-4 font-montserrat">
+											po domluvě
+										</td>
+										<td className="py-4 px-4 font-montserrat">
+											po domluvě
+										</td>
+									</tr>
 								</tbody>
 							</table>
 						</div>
 					</motion.div>
+
+					<p className="mt-4 text-sm italic font-montserrat">
+						V případě pronájmu na focení, do filmů či na akce je
+						cena individuální.
+					</p>
 				</section>
+
+				<RentalForm
+					title="Rezervace vozu"
+					description="Vyplňte formulář pro rezervaci vozu na vámi požadovaný termín. Budeme vás kontaktovat s potvrzením dostupnosti."
+					note={
+						<p
+							className="text-xs text-gray-500 mb-4"
+							style={{ fontSize: "0.85rem" }}
+						>
+							ne všechny údaje jsou povinné
+						</p>
+					}
+				/>
 
 				<section
 					ref={infoRef}
@@ -190,45 +198,64 @@ export default function RentalPage() {
 					>
 						<div className="art-deco-border">
 							<div className="p-6 bg-cream">
-								<h3 className="font-marcellus text-xl mb-4">
-									Dovoz, předání, rezervace, kauce, pomínky,
-									pojistka...
-								</h3>
-
 								<div className="space-y-4 font-montserrat">
-									<p>
-										Pronájem našich veteránů je jednoduchý
-										proces, který začíná rezervací vozu na
-										vámi požadovaný termín. Kauce je vratná
-										a slouží jako pojistka proti případnému
-										poškození.
-									</p>
+									<ul className="list-disc pl-6 space-y-4">
+										<li>
+											Po rezervaci se Vám ozveme a
+											společně doladíme podmínky pronájmu.
+											Pokud chcete, můžete se na auto
+											předem přijet osobně podívat.
+										</li>
+										<li>
+											Vůz vám můžeme přistavit na předem
+											domluvené místo. Na přání jsme
+											schopni vůz i upravit podle vašich
+											požadavků.
+										</li>
+										<li>
+											Při předání podepíšeme předávací
+											protokol a nájmení dohodu + Vás
+											seznámíme s ovládáním vozu – není to
+											nic složitého.
+										</li>
+										<li>
+											Zároveň složíte vratnou zálohu a
+											předáme Vám klíčky od vozu. Rádi se
+											mezitím postaráme i o Vaše vlastní
+											auto.
+										</li>
+										<li>
+											Po skončení pronájmu si auto buď
+											vyzvedneme, nebo si ho předáme na
+											domluveném místě. Vše vyúčtujeme a
+											případně vrátíme zbývající část
+											zálohy.
+										</li>
+									</ul>
 
-									<p>
-										Vozy dovezeme na místo určení a předáme
-										vám je v perfektním stavu. Před předáním
-										provedeme krátké školení o ovládání
-										historického vozu a specifických
-										vlastnostech daného modelu.
-									</p>
+									<div className="border-t border-gold/30 my-6"></div>
 
-									<p>
-										Všechny naše vozy jsou pojištěné,
-										nicméně doporučujeme opatrné zacházení s
-										těmito historickými skvosty. V případě
-										jakýchkoliv dotazů jsme vám k dispozici
-										na telefonu po celou dobu pronájmu.
-									</p>
+									<div className="mt-6 space-y-3">
+										<p>
+											Všechny naše vozy jsou pojištěné,
+											ale doporučujeme s nimi zacházet s
+											citem.
+										</p>
+										<p>
+											Po celou dobu pronájmu jsme vám k
+											dispozici na telefonu.
+										</p>
+										<p>
+											V případě poruchy, nehody nebo
+											jiných problémů vám okamžitě
+											pomůžeme vše vyřešit.
+										</p>
+									</div>
 								</div>
 							</div>
 						</div>
 					</motion.div>
 				</section>
-
-				<RentalForm
-					title="Rezervace vozu"
-					description="Vyplňte formulář pro rezervaci vozu na vámi požadovaný termín. Budeme vás kontaktovat s potvrzením dostupnosti."
-				/>
 
 				<section ref={galleryRef} className="mb-24">
 					<h2 className="font-marcellus text-2xl md:text-3xl mb-12 vintage-heading">

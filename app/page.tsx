@@ -30,7 +30,7 @@ export default function Home() {
 								key={car.id}
 								className="group flex flex-col h-full"
 							>
-								<div className="art-deco-border overflow-hidden flex flex-col h-full">
+								<div className="art-deco-border overflow-hidden">
 									<div className="relative h-72 overflow-hidden">
 										<Image
 											src={car.mainImage}
@@ -38,24 +38,6 @@ export default function Home() {
 											fill
 											className="object-cover transition-transform duration-500 group-hover:scale-105"
 										/>
-										<div className="absolute inset-0 bg-gradient-to-t from-brown-dark/70 to-transparent"></div>
-										<div className="absolute inset-0 flex items-center justify-center">
-											<h3 className="font-marcellus text-2xl text-white text-shadow tracking-wider text-center px-4">
-												{car.name}
-											</h3>
-										</div>
-									</div>
-
-									<div className="p-6 bg-cream flex flex-col flex-grow">
-										<p className="font-montserrat text-brown mb-6 flex-grow line-clamp-3">
-											{car.description}
-										</p>
-										<Link
-											href={`/prodej/${car.id}`}
-											className="vintage-button w-full text-center"
-										>
-											Zobrazit detail
-										</Link>
 									</div>
 								</div>
 							</div>
@@ -64,7 +46,7 @@ export default function Home() {
 
 					<div className="text-center mt-12">
 						<Link href="/fotogalerie" className="vintage-button">
-							Zobrazit všechny vozy
+							Rozbalit
 						</Link>
 					</div>
 				</div>
@@ -72,43 +54,43 @@ export default function Home() {
 
 			<section className="section-padding">
 				<div className="container-vintage">
-					<div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-6 max-w-7xl mx-auto">
-						<div className="text-center p-6 art-deco-border">
-							<Trophy className="w-12 h-12 md:w-16 md:h-16 mx-auto mb-4 text-nfs-cyan" />
-							<h3 className="text-xl md:text-2xl font-bold mb-2">
+					<div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3 max-w-5xl mx-auto">
+						<div className="text-center p-3 art-deco-border">
+							<Trophy className="w-8 h-8 md:w-10 md:h-10 mx-auto mb-2 text-nfs-cyan" />
+							<h3 className="text-lg md:text-xl font-bold mb-1">
 								100+
 							</h3>
-							<p className="text-sm md:text-lg">Prodaných vozů</p>
+							<p className="text-xs md:text-sm">Prodaných vozů</p>
 						</div>
-						<div className="text-center p-6 art-deco-border">
-							<Car className="w-12 h-12 md:w-16 md:h-16 mx-auto mb-4 text-nfs-cyan" />
-							<h3 className="text-xl md:text-2xl font-bold mb-2">
+						<div className="text-center p-3 art-deco-border">
+							<Car className="w-8 h-8 md:w-10 md:h-10 mx-auto mb-2 text-nfs-cyan" />
+							<h3 className="text-lg md:text-xl font-bold mb-1">
 								50+
 							</h3>
-							<p className="text-sm md:text-lg">
+							<p className="text-xs md:text-sm">
 								Pronajatých vozů
 							</p>
 						</div>
-						<div className="text-center p-6 art-deco-border">
-							<Heart className="w-12 h-12 md:w-16 md:h-16 mx-auto mb-4 text-nfs-cyan" />
-							<h3 className="text-xl md:text-2xl font-bold mb-2">
+						<div className="text-center p-3 art-deco-border">
+							<Heart className="w-8 h-8 md:w-10 md:h-10 mx-auto mb-2 text-nfs-cyan" />
+							<h3 className="text-lg md:text-xl font-bold mb-1">
 								50+
 							</h3>
-							<p className="text-sm md:text-lg">Svateb</p>
+							<p className="text-xs md:text-sm">Svateb</p>
 						</div>
-						<div className="text-center p-6 art-deco-border">
-							<Clock className="w-12 h-12 md:w-16 md:h-16 mx-auto mb-4 text-nfs-cyan" />
-							<h3 className="text-xl md:text-2xl font-bold mb-2">
+						<div className="text-center p-3 art-deco-border">
+							<Clock className="w-8 h-8 md:w-10 md:h-10 mx-auto mb-2 text-nfs-cyan" />
+							<h3 className="text-lg md:text-xl font-bold mb-1">
 								10+
 							</h3>
-							<p className="text-sm md:text-lg">Let zkušeností</p>
+							<p className="text-xs md:text-sm">Let zkušeností</p>
 						</div>
-						<div className="text-center p-6 art-deco-border">
-							<Users className="w-12 h-12 md:w-16 md:h-16 mx-auto mb-4 text-nfs-cyan" />
-							<h3 className="text-xl md:text-2xl font-bold mb-2">
+						<div className="text-center p-3 art-deco-border">
+							<Users className="w-8 h-8 md:w-10 md:h-10 mx-auto mb-2 text-nfs-cyan" />
+							<h3 className="text-lg md:text-xl font-bold mb-1">
 								100+
 							</h3>
-							<p className="text-sm md:text-lg">
+							<p className="text-xs md:text-sm">
 								Spokojených klientů
 							</p>
 						</div>

@@ -15,10 +15,11 @@ export const emailSchema = z
 // Rental Form Schema
 export const rentalFormSchema = z.object({
 	carType: z.string().min(1, "Typ vozu je povinný"),
+	purpose: z.string().min(1, "Účel pronájmu je povinný"),
 	dateFrom: z.string().min(1, "Datum od je povinné"),
 	dateTo: z.string().min(1, "Datum do je povinné"),
-	purpose: z.string().min(1, "Účel pronájmu je povinný"),
-	location: z.string().min(1, "Místo je povinné"),
+	hours: z.string().optional(),
+	location: z.string().min(1, "Místo konání je povinné"),
 	comment: z.string().optional(),
 	phone: phoneSchema,
 	email: emailSchema,
@@ -37,10 +38,12 @@ export const contactFormSchema = z.object({
 // Sale Form Schema
 export const saleFormSchema = z.object({
 	brand: z.string().min(1, "Značka je povinná"),
-	type: z.string().min(1, "Typ je povinný"),
-	price: z.string().min(1, "Cenová představa je povinná"),
-	transmission: z.string().optional(),
+	type: z.string().optional(),
+	bodyType: z.string().optional(),
 	engine: z.string().optional(),
+	transmission: z.string().optional(),
+	color: z.string().optional(),
+	price: z.string().min(1, "Cenová představa je povinná"),
 	condition: z.string().optional(),
 	description: z.string().optional(),
 	phone: phoneSchema,
@@ -55,4 +58,15 @@ export const vehicleInterestFormSchema = z.object({
 	viewingDate: z.string().optional(),
 	offeredPrice: z.string().optional(),
 	message: z.string().min(10, "Zpráva musí mít alespoň 10 znaků"),
+});
+
+// Wedding Form Schema
+export const weddingFormSchema = z.object({
+	carType: z.string().min(1, "Typ vozu je povinný"),
+	dateFrom: z.string().min(1, "Datum od je povinné"),
+	dateTo: z.string().min(1, "Datum do je povinné"),
+	location: z.string().min(1, "Místo konání je povinné"),
+	comment: z.string().optional(),
+	phone: phoneSchema,
+	email: emailSchema,
 });

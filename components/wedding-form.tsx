@@ -4,8 +4,8 @@ import { useRef, useState } from "react";
 import { motion, useInView } from "framer-motion";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { rentalFormSchema } from "@/lib/validations";
-import { sendEmail, formatRentalFormData } from "@/lib/emailjs";
+import { weddingFormSchema } from "@/lib/validations";
+import { sendEmail, formatWeddingFormData } from "@/lib/emailjs";
 import type { z } from "zod";
 import {
 	Form,
@@ -25,19 +25,14 @@ import {
 	SelectValue,
 } from "@/components/ui/select";
 
-interface RentalFormProps {
+interface WeddingFormProps {
 	title: string;
 	description: string;
-	note?: React.ReactNode;
 }
 
-type RentalFormValues = z.infer<typeof rentalFormSchema>;
+type WeddingFormValues = z.infer<typeof weddingFormSchema>;
 
-export default function RentalForm({
-	title,
-	description,
-	note,
-}: RentalFormProps) {
+export default function WeddingForm({ title, description }: WeddingFormProps) {
 	const formRef = useRef<HTMLDivElement>(null);
 	const isFormInView = useInView(formRef, { once: true, amount: 0.1 });
 	const [isSubmitting, setIsSubmitting] = useState(false);
@@ -45,14 +40,12 @@ export default function RentalForm({
 		"idle" | "success" | "error"
 	>("idle");
 
-	const form = useForm<RentalFormValues>({
-		resolver: zodResolver(rentalFormSchema),
+	const form = useForm<WeddingFormValues>({
+		resolver: zodResolver(weddingFormSchema),
 		defaultValues: {
 			carType: "",
-			purpose: "",
 			dateFrom: "",
 			dateTo: "",
-			hours: "",
 			location: "",
 			comment: "",
 			phone: "",
@@ -60,12 +53,12 @@ export default function RentalForm({
 		},
 	});
 
-	async function onSubmit(data: RentalFormValues) {
+	async function onSubmit(data: WeddingFormValues) {
 		setIsSubmitting(true);
 		setSubmitStatus("idle");
 
 		try {
-			const emailData = formatRentalFormData(data);
+			const emailData = formatWeddingFormData(data);
 			const success = await sendEmail(emailData);
 
 			if (success) {
@@ -121,18 +114,15 @@ export default function RentalForm({
 													<SelectValue placeholder="Vyberte typ vozidla" />
 												</SelectTrigger>
 												<SelectContent className="bg-white">
-													<SelectItem value="rolls-royce-phantom">
-														Rolls-Royce Phantom
-														(1925)
-													</SelectItem>
-													<SelectItem value="bugatti-type-35">
-														Bugatti Type 35 (1927)
-													</SelectItem>
 													<SelectItem value="cadillac-v16">
 														Cadillac V16 (1930)
 													</SelectItem>
 													<SelectItem value="packard-eight">
 														Packard Eight (1931)
+													</SelectItem>
+													<SelectItem value="rolls-royce-phantom">
+														Rolls-Royce Phantom
+														(1925)
 													</SelectItem>
 													<SelectItem value="jiný">
 														Jiný
@@ -145,48 +135,7 @@ export default function RentalForm({
 								)}
 							/>
 
-							<FormField
-								control={form.control}
-								name="purpose"
-								render={({ field }) => (
-									<FormItem>
-										<FormLabel>Účel pronájmu*</FormLabel>
-										<FormControl>
-											<Select
-												onValueChange={field.onChange}
-												defaultValue={field.value}
-											>
-												<SelectTrigger className="vintage-input w-full">
-													<SelectValue placeholder="Vyberte účel pronájmu" />
-												</SelectTrigger>
-												<SelectContent className="bg-white">
-													<SelectItem value="film">
-														Film
-													</SelectItem>
-													<SelectItem value="klip">
-														Klip
-													</SelectItem>
-													<SelectItem value="focení">
-														Focení
-													</SelectItem>
-													<SelectItem value="event">
-														Event
-													</SelectItem>
-													<SelectItem value="projížďka">
-														Projížďka
-													</SelectItem>
-													<SelectItem value="jiné">
-														Jiné
-													</SelectItem>
-												</SelectContent>
-											</Select>
-										</FormControl>
-										<FormMessage className="text-red-500" />
-									</FormItem>
-								)}
-							/>
-
-							<div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+							<div className="grid grid-cols-1 md:grid-cols-2 gap-6">
 								<FormField
 									control={form.control}
 									name="dateFrom"
@@ -222,27 +171,6 @@ export default function RentalForm({
 										</FormItem>
 									)}
 								/>
-
-								<FormField
-									control={form.control}
-									name="hours"
-									render={({ field }) => (
-										<FormItem>
-											<FormLabel>
-												Případně počet hodin
-											</FormLabel>
-											<FormControl>
-												<Input
-													type="text"
-													{...field}
-													className="vintage-input w-full"
-													placeholder="např. 4 hodiny"
-												/>
-											</FormControl>
-											<FormMessage className="text-red-500" />
-										</FormItem>
-									)}
-								/>
 							</div>
 
 							<FormField
@@ -255,7 +183,7 @@ export default function RentalForm({
 											<Input
 												{...field}
 												className="vintage-input w-full"
-												placeholder="Místo konání události"
+												placeholder="Místo konání svatby"
 											/>
 										</FormControl>
 										<FormMessage className="text-red-500" />
@@ -268,12 +196,14 @@ export default function RentalForm({
 								name="comment"
 								render={({ field }) => (
 									<FormItem>
-										<FormLabel>Doplňující text</FormLabel>
+										<FormLabel>
+											Komentář + specifikace požadavků
+										</FormLabel>
 										<FormControl>
 											<Textarea
 												{...field}
 												className="vintage-input w-full"
-												placeholder="Další informace o pronájmu..."
+												placeholder="Popište vaše požadavky na svatební den..."
 											/>
 										</FormControl>
 										<FormMessage className="text-red-500" />

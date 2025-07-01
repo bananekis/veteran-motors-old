@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
-import { Play, Pause, Volume2, VolumeX, ChevronDown } from "lucide-react";
+import { Play, Pause, Volume2, VolumeX } from "lucide-react";
 import VideoPlayer from "./video-player";
 
 export default function HeroSection() {
@@ -61,14 +61,6 @@ export default function HeroSection() {
 	const handleVideoLoaded = (videoElement: HTMLVideoElement) => {
 		setIsVideoLoaded(true);
 		videoRef.current = videoElement;
-	};
-
-	// Scroll to content section
-	const scrollToContent = () => {
-		window.scrollTo({
-			top: window.innerHeight,
-			behavior: "smooth",
-		});
 	};
 
 	return (
@@ -189,7 +181,7 @@ export default function HeroSection() {
 						animate={{ opacity: 1 }}
 						transition={{ duration: 1, delay: 0.8 }}
 					>
-						Elegance a styl minulých dob na čtyřech kolech
+						Elegance a styl minulých let na čtyřech kolech
 					</motion.p>
 
 					<div className="flex flex-col sm:flex-row justify-center gap-6">
@@ -198,57 +190,24 @@ export default function HeroSection() {
 							animate={{ opacity: 1, y: 0 }}
 							transition={{ duration: 0.5, delay: 1.0 }}
 						>
-							<Link
-								href="/prodej"
+							<button
+								onClick={() => {
+									const servicesSection =
+										document.querySelector("#naše-služby");
+									if (servicesSection) {
+										servicesSection.scrollIntoView({
+											behavior: "smooth",
+										});
+									}
+								}}
 								className="vintage-button border-gold text-white hover:text-gold"
 							>
-								Prohlédnout vozy
-							</Link>
-						</motion.div>
-
-						<motion.div
-							initial={{ opacity: 0, y: 20 }}
-							animate={{ opacity: 1, y: 0 }}
-							transition={{ duration: 0.5, delay: 1.2 }}
-						>
-							<Link
-								href="/kontakt"
-								className="vintage-button border-gold/70 text-white hover:text-gold"
-							>
-								Kontaktujte nás
-							</Link>
+								Naše služby
+							</button>
 						</motion.div>
 					</div>
 				</motion.div>
 			</div>
-
-			{/* Scroll indicator */}
-			<motion.div
-				className="absolute bottom-10 left-0 right-0 flex justify-center z-20"
-				initial={{ opacity: 0 }}
-				animate={{ opacity: 1 }}
-				transition={{ duration: 1, delay: 1.5 }}
-			>
-				<button
-					onClick={scrollToContent}
-					className="flex flex-col items-center text-gold hover:text-gold-light transition-colors duration-300 focus:outline-none"
-					aria-label="Scroll down"
-				>
-					<span className="text-sm font-marcellus tracking-wider mb-2">
-						OBJEVTE VÍCE
-					</span>
-					<motion.div
-						animate={{ y: [0, 5, 0] }}
-						transition={{
-							duration: 1.5,
-							repeat: Number.POSITIVE_INFINITY,
-							repeatType: "loop",
-						}}
-					>
-						<ChevronDown size={24} />
-					</motion.div>
-				</button>
-			</motion.div>
 		</div>
 	);
 }

@@ -20,13 +20,16 @@ export interface EmailData {
 	date_to?: string;
 	purpose?: string;
 	location?: string;
+	hours?: string;
 	inquiry_type?: string;
 	// Sale form fields
 	brand?: string;
 	type?: string;
-	price?: string;
-	transmission?: string;
+	bodyType?: string;
 	engine?: string;
+	transmission?: string;
+	color?: string;
+	price?: string;
 	condition?: string;
 	// Vehicle interest form fields
 	vehicle_name?: string;
@@ -67,18 +70,45 @@ export const formatRentalFormData = (data: any): EmailData => {
 Rezervace vozu:
 
 Typ vozidla: ${data.carType}
+Účel pronájmu: ${data.purpose}
 Datum od: ${data.dateFrom}
 Datum do: ${data.dateTo}
-Účel pronájmu: ${data.purpose}
+${data.hours ? `Počet hodin: ${data.hours}` : ""}
 Místo konání: ${data.location}
 Telefon: ${data.phone}
 Email: ${data.email}
-${data.comment ? `\nPoznámka: ${data.comment}` : ""}
+${data.comment ? `\nDoplňující text: ${data.comment}` : ""}
+    `.trim(),
+		car_type: data.carType,
+		purpose: data.purpose,
+		date_from: data.dateFrom,
+		date_to: data.dateTo,
+		hours: data.hours,
+		location: data.location,
+	};
+};
+
+// Helper function to format wedding form data for email
+export const formatWeddingFormData = (data: any): EmailData => {
+	return {
+		from_name: `${data.email}`, // Using email as name since name field is not in wedding form
+		from_email: data.email,
+		from_phone: data.phone,
+		subject: `Rezervace vozu na svatbu - ${data.carType}`,
+		message: `
+Rezervace vozu na svatbu:
+
+Typ vozidla: ${data.carType}
+Datum od: ${data.dateFrom}
+Datum do: ${data.dateTo}
+Místo konání: ${data.location}
+Telefon: ${data.phone}
+Email: ${data.email}
+${data.comment ? `\nKomentář + specifikace požadavků: ${data.comment}` : ""}
     `.trim(),
 		car_type: data.carType,
 		date_from: data.dateFrom,
 		date_to: data.dateTo,
-		purpose: data.purpose,
 		location: data.location,
 	};
 };
@@ -109,29 +139,37 @@ ${data.message}
 // Helper function to format sale form data for email
 export const formatSaleFormData = (data: any): EmailData => {
 	return {
-		from_name: data.email, // Using email as name since there's no name field
-		from_email: data.email,
+		from_name: data.email || data.phone, // Use email if provided, otherwise phone
+		from_email: data.email || "noreply@veteranmotors.cz", // Fallback email if none provided
 		from_phone: data.phone,
-		subject: `Poptávka vozu - ${data.brand} ${data.type}`,
+		subject: `Poptávka vozu${data.brand ? ` - ${data.brand}` : ""}${
+			data.type ? ` ${data.type}` : ""
+		}`,
 		message: `
 Poptávka vozu:
 
-Email: ${data.email}
 Telefon: ${data.phone}
-Značka: ${data.brand}
-Typ: ${data.type}
-Cenová představa: ${data.price}
-${data.transmission ? `Převodovka: ${data.transmission}` : ""}
+${data.email ? `Email: ${data.email}` : ""}
+${data.brand ? `Značka: ${data.brand}` : ""}
+${data.type ? `Typ: ${data.type}` : ""}
+${data.bodyType ? `Karoserie: ${data.bodyType}` : ""}
 ${data.engine ? `Motor: ${data.engine}` : ""}
+${data.transmission ? `Převodovka: ${data.transmission}` : ""}
+${data.color ? `Barva: ${data.color}` : ""}
+${data.price ? `Cenová představa: ${data.price}` : ""}
 ${data.condition ? `Stav: ${data.condition}` : ""}
 ${data.description ? `\nDoplňující popis: ${data.description}` : ""}
+
+* Povinné je pouze telefonní číslo, ostatní kategorie jsou nepovinné
     `.trim(),
 		// Additional fields for template variables
 		brand: data.brand,
 		type: data.type,
-		price: data.price,
-		transmission: data.transmission,
+		bodyType: data.bodyType,
 		engine: data.engine,
+		transmission: data.transmission,
+		color: data.color,
+		price: data.price,
 		condition: data.condition,
 	};
 };

@@ -16,6 +16,31 @@ export default function GalleryPage() {
 	const rentalCars = cars.filter((car) => car.category === "rental");
 	const weddingCars = cars.filter((car) => car.category === "wedding");
 
+	// Mix all photos from all categories for the main gallery
+	const allMixedPhotos = [
+		...saleCars
+			.slice(0, 4)
+			.map((car) => ({
+				src: car.mainImage,
+				alt: car.name,
+				category: "Prodej",
+			})),
+		...rentalCars
+			.slice(0, 4)
+			.map((car) => ({
+				src: car.mainImage,
+				alt: car.name,
+				category: "Pronájem",
+			})),
+		...weddingCars
+			.slice(0, 4)
+			.map((car) => ({
+				src: car.mainImage,
+				alt: car.name,
+				category: "Svatby",
+			})),
+	];
+
 	return (
 		<div className="pt-32 pb-16">
 			<div className="container-vintage">
@@ -23,12 +48,61 @@ export default function GalleryPage() {
 
 				<div className="mb-16 text-center">
 					<p className="font-cormorant text-2xl text-brown">
-						Prohlédněte si naši fotogalerii rozdělenou do kategorií.
-						Každá sekce obsahuje unikátní fotografie našich vozů.
+						Prohlédněte si naši fotogalerii - mix fotografií ze
+						všech kategorií.
 					</p>
 				</div>
 
-				<section ref={ref} className="space-y-24">
+				<section ref={ref} className="mb-16">
+					<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+						{allMixedPhotos.map((photo, index) => (
+							<motion.div
+								key={`${photo.alt}-${index}`}
+								initial={{ opacity: 0, y: 20 }}
+								animate={
+									isInView
+										? { opacity: 1, y: 0 }
+										: { opacity: 0, y: 20 }
+								}
+								transition={{
+									duration: 0.5,
+									delay: index * 0.1,
+								}}
+								className="art-deco-border overflow-hidden"
+							>
+								<div className="relative h-64">
+									<Image
+										src={photo.src}
+										alt={photo.alt}
+										fill
+										className="object-cover"
+									/>
+								</div>
+							</motion.div>
+						))}
+					</div>
+
+					<div className="text-center mt-12">
+						<button
+							onClick={() => {
+								// This would expand to show all photos
+								// For now, we'll create separate category sections
+								const expanded =
+									document.querySelector("#expanded-gallery");
+								if (expanded) {
+									expanded.scrollIntoView({
+										behavior: "smooth",
+									});
+								}
+							}}
+							className="vintage-button"
+						>
+							Rozbalit
+						</button>
+					</div>
+				</section>
+
+				<section id="expanded-gallery" className="space-y-24">
 					{/* Prodej Gallery Section */}
 					<motion.div
 						initial={{ opacity: 0, y: 20 }}
@@ -47,21 +121,15 @@ export default function GalleryPage() {
 							{saleCars.slice(0, 6).map((car, index) => (
 								<div
 									key={car.id}
-									className="art-deco-border overflow-hidden group cursor-pointer"
+									className="art-deco-border overflow-hidden"
 								>
 									<div className="relative h-64">
 										<Image
 											src={car.mainImage}
 											alt={car.name}
 											fill
-											className="object-cover transition-all duration-300"
+											className="object-cover"
 										/>
-										<div className="absolute inset-0 bg-brown-dark/0 group-hover:bg-brown-dark/30 transition-all duration-300"></div>
-									</div>
-									<div className="p-4 bg-cream-darker group-hover:bg-cream transition-colors duration-300">
-										<h3 className="font-marcellus text-lg text-brown-dark group-hover:text-brown transition-colors duration-300">
-											{car.name}
-										</h3>
 									</div>
 								</div>
 							))}
@@ -94,21 +162,15 @@ export default function GalleryPage() {
 							{rentalCars.slice(0, 6).map((car, index) => (
 								<div
 									key={car.id}
-									className="art-deco-border overflow-hidden group cursor-pointer"
+									className="art-deco-border overflow-hidden"
 								>
 									<div className="relative h-64">
 										<Image
 											src={car.mainImage}
 											alt={car.name}
 											fill
-											className="object-cover transition-all duration-300"
+											className="object-cover"
 										/>
-										<div className="absolute inset-0 bg-brown-dark/0 group-hover:bg-brown-dark/30 transition-all duration-300"></div>
-									</div>
-									<div className="p-4 bg-cream-darker group-hover:bg-cream transition-colors duration-300">
-										<h3 className="font-marcellus text-lg text-brown-dark group-hover:text-brown transition-colors duration-300">
-											{car.name}
-										</h3>
 									</div>
 								</div>
 							))}
@@ -141,21 +203,15 @@ export default function GalleryPage() {
 							{weddingCars.slice(0, 6).map((car, index) => (
 								<div
 									key={car.id}
-									className="art-deco-border overflow-hidden group cursor-pointer"
+									className="art-deco-border overflow-hidden"
 								>
 									<div className="relative h-64">
 										<Image
 											src={car.mainImage}
 											alt={car.name}
 											fill
-											className="object-cover transition-all duration-300"
+											className="object-cover"
 										/>
-										<div className="absolute inset-0 bg-brown-dark/0 group-hover:bg-brown-dark/30 transition-all duration-300"></div>
-									</div>
-									<div className="p-4 bg-cream-darker group-hover:bg-cream transition-colors duration-300">
-										<h3 className="font-marcellus text-lg text-brown-dark group-hover:text-brown transition-colors duration-300">
-											{car.name}
-										</h3>
 									</div>
 								</div>
 							))}
