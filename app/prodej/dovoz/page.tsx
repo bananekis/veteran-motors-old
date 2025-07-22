@@ -9,7 +9,9 @@ import Image from "next/image";
 import Link from "next/link";
 
 export default function ImportPage() {
-	const importCars = cars.filter((car) => car.category === "sale");
+	const importCars = cars.filter(
+		(car) => car.category === "sale" && car.stockType === "dovoz"
+	);
 
 	const servicesRef = useRef<HTMLDivElement>(null);
 	const carsRef = useRef<HTMLDivElement>(null);
@@ -195,7 +197,7 @@ export default function ImportPage() {
 					</h2>
 
 					<div className="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-12 max-w-7xl mx-auto">
-						{importCars.slice(0, 5).map((car, index) => (
+						{importCars.slice(0, 3).map((car, index) => (
 							<div
 								key={car.id}
 								className="group flex flex-col h-full"

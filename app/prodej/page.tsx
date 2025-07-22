@@ -27,9 +27,13 @@ type SaleFormValues = z.infer<typeof saleFormSchema>;
 
 export default function SalePage() {
 	const carsForSale = cars.filter((car) => car.category === "sale");
-	const inStockCars = carsForSale.slice(0, 4);
-	const importCars = carsForSale.slice(0, 4);
-	const soldCars = carsForSale.slice(0, 4); // This would be replaced with actual sold cars data
+	const inStockCars = carsForSale.filter(
+		(car) => car.stockType === "skladem"
+	);
+
+	console.log("inStockCars", inStockCars.length);
+	const importCars = carsForSale.filter((car) => car.stockType === "dovoz");
+	const soldCars = carsForSale.filter((car) => car.available === false);
 
 	const ref = useRef<HTMLDivElement>(null);
 	const formRef = useRef<HTMLDivElement>(null);
@@ -113,7 +117,7 @@ export default function SalePage() {
 					</motion.h2>
 
 					<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-						{inStockCars.map((car, index) => (
+						{inStockCars.slice(0, 4).map((car, index) => (
 							<CarCard
 								key={car.id}
 								car={car}
@@ -145,7 +149,7 @@ export default function SalePage() {
 					</h2>
 
 					<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-						{importCars.map((car, index) => (
+						{importCars.slice(0, 4).map((car, index) => (
 							<CarCard
 								key={car.id}
 								car={car}
@@ -537,7 +541,7 @@ export default function SalePage() {
 					</h2>
 
 					<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-						{soldCars.map((car, index) => (
+						{soldCars.slice(0, 4).map((car, index) => (
 							<CarCard
 								key={car.id}
 								car={car}
@@ -559,30 +563,50 @@ export default function SalePage() {
 						Fotogalerie
 					</h2>
 
+					<div className="mb-8 text-center">
+						<p className="font-cormorant text-xl text-brown">
+							Prohlédněte si naši fotogalerii - mix fotografií ze
+							všech kategorií.
+						</p>
+					</div>
+
 					<div className="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-12 max-w-7xl mx-auto">
-						{inStockCars.slice(0, 5).map((car, index) => (
-							<div
-								key={car.id}
-								className="group flex flex-col h-full"
-							>
-								<div className="art-deco-border overflow-hidden flex flex-col h-full">
-									<div className="relative h-72 overflow-hidden">
-										<Image
-											src={car.mainImage}
-											alt={car.name}
-											fill
-											className="object-cover transition-transform duration-500 group-hover:scale-105"
-										/>
-										<div className="absolute inset-0 bg-gradient-to-t from-brown-dark/70 to-transparent"></div>
-										<div className="absolute inset-0 flex items-center justify-center">
-											<h3 className="font-marcellus text-2xl text-white text-shadow tracking-wider text-center px-4">
-												{car.name}
-											</h3>
+						{(() => {
+							// Create a randomized diverse selection from all categories
+							const allAvailableCars = [
+								...inStockCars,
+								...importCars,
+								...soldCars,
+							];
+							const shuffled = allAvailableCars.sort(
+								() => Math.random() - 0.5
+							);
+							const showcaseCars = shuffled.slice(0, 3);
+
+							return showcaseCars.map((car, index) => (
+								<div
+									key={car.id}
+									className="group flex flex-col h-full"
+								>
+									<div className="art-deco-border overflow-hidden flex flex-col h-full">
+										<div className="relative h-72 overflow-hidden">
+											<Image
+												src={car.mainImage}
+												alt={car.name}
+												fill
+												className="object-cover transition-transform duration-500 group-hover:scale-105"
+											/>
+											<div className="absolute inset-0 bg-gradient-to-t from-brown-dark/70 to-transparent"></div>
+											<div className="absolute inset-0 flex items-center justify-center">
+												<h3 className="font-marcellus text-2xl text-white text-shadow tracking-wider text-center px-4">
+													{car.name}
+												</h3>
+											</div>
 										</div>
 									</div>
 								</div>
-							</div>
-						))}
+							));
+						})()}
 					</div>
 
 					<div className="text-center mt-12">

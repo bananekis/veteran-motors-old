@@ -9,7 +9,9 @@ import Image from "next/image";
 import Link from "next/link";
 
 export default function InStockPage() {
-	const inStockCars = cars.filter((car) => car.category === "sale");
+	const inStockCars = cars.filter(
+		(car) => car.category === "sale" && car.stockType === "skladem"
+	);
 
 	const servicesRef = useRef<HTMLDivElement>(null);
 	const carsRef = useRef<HTMLDivElement>(null);
@@ -190,7 +192,7 @@ export default function InStockPage() {
 					</h2>
 
 					<div className="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-12 max-w-7xl mx-auto">
-						{inStockCars.slice(0, 5).map((car, index) => (
+						{inStockCars.slice(0, 3).map((car, index) => (
 							<div
 								key={car.id}
 								className="group flex flex-col h-full"

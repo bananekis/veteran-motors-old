@@ -16,30 +16,32 @@ export default function GalleryPage() {
 	const rentalCars = cars.filter((car) => car.category === "rental");
 	const weddingCars = cars.filter((car) => car.category === "wedding");
 
-	// Mix all photos from all categories for the main gallery
-	const allMixedPhotos = [
-		...saleCars
-			.slice(0, 4)
-			.map((car) => ({
+	// Create a truly randomized mix from all categories
+	const createRandomMix = () => {
+		const allCarsWithCategory = [
+			...saleCars.map((car) => ({
 				src: car.mainImage,
 				alt: car.name,
 				category: "Prodej",
 			})),
-		...rentalCars
-			.slice(0, 4)
-			.map((car) => ({
+			...rentalCars.map((car) => ({
 				src: car.mainImage,
 				alt: car.name,
 				category: "Pronájem",
 			})),
-		...weddingCars
-			.slice(0, 4)
-			.map((car) => ({
+			...weddingCars.map((car) => ({
 				src: car.mainImage,
 				alt: car.name,
 				category: "Svatby",
 			})),
-	];
+		];
+
+		// Shuffle the array randomly and take 12 cars for a good mix
+		const shuffled = allCarsWithCategory.sort(() => Math.random() - 0.5);
+		return shuffled.slice(0, 12);
+	};
+
+	const allMixedPhotos = createRandomMix();
 
 	return (
 		<div className="pt-32 pb-16">
@@ -77,6 +79,16 @@ export default function GalleryPage() {
 										fill
 										className="object-cover"
 									/>
+									<div className="absolute top-2 left-2">
+										<span className="bg-brown-dark/80 text-cream px-2 py-1 text-xs font-montserrat rounded">
+											{photo.category}
+										</span>
+									</div>
+									<div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-brown-dark/70 to-transparent p-4">
+										<h3 className="text-cream font-marcellus text-sm">
+											{photo.alt}
+										</h3>
+									</div>
 								</div>
 							</motion.div>
 						))}

@@ -263,7 +263,7 @@ export default function RentalPage() {
 					</h2>
 
 					<div className="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-12 max-w-7xl mx-auto">
-						{rentalCars.slice(0, 5).map((car, index) => (
+						{rentalCars.slice(0, 3).map((car, index) => (
 							<div
 								key={car.id}
 								className="group flex flex-col h-full"

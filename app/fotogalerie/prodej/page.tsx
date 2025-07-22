@@ -11,22 +11,14 @@ export default function SaleGalleryPage() {
 	const ref = useRef<HTMLDivElement>(null);
 	const isInView = useInView(ref, { once: true, amount: 0.1 });
 
-	// Filter sale cars and collect all their images
+	// Filter sale cars and collect only their main images
 	const saleCars = cars.filter((car) => car.category === "sale");
-	const allPhotos = saleCars.flatMap((car) => [
-		{
-			src: car.mainImage,
-			alt: car.name,
-			carName: car.name,
-			id: car.id,
-		},
-		...car.images.map((image, index) => ({
-			src: image,
-			alt: `${car.name} - detail ${index + 1}`,
-			carName: car.name,
-			id: car.id,
-		})),
-	]);
+	const mainPhotos = saleCars.map((car) => ({
+		src: car.mainImage,
+		alt: car.name,
+		carName: car.name,
+		id: car.id,
+	}));
 
 	return (
 		<div className="pt-32 pb-16">
@@ -48,7 +40,7 @@ export default function SaleGalleryPage() {
 						Všechny vozy na prodej
 					</h2>
 					<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-						{allPhotos.map((photo, index) => (
+						{mainPhotos.map((photo, index) => (
 							<Link
 								key={`${photo.carName}-${index}`}
 								href={`/fotogalerie/prodej/${photo.id}`}

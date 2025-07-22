@@ -11,21 +11,21 @@ const services = [
 		title: "PRODEJ",
 		description:
 			"Prodej a dovoz na zakázku. Nabízíme k prodeji pečlivě vybrané a prověřené veterány. V naší nabídce najdete jak vozy skladem, tak možnost dovozu na zakázku podle vašich představ.",
-		image: "/vintage-gangster-car.png",
+		image: "/bmw-2002-touring-front.jpeg",
 		link: "/prodej",
 	},
 	{
 		title: "PRONÁJEM",
 		description:
 			"Půjčte si auta na focení, do filmů, klipů na akce a eventy či jen na na projížďku nebo výlet.",
-		image: "/vintage-car-rental-gangster.png",
+		image: "/rental-car/f36e5efa-378b-484d-968c-696a2f956ded.jpeg",
 		link: "/pronajem",
 	},
 	{
 		title: "SVATBY",
 		description:
 			"Učiňte svůj jedinečný den opravdu jedinečným. Pronajměte si vůz včetně výzdoby, řidiče, focení dopravy a dalších služeb.",
-		image: "/1930s-wedding-car.png",
+		image: "/rental-car/cef17ab3-53fa-4a5a-9767-bcd6793fcba2.jpeg",
 		link: "/svatby",
 	},
 ];

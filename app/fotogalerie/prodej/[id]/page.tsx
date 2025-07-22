@@ -39,26 +39,11 @@ export default function CarDetailPage({ params }: CarDetailPageProps) {
 	}
 
 	const galleryImages = [
-		{
-			src: car.mainImage,
-			alt: car.name,
-		},
-		{
-			src: "/bmw-2002-touring-side.jpeg",
-			alt: `${car.name} Side View`,
-		},
-		{
-			src: "/bmw-2002-touring-badge.jpeg",
-			alt: `${car.name} Badge`,
-		},
-		{
-			src: "/bmw-2002-touring-interior.jpeg",
-			alt: `${car.name} Interior`,
-		},
-		{
-			src: "/bmw-2002-touring-steering.jpeg",
-			alt: `${car.name} Steering Wheel`,
-		},
+		{ src: car.mainImage, alt: car.name },
+		...(car.images || []).map((img, idx) => ({
+			src: img,
+			alt: `${car.name} - detail ${idx + 1}`,
+		})),
 	];
 
 	return (

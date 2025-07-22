@@ -43,7 +43,7 @@ export default function CarDetailPage({ params }: CarDetailPageProps) {
 			src: car.mainImage,
 			alt: car.name,
 		},
-		...car.images.map((image, index) => ({
+		...(car.images || []).map((image, index) => ({
 			src: image,
 			alt: `${car.name} - detail ${index + 1}`,
 		})),

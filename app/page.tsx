@@ -8,7 +8,7 @@ import Image from "next/image";
 import { Trophy, Users, Clock, Car, Heart } from "lucide-react";
 
 export default function Home() {
-	const featuredCars = cars.filter((car) => car.featured).slice(0, 5);
+	const featuredCars = cars.filter((car) => car.featured).slice(0, 3);
 
 	return (
 		<div>

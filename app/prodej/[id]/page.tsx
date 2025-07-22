@@ -346,7 +346,7 @@ export default function CarDetailPage({ params }: CarDetailPageProps) {
 										<span className="font-medium">
 											Karoserie:
 										</span>
-										<span>Sedan</span>
+										<span>{car.bodyType || "-"}</span>
 									</li>
 									<li className="flex justify-between">
 										<span className="font-medium">
@@ -366,7 +366,7 @@ export default function CarDetailPage({ params }: CarDetailPageProps) {
 										<span className="font-medium">
 											Stav:
 										</span>
-										<span>
+										<span className="text-end">
 											{car.specifications.condition}
 										</span>
 									</li>

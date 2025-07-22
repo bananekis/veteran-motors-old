@@ -11,20 +11,14 @@ export default function WeddingGalleryPage() {
 	const ref = useRef<HTMLDivElement>(null);
 	const isInView = useInView(ref, { once: true, amount: 0.1 });
 
-	// Filter wedding cars and collect all their images
+	// Filter wedding cars and collect only main images
 	const weddingCars = cars.filter((car) => car.category === "wedding");
-	const allPhotos = weddingCars.flatMap((car) => [
-		{
-			src: car.mainImage,
-			alt: car.name,
-			carName: car.name,
-		},
-		...car.images.map((image, index) => ({
-			src: image,
-			alt: `${car.name} - detail ${index + 1}`,
-			carName: car.name,
-		})),
-	]);
+	const mainPhotos = weddingCars.map((car) => ({
+		src: car.mainImage,
+		alt: car.name,
+		carName: car.name,
+		carId: car.id,
+	}));
 
 	return (
 		<div className="pt-32 pb-16">
@@ -43,10 +37,10 @@ export default function WeddingGalleryPage() {
 
 				<section ref={ref} className="mb-24">
 					<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-						{allPhotos.map((photo, index) => (
+						{mainPhotos.map((photo, index) => (
 							<Link
 								key={`${photo.carName}-${index}`}
-								href={`/fotogalerie/svatby/${photo.id}`}
+								href={`/fotogalerie/svatby/${photo.carId}`}
 								className="group"
 							>
 								<motion.div
