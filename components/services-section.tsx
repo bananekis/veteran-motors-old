@@ -11,21 +11,21 @@ const services = [
 		title: "PRODEJ",
 		description:
 			"Prodej a dovoz na zakázku. Nabízíme k prodeji pečlivě vybrané a prověřené veterány. V naší nabídce najdete jak vozy skladem, tak možnost dovozu na zakázku podle vašich představ.",
-		image: "/bmw-2002-touring-front.jpeg",
+		image: "/mainPhotos/IMG_9435 (1).jpeg",
 		link: "/prodej",
 	},
 	{
 		title: "PRONÁJEM",
 		description:
 			"Půjčte si auta na focení, do filmů, na akce a eventy či jen na projížďku nebo výlet.",
-		image: "/rental-car/7f91e347-7dbb-4049-b50c-0d4800a678aa.jpeg",
+		image: "/mainPhotos/IMG_0311 (1).jpeg",
 		link: "/pronajem",
 	},
 	{
 		title: "SVATBY",
 		description:
 			"Učiňte svůj jedinečný den opravdu jedinečným. Pronajměte si vůz na stavbu včetně výzdoby, řidiče, focení, dopravy a dalších služeb.",
-		image: "/rental-car/cef17ab3-53fa-4a5a-9767-bcd6793fcba2.jpeg",
+		image: "/mainPhotos/IMG_9221 (1).jpeg",
 		link: "/svatby",
 	},
 ];
