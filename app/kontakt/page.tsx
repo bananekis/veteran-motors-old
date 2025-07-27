@@ -107,19 +107,17 @@ export default function ContactPage() {
 									<h3 className="text-xl font-medium mb-2 text-gold">
 										Email
 									</h3>
-									<p>info@veteranmotors.cz</p>
+									<p>veteran.mot@gmail.com</p>
 								</div>
 
 								<div>
 									<h3 className="text-xl font-medium mb-2 text-gold">
 										Otevírací doba
 									</h3>
-									<p>Pondělí - Pátek: 9:00 - 17:00</p>
 									<p>
-										Sobota: 10:00 - 14:00 (po předchozí
-										domluvě)
+										každý den včetně víkendů po předešlé
+										domluvě
 									</p>
-									<p>Neděle: Zavřeno</p>
 								</div>
 							</div>
 						</div>
@@ -400,7 +398,7 @@ export default function ContactPage() {
 									📞 +420 735 705 601
 								</p>
 								<p className="text-xs text-brown">
-									✉️ info@veteranmotors.cz
+									✉️ veteran.mot@gmail.com
 								</p>
 							</div>
 						</div>

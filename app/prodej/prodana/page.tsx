@@ -9,7 +9,9 @@ import Image from "next/image";
 import Link from "next/link";
 
 export default function SoldPage() {
-	const soldCars = cars.filter((car) => car.category === "sale" && car.available === false);
+	const soldCars = cars.filter(
+		(car) => car.category === "sale" && car.available === false
+	);
 
 	const servicesRef = useRef<HTMLDivElement>(null);
 	const carsRef = useRef<HTMLDivElement>(null);
@@ -270,7 +272,7 @@ export default function SoldPage() {
 									Email
 								</h3>
 								<p className="font-montserrat">
-									info@veteranmotors.cz
+									veteran.mot@gmail.com
 								</p>
 							</div>
 						</motion.div>

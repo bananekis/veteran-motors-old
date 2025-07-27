@@ -21,6 +21,7 @@ import Link from "next/link";
 import { cars } from "@/lib/data";
 import ArtDecoHeading from "@/components/art-deco-heading";
 import CarCard from "@/components/car-card";
+import { ArrowRight } from "lucide-react";
 import type { z } from "zod";
 
 type SaleFormValues = z.infer<typeof saleFormSchema>;
@@ -37,11 +38,16 @@ export default function SalePage() {
 
 	const ref = useRef<HTMLDivElement>(null);
 	const formRef = useRef<HTMLDivElement>(null);
+	const servicesRef = useRef<HTMLDivElement>(null);
 	const infoRef = useRef<HTMLDivElement>(null);
 	const galleryRef = useRef<HTMLDivElement>(null);
 
 	const isInView = useInView(ref, { once: true, amount: 0.1 });
 	const isFormInView = useInView(formRef, { once: true, amount: 0.1 });
+	const isServicesInView = useInView(servicesRef, {
+		once: true,
+		amount: 0.1,
+	});
 	const isInfoInView = useInView(infoRef, { once: true, amount: 0.1 });
 	const isGalleryInView = useInView(galleryRef, { once: true, amount: 0.1 });
 
@@ -49,6 +55,11 @@ export default function SalePage() {
 	const [submitStatus, setSubmitStatus] = useState<
 		"idle" | "success" | "error"
 	>("idle");
+
+	// Add state for expandable sections
+	const [isInStockExpanded, setIsInStockExpanded] = useState(false);
+	const [isImportExpanded, setIsImportExpanded] = useState(false);
+	const [isGalleryExpanded, setIsGalleryExpanded] = useState(false);
 
 	const form = useForm<SaleFormValues>({
 		resolver: zodResolver(saleFormSchema),
@@ -117,7 +128,10 @@ export default function SalePage() {
 					</motion.h2>
 
 					<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-						{inStockCars.slice(0, 4).map((car, index) => (
+						{(isInStockExpanded
+							? inStockCars
+							: inStockCars.slice(0, 4)
+						).map((car, index) => (
 							<CarCard
 								key={car.id}
 								car={car}
@@ -127,20 +141,27 @@ export default function SalePage() {
 						))}
 					</div>
 
-					<motion.div
-						initial={{ opacity: 0, y: 20 }}
-						animate={
-							isInView
-								? { opacity: 1, y: 0 }
-								: { opacity: 0, y: 20 }
-						}
-						transition={{ duration: 0.5, delay: 0.4 }}
-						className="text-right mt-8"
-					>
-						<Link href="/prodej/skladem" className="vintage-button">
-							Rozbalit vše
-						</Link>
-					</motion.div>
+					{inStockCars.length > 4 && (
+						<motion.div
+							initial={{ opacity: 0, y: 20 }}
+							animate={
+								isInView
+									? { opacity: 1, y: 0 }
+									: { opacity: 0, y: 20 }
+							}
+							transition={{ duration: 0.5, delay: 0.4 }}
+							className="text-right mt-8"
+						>
+							<button
+								onClick={() =>
+									setIsInStockExpanded(!isInStockExpanded)
+								}
+								className="vintage-button"
+							>
+								{isInStockExpanded ? "Sbalit" : "Rozbalit vše"}
+							</button>
+						</motion.div>
+					)}
 				</section>
 
 				<section className="mb-24">
@@ -149,7 +170,10 @@ export default function SalePage() {
 					</h2>
 
 					<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-						{importCars.slice(0, 4).map((car, index) => (
+						{(isImportExpanded
+							? importCars
+							: importCars.slice(0, 4)
+						).map((car, index) => (
 							<CarCard
 								key={car.id}
 								car={car}
@@ -159,11 +183,18 @@ export default function SalePage() {
 						))}
 					</div>
 
-					<div className="text-right mt-8">
-						<Link href="/prodej/dovoz" className="vintage-button">
-							Rozbalit vše
-						</Link>
-					</div>
+					{importCars.length > 4 && (
+						<div className="text-right mt-8">
+							<button
+								onClick={() =>
+									setIsImportExpanded(!isImportExpanded)
+								}
+								className="vintage-button"
+							>
+								{isImportExpanded ? "Sbalit" : "Rozbalit vše"}
+							</button>
+						</div>
+					)}
 				</section>
 
 				<section ref={formRef} className="mb-24">
@@ -535,88 +566,193 @@ export default function SalePage() {
 					</motion.div>
 				</section>
 
-				<section className="mb-24">
-					<h2 className="font-marcellus text-2xl md:text-3xl mb-12 vintage-heading">
-						Prodaná auta
-					</h2>
+				<section ref={servicesRef} className="mb-24">
+					<motion.div
+						initial={{ opacity: 0, y: 30 }}
+						animate={
+							isServicesInView
+								? { opacity: 1, y: 0 }
+								: { opacity: 0, y: 30 }
+						}
+						transition={{ duration: 0.6 }}
+						className="art-deco-border"
+					>
+						<div className="p-8 bg-cream">
+							<h2 className="font-marcellus text-2xl md:text-3xl mb-8 vintage-heading">
+								Co nabízíme:
+							</h2>
 
-					<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-						{soldCars.slice(0, 4).map((car, index) => (
-							<CarCard
-								key={car.id}
-								car={car}
-								type="sale"
-								index={index}
-							/>
-						))}
-					</div>
-
-					<div className="text-right mt-8">
-						<Link href="/prodej/prodana" className="vintage-button">
-							Rozbalit vše
-						</Link>
-					</div>
+							<ul className="grid grid-cols-1 md:grid-cols-2 gap-6">
+								{[
+									"Celková kontrola vozu, pomoc s výběrem, testovací jízdy",
+									"Přihlášení na bílé SPZ",
+									"Přihlášení na veteránské SPZ (Historické průkazy, veteránské testace apod.)",
+									"Renovace, vyvařování, dodávka náhradních dílů apod.",
+									"Garážování",
+									"Komisní prodej",
+								].map((service, index) => (
+									<motion.li
+										key={index}
+										initial={{
+											opacity: 0,
+											x: index % 2 === 0 ? -20 : 20,
+										}}
+										animate={
+											isServicesInView
+												? { opacity: 1, x: 0 }
+												: {
+														opacity: 0,
+														x:
+															index % 2 === 0
+																? -20
+																: 20,
+												  }
+										}
+										transition={{
+											duration: 0.5,
+											delay: index * 0.1,
+										}}
+										className="flex items-start"
+									>
+										<span className="inline-block w-4 h-4 mt-1.5 mr-3 bg-gold flex-shrink-0"></span>
+										<span className="font-montserrat">
+											{service}
+										</span>
+									</motion.li>
+								))}
+							</ul>
+						</div>
+					</motion.div>
 				</section>
 
 				<section ref={galleryRef} className="mb-24">
-					<h2 className="font-marcellus text-2xl md:text-3xl mb-12 vintage-heading">
-						Fotogalerie
-					</h2>
+					<div className="flex items-center justify-between mb-12">
+						<h2 className="font-marcellus text-2xl md:text-3xl vintage-heading">
+							Fotogalerie
+						</h2>
+						<Link
+							href="/fotogalerie/prodej"
+							className="group flex items-center text-brown hover:text-gold transition-colors duration-300"
+						>
+							<span className="font-montserrat text-sm mr-2">
+								Zobrazit všechny
+							</span>
+							<ArrowRight className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" />
+						</Link>
+					</div>
 
 					<div className="mb-8 text-center">
 						<p className="font-cormorant text-xl text-brown">
-							Prohlédněte si naši fotogalerii - mix fotografií ze
-							všech kategorií.
+							Prohlédněte si galerii našich úspěšně prodaných
+							vozů.
 						</p>
 					</div>
 
-					<div className="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-12 max-w-7xl mx-auto">
-						{(() => {
-							// Create a randomized diverse selection from all categories
-							const allAvailableCars = [
-								...inStockCars,
-								...importCars,
-								...soldCars,
-							];
-							const shuffled = allAvailableCars.sort(
-								() => Math.random() - 0.5
+					{(() => {
+						// Get photos from sold cars only
+						const allPhotos = soldCars
+							.filter((car) => car.featured)
+							.map((car) => ({
+								src: car.mainImage,
+								alt: car.name,
+								category: "Prodáno",
+								available: car.available,
+								id: car.id,
+							}))
+							// Remove duplicates based on image src
+							.filter(
+								(photo, index, array) =>
+									array.findIndex(
+										(p) => p.src === photo.src
+									) === index
 							);
-							const showcaseCars = shuffled.slice(0, 3);
 
-							return showcaseCars.map((car, index) => (
-								<div
-									key={car.id}
-									className="group flex flex-col h-full"
-								>
-									<div className="art-deco-border overflow-hidden flex flex-col h-full">
-										<div className="relative h-72 overflow-hidden">
-											<Image
-												src={car.mainImage}
-												alt={car.name}
-												fill
-												className="object-cover transition-transform duration-500 group-hover:scale-105"
-											/>
-											<div className="absolute inset-0 bg-gradient-to-t from-brown-dark/70 to-transparent"></div>
-											<div className="absolute inset-0 flex items-center justify-center">
-												<h3 className="font-marcellus text-2xl text-white text-shadow tracking-wider text-center px-4">
-													{car.name}
-												</h3>
-											</div>
-										</div>
+						const featuredPhotos = allPhotos.slice(0, 3);
+						const expandedPhotos = allPhotos.slice(0, 15);
+
+						return (
+							<>
+								{!isGalleryExpanded ? (
+									// Initial view - 3 featured photos
+									<div className="grid grid-cols-1 md:grid-cols-3 gap-0 max-w-7xl mx-auto">
+										{featuredPhotos.map((photo, index) => (
+											<Link
+												key={photo.id}
+												href={`/fotogalerie/prodej/${photo.id}`}
+												className="group relative overflow-hidden block"
+											>
+												<div className="art-deco-border overflow-hidden">
+													<div className="relative h-72 overflow-hidden">
+														<Image
+															src={photo.src}
+															alt={photo.alt}
+															fill
+															className="object-cover transition-transform duration-500 group-hover:scale-105"
+														/>
+														<div className="absolute top-2 left-2">
+															<span className="bg-brown-dark/80 text-cream px-2 py-1 text-xs font-montserrat rounded">
+																{photo.category}
+															</span>
+														</div>
+														<div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-brown-dark/70 to-transparent p-4">
+															<h3 className="text-cream font-marcellus text-lg">
+																{photo.alt}
+															</h3>
+														</div>
+													</div>
+												</div>
+											</Link>
+										))}
 									</div>
-								</div>
-							));
-						})()}
-					</div>
+								) : (
+									// Expanded view - more photos without gaps
+									<div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-0 max-w-7xl mx-auto">
+										{expandedPhotos.map((photo, index) => (
+											<Link
+												key={photo.id}
+												href={`/fotogalerie/prodej/${photo.id}`}
+												className="group relative overflow-hidden block"
+											>
+												<div className="relative h-48 md:h-56 lg:h-64 overflow-hidden">
+													<Image
+														src={photo.src}
+														alt={photo.alt}
+														fill
+														className="object-cover transition-transform duration-500 group-hover:scale-105"
+													/>
+													<div className="absolute top-2 left-2">
+														<span className="bg-brown-dark/80 text-cream px-2 py-1 text-xs font-montserrat rounded">
+															{photo.category}
+														</span>
+													</div>
+													<div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-brown-dark/70 to-transparent p-2">
+														<h3 className="text-cream font-marcellus text-xs md:text-sm">
+															{photo.alt}
+														</h3>
+													</div>
+												</div>
+											</Link>
+										))}
+									</div>
+								)}
 
-					<div className="text-center mt-12">
-						<Link
-							href="/fotogalerie/prodej"
-							className="vintage-button"
-						>
-							Zobrazit všechny fotky
-						</Link>
-					</div>
+								<div className="text-center mt-12">
+									<button
+										onClick={() =>
+											setIsGalleryExpanded(
+												!isGalleryExpanded
+											)
+										}
+										className="vintage-button"
+									>
+										{isGalleryExpanded
+											? "Sbalit"
+											: "Rozbalit"}
+									</button>
+								</div>
+							</>
+						);
+					})()}
 				</section>
 			</div>
 		</div>

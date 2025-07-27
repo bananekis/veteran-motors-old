@@ -63,10 +63,10 @@ export default function ContactSection() {
 										<strong>Email:</strong>
 										<br />
 										<Link
-											href="mailto:info@veteranmotors.cz"
+											href="mailto:veteran.mot@gmail.com"
 											className="hover:text-brown transition-colors"
 										>
-											info@veteranmotors.cz
+											veteran.mot@gmail.com
 										</Link>
 									</p>
 

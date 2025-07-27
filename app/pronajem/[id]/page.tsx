@@ -9,19 +9,21 @@ import { motion, useInView } from "framer-motion";
 import ArtDecoHeading from "@/components/art-deco-heading";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { vehicleInterestFormSchema } from "@/lib/validations";
-import { sendEmail, formatVehicleInterestFormData } from "@/lib/emailjs";
+import { rentalFormSchema } from "@/lib/validations";
+import { sendEmail, formatRentalFormData } from "@/lib/emailjs";
 import { z } from "zod";
 
-interface CarDetailPageProps {
+interface RentalCarDetailPageProps {
 	params: {
 		id: string;
 	};
 }
 
-type VehicleInterestFormData = z.infer<typeof vehicleInterestFormSchema>;
+type RentalFormData = z.infer<typeof rentalFormSchema>;
 
-export default function CarDetailPage({ params }: CarDetailPageProps) {
+export default function RentalCarDetailPage({
+	params,
+}: RentalCarDetailPageProps) {
 	const car = cars.find((c) => c.id === params.id);
 	const [isSubmitting, setIsSubmitting] = useState(false);
 	const [submitMessage, setSubmitMessage] = useState<string | null>(null);
@@ -32,46 +34,13 @@ export default function CarDetailPage({ params }: CarDetailPageProps) {
 		handleSubmit,
 		formState: { errors },
 		reset,
-	} = useForm<VehicleInterestFormData>({
-		resolver: zodResolver(vehicleInterestFormSchema),
+	} = useForm<RentalFormData>({
+		resolver: zodResolver(rentalFormSchema),
 	});
 
-	if (!car) {
+	if (!car || (car.category !== "rental" && car.category !== "all")) {
 		notFound();
 	}
-
-	// Function to clean up description text
-	const cleanDescription = (description: string) => {
-		let cleaned = description;
-
-		// Remove email addresses
-		cleaned = cleaned.replace(/[\w\.-]+@[\w\.-]+\.\w+/g, "");
-
-		// Remove phone numbers (various formats)
-		cleaned = cleaned.replace(/(\+420\s?)?[\d\s]{9,}/g, "");
-		cleaned = cleaned.replace(/7️⃣3️⃣5️⃣\s?7️⃣0️⃣5️⃣\s?6️⃣0️⃣1️⃣/g, "");
-
-		// Remove contact section
-		cleaned = cleaned.replace(/kontakt:\s*\n.*$/gim, "");
-		cleaned = cleaned.replace(/Telefon:.*$/gim, "");
-		cleaned = cleaned.replace(/E-mail:.*$/gim, "");
-
-		// Remove duplicate info that's already in "Další informace"
-		cleaned = cleaned.replace(/Rok výroby:\s*\d{4}/gi, "");
-		cleaned = cleaned.replace(/Motor:\s*[^\n]*/gi, "");
-		cleaned = cleaned.replace(/Převodovka:\s*[^\n]*/gi, "");
-		cleaned = cleaned.replace(/Cena:\s*[^\n]*/gi, "");
-		cleaned = cleaned.replace(/rok výroby:\s*\d{4}/gi, "");
-		cleaned = cleaned.replace(/motor:\s*[^\n]*/gi, "");
-		cleaned = cleaned.replace(/převodovka:\s*[^\n]*/gi, "");
-		cleaned = cleaned.replace(/cena:\s*[^\n]*/gi, "");
-
-		// Remove extra whitespace and newlines
-		cleaned = cleaned.replace(/\n\s*\n\s*\n/g, "\n\n");
-		cleaned = cleaned.replace(/^\s+|\s+$/g, "");
-
-		return cleaned;
-	};
 
 	const mainImageRef = useRef<HTMLDivElement>(null);
 	const infoRef = useRef<HTMLDivElement>(null);
@@ -83,26 +52,26 @@ export default function CarDetailPage({ params }: CarDetailPageProps) {
 	const isInfoInView = useInView(infoRef, { once: true, amount: 0.1 });
 	const isFormInView = useInView(formRef, { once: true, amount: 0.1 });
 
-	const onSubmit = async (data: VehicleInterestFormData) => {
+	const onSubmit = async (data: RentalFormData) => {
 		setIsSubmitting(true);
 		setSubmitMessage(null);
 		setSubmitError(null);
 
 		try {
-			const emailData = formatVehicleInterestFormData(data, car.name);
+			const emailData = formatRentalFormData(data, car.name);
 			const success = await sendEmail(emailData);
 
 			if (success) {
-				setSubmitMessage("Váš zájem byl úspěšně odeslán!");
+				setSubmitMessage("Vaše rezervace byla úspěšně odeslána!");
 				reset();
 			} else {
 				setSubmitError(
-					"Nepodařilo se odeslat zprávu. Zkuste to prosím znovu."
+					"Nepodařilo se odeslat rezervaci. Zkuste to prosím znovu."
 				);
 			}
 		} catch (error) {
 			console.error("Form submission error:", error);
-			setSubmitError("Došlo k chybě při odesílání zprávy.");
+			setSubmitError("Došlo k chybě při odesílání rezervace.");
 		} finally {
 			setIsSubmitting(false);
 		}
@@ -179,7 +148,7 @@ export default function CarDetailPage({ params }: CarDetailPageProps) {
 							<div className="art-deco-border">
 								<div className="p-4 sm:p-6 bg-cream text-sm">
 									<h2 className="font-marcellus text-xl mb-4 vintage-heading text-center">
-										Mám zájem o vozidlo
+										Rezervace vozu
 									</h2>
 									<form
 										onSubmit={handleSubmit(onSubmit)}
@@ -238,47 +207,63 @@ export default function CarDetailPage({ params }: CarDetailPageProps) {
 											</div>
 										</div>
 
+										<div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+											<div>
+												<label className="block text-xs font-medium mb-1 font-montserrat">
+													Datum od
+												</label>
+												<input
+													{...register("dateFrom")}
+													type="date"
+													className="vintage-input text-sm px-3 py-2"
+												/>
+												{errors.dateFrom && (
+													<p className="text-red-600 text-xs mt-1">
+														{
+															errors.dateFrom
+																.message
+														}
+													</p>
+												)}
+											</div>
+
+											<div>
+												<label className="block text-xs font-medium mb-1 font-montserrat">
+													Datum do
+												</label>
+												<input
+													{...register("dateTo")}
+													type="date"
+													className="vintage-input text-sm px-3 py-2"
+												/>
+												{errors.dateTo && (
+													<p className="text-red-600 text-xs mt-1">
+														{errors.dateTo.message}
+													</p>
+												)}
+											</div>
+										</div>
+
 										<div>
 											<label className="block text-xs font-medium mb-1 font-montserrat">
-												Termín prohlídky, v případě, že
-												se chcete přijet podívat
+												Účel pronájmu
 											</label>
 											<input
-												{...register("viewingDate")}
+												{...register("purpose")}
 												type="text"
 												className="vintage-input text-sm px-3 py-2"
-												placeholder="např. 15.1.2024 odpoledne"
+												placeholder="např. svatba, focení, akce..."
 											/>
-											{errors.viewingDate && (
+											{errors.purpose && (
 												<p className="text-red-600 text-xs mt-1">
-													{errors.viewingDate.message}
+													{errors.purpose.message}
 												</p>
 											)}
 										</div>
 
 										<div>
 											<label className="block text-xs font-medium mb-1 font-montserrat">
-												Nabízená cena
-											</label>
-											<input
-												{...register("offeredPrice")}
-												type="text"
-												className="vintage-input text-sm px-3 py-2"
-												placeholder="např. 500 000 Kč"
-											/>
-											{errors.offeredPrice && (
-												<p className="text-red-600 text-xs mt-1">
-													{
-														errors.offeredPrice
-															.message
-													}
-												</p>
-											)}
-										</div>
-
-										<div>
-											<label className="block text-xs font-medium mb-1 font-montserrat">
-												Zpráva *
+												Zpráva
 											</label>
 											<textarea
 												{...register("message")}
@@ -313,7 +298,7 @@ export default function CarDetailPage({ params }: CarDetailPageProps) {
 											>
 												{isSubmitting
 													? "Odesílám..."
-													: "Odeslat"}
+													: "Odeslat rezervaci"}
 											</button>
 										</div>
 										<div
@@ -342,18 +327,7 @@ export default function CarDetailPage({ params }: CarDetailPageProps) {
 						<div className="art-deco-border">
 							<div className="p-6 bg-cream">
 								<h2 className="font-marcellus text-2xl mb-4 vintage-heading">
-									cena k jednání
-								</h2>
-								<p className="text-3xl font-bold text-gold font-marcellus">
-									{car.price.toLocaleString()} Kč
-								</p>
-							</div>
-						</div>
-
-						<div className="art-deco-border">
-							<div className="p-6 bg-cream">
-								<h2 className="font-marcellus text-2xl mb-4 vintage-heading">
-									Další informace
+									Informace o vozidle
 								</h2>
 
 								<ul className="space-y-3 font-montserrat">
@@ -421,10 +395,104 @@ export default function CarDetailPage({ params }: CarDetailPageProps) {
 						<div className="art-deco-border">
 							<div className="p-6 bg-cream">
 								<h2 className="font-marcellus text-2xl mb-4 vintage-heading">
-									Popis
+									Ceník
 								</h2>
-								<p className="font-montserrat whitespace-pre-line">
-									{cleanDescription(car.description)}
+								{(() => {
+									// Define pricing based on car model
+									const getPricing = (carName: string) => {
+										const name = carName.toLowerCase();
+										if (
+											name.includes("ford") &&
+											name.includes("mustang")
+										) {
+											return {
+												hour: "490",
+												halfDay: "990",
+												day: "1.990",
+											};
+										} else if (
+											name.includes("bmw") &&
+											name.includes("2002")
+										) {
+											return {
+												hour: "290",
+												halfDay: "790",
+												day: "1.490",
+											};
+										} else if (
+											name.includes("vw") &&
+											name.includes("brouk")
+										) {
+											return {
+												hour: "290",
+												halfDay: "790",
+												day: "1.490",
+											};
+										} else if (
+											name.includes("chevrolet") &&
+											name.includes("camaro")
+										) {
+											return {
+												hour: "490",
+												halfDay: "990",
+												day: "1.990",
+											};
+										} else if (
+											name.includes("chevrolet") &&
+											name.includes("corvette")
+										) {
+											return {
+												hour: "490",
+												halfDay: "990",
+												day: "1.990",
+											};
+										} else if (
+											name.includes("cadillac") &&
+											name.includes("eldorado")
+										) {
+											return {
+												hour: "490",
+												halfDay: "990",
+												day: "1.990",
+											};
+										} else {
+											// Default pricing for other cars
+											return {
+												hour: "490",
+												halfDay: "990",
+												day: "1.990",
+											};
+										}
+									};
+
+									const pricing = getPricing(car.name);
+
+									return (
+										<div className="space-y-2 text-sm font-montserrat">
+											<div className="flex justify-between">
+												<span>Hodina:</span>
+												<span>{pricing.hour},- Kč</span>
+											</div>
+											<div className="flex justify-between">
+												<span>Půl den:</span>
+												<span>
+													{pricing.halfDay},- Kč
+												</span>
+											</div>
+											<div className="flex justify-between">
+												<span>Den:</span>
+												<span>{pricing.day},- Kč</span>
+											</div>
+											<div className="flex justify-between">
+												<span>Vícedenní:</span>
+												<span>po domluvě</span>
+											</div>
+										</div>
+									);
+								})()}
+								<p className="text-xs mt-3 italic font-montserrat">
+									Finální cena je stanovena individuálně podle
+									účelu pronájmu.
 								</p>
 							</div>
 						</div>
@@ -432,8 +500,8 @@ export default function CarDetailPage({ params }: CarDetailPageProps) {
 				</div>
 
 				<div className="text-center">
-					<Link href="/prodej" className="vintage-button">
-						Zpět na nabídku
+					<Link href="/pronajem" className="vintage-button">
+						Zpět na pronájem
 					</Link>
 				</div>
 			</div>

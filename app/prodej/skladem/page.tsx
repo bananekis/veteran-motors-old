@@ -13,16 +13,11 @@ export default function InStockPage() {
 		(car) => car.category === "sale" && car.stockType === "skladem"
 	);
 
-	const servicesRef = useRef<HTMLDivElement>(null);
 	const carsRef = useRef<HTMLDivElement>(null);
 	const infoRef = useRef<HTMLDivElement>(null);
 	const contactRef = useRef<HTMLDivElement>(null);
 	const galleryRef = useRef<HTMLDivElement>(null);
 
-	const isServicesInView = useInView(servicesRef, {
-		once: true,
-		amount: 0.1,
-	});
 	const isCarsInView = useInView(carsRef, { once: true, amount: 0.1 });
 	const isInfoInView = useInView(infoRef, { once: true, amount: 0.1 });
 	const isContactInView = useInView(contactRef, { once: true, amount: 0.1 });
@@ -40,64 +35,6 @@ export default function InStockPage() {
 					</p>
 				</div>
 
-				<section ref={servicesRef} className="mb-24">
-					<motion.div
-						initial={{ opacity: 0, y: 30 }}
-						animate={
-							isServicesInView
-								? { opacity: 1, y: 0 }
-								: { opacity: 0, y: 30 }
-						}
-						transition={{ duration: 0.6 }}
-						className="art-deco-border"
-					>
-						<div className="p-8 bg-cream">
-							<h2 className="font-marcellus text-2xl md:text-3xl mb-8 vintage-heading">
-								Co nabízíme:
-							</h2>
-
-							<ul className="grid grid-cols-1 md:grid-cols-2 gap-6">
-								{[
-									"Kompletní servisní prohlídka",
-									"Záruka na technický stav",
-									"Možnost financování",
-									"Pomoc s registrací",
-									"Záruční a pozáruční servis",
-									"Možnost výměny za jiný vůz",
-								].map((service, index) => (
-									<motion.li
-										key={index}
-										initial={{
-											opacity: 0,
-											x: index % 2 === 0 ? -20 : 20,
-										}}
-										animate={
-											isServicesInView
-												? { opacity: 1, x: 0 }
-												: {
-														opacity: 0,
-														x:
-															index % 2 === 0
-																? -20
-																: 20,
-												  }
-										}
-										transition={{
-											duration: 0.5,
-											delay: index * 0.1,
-										}}
-										className="flex items-start"
-									>
-										<span className="inline-block w-4 h-4 mt-1.5 mr-3 bg-gold flex-shrink-0"></span>
-										<span className="font-montserrat">
-											{service}
-										</span>
-									</motion.li>
-								))}
-							</ul>
-						</div>
-					</motion.div>
-				</section>
 
 				<section ref={carsRef} className="mb-24">
 					<motion.h2
@@ -158,28 +95,37 @@ export default function InStockPage() {
 							<div className="p-6 bg-cream">
 								<div className="space-y-4 font-montserrat">
 									<p>
-										Proces koupě vozu u nás je jednoduchý a
-										transparentní:
+										Proces koupě vozu na skladě je přímočarý a transparentní:
 									</p>
 
 									<ul className="list-disc pl-6 space-y-4">
 										<li>
-											Vyberte si vůz z naší nabídky nebo
-											nás kontaktujte s vašimi požadavky
+											Vyberte si vůz z naší nabídky vozů na skladě nebo nás kontaktujte pro bližší informace
 										</li>
 										<li>
-											Domluvte si prohlídku vozu a
-											zkušební jízdu
+											Domluvte si osobní prohlídku vozu a zkušební jízdu u nás na prodejně
 										</li>
 										<li>
-											Po dohodě ceny a podmínek sepíšeme
-											kupní smlouvu
+											Po kontrole technického stavu a dohodě podmínek sepíšeme kupní smlouvu
 										</li>
 										<li>
-											Zajistíme přihlášení vozu a předání
-											v perfektním stavu
+											Zajistíme kompletní přihlášení vozu a předání v perfektním stavu
 										</li>
 									</ul>
+
+									<div className="border-t border-gold/30 my-8"></div>
+
+									<div className="mt-8">
+										<h4 className="font-marcellus mb-2">
+											Co vše jsme schopni zařídit:
+										</h4>
+										<p>
+											Přihlašování jak na Bílé tak
+											Veteránské SPZ, opravy, garážování,
+											poptání náhradních dílů, komisní
+											prodej apod.
+										</p>
+									</div>
 								</div>
 							</div>
 						</div>

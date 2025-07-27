@@ -17,14 +17,14 @@ const services = [
 	{
 		title: "PRONÁJEM",
 		description:
-			"Půjčte si auta na focení, do filmů, klipů na akce a eventy či jen na na projížďku nebo výlet.",
-		image: "/rental-car/f36e5efa-378b-484d-968c-696a2f956ded.jpeg",
+			"Půjčte si auta na focení, do filmů, na akce a eventy či jen na projížďku nebo výlet.",
+		image: "/rental-car/7f91e347-7dbb-4049-b50c-0d4800a678aa.jpeg",
 		link: "/pronajem",
 	},
 	{
 		title: "SVATBY",
 		description:
-			"Učiňte svůj jedinečný den opravdu jedinečným. Pronajměte si vůz včetně výzdoby, řidiče, focení dopravy a dalších služeb.",
+			"Učiňte svůj jedinečný den opravdu jedinečným. Pronajměte si vůz na stavbu včetně výzdoby, řidiče, focení, dopravy a dalších služeb.",
 		image: "/rental-car/cef17ab3-53fa-4a5a-9767-bcd6793fcba2.jpeg",
 		link: "/svatby",
 	},

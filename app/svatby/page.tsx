@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { motion, useInView } from "framer-motion";
 import { cars } from "@/lib/data";
 import CarCard from "@/components/car-card";
@@ -8,11 +8,15 @@ import ArtDecoHeading from "@/components/art-deco-heading";
 import WeddingForm from "@/components/wedding-form";
 import Image from "next/image";
 import Link from "next/link";
+import { ArrowRight } from "lucide-react";
 
 export default function WeddingsPage() {
 	const weddingCars = cars.filter(
 		(car) => car.category === "wedding" || car.category === "all"
 	);
+
+	const [isGalleryExpanded, setIsGalleryExpanded] = useState(false);
+	const [isWeddingCarsExpanded, setIsWeddingCarsExpanded] = useState(false);
 
 	const servicesRef = useRef<HTMLDivElement>(null);
 	const carsRef = useRef<HTMLDivElement>(null);
@@ -41,8 +45,8 @@ export default function WeddingsPage() {
 				<div className="mb-16 text-center">
 					<p className="font-cormorant text-2xl text-brown">
 						Učiňte svůj jedinečný den opravdu jedinečným. Pronajměte
-						si vůz včetně výzdoby, řidiče, focení dopravy a dalších
-						služeb.
+						si vůz na stavbu včetně výzdoby, řidiče, focení, dopravy
+						a dalších služeb.
 					</p>
 				</div>
 
@@ -61,7 +65,10 @@ export default function WeddingsPage() {
 					</motion.h2>
 
 					<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-						{weddingCars.slice(0, 4).map((car, index) => (
+						{(isWeddingCarsExpanded
+							? weddingCars
+							: weddingCars.slice(0, 4)
+						).map((car, index) => (
 							<div key={car.id} className="h-full">
 								<CarCard
 									car={car}
@@ -72,11 +79,22 @@ export default function WeddingsPage() {
 						))}
 					</div>
 
-					<div className="text-right mt-12">
-						<Link href="/svatby/vozy" className="vintage-button">
-							Rozbalit vše
-						</Link>
-					</div>
+					{weddingCars.length > 4 && (
+						<div className="text-right mt-12">
+							<button
+								onClick={() =>
+									setIsWeddingCarsExpanded(
+										!isWeddingCarsExpanded
+									)
+								}
+								className="vintage-button"
+							>
+								{isWeddingCarsExpanded
+									? "Sbalit"
+									: "Rozbalit vše"}
+							</button>
+						</div>
+					)}
 				</section>
 
 				<section ref={servicesRef} className="mb-24">
@@ -90,8 +108,13 @@ export default function WeddingsPage() {
 						transition={{ duration: 0.5 }}
 						className="font-marcellus text-2xl md:text-3xl mb-12 vintage-heading"
 					>
-						Orientační ceník
+						Ceník
 					</motion.h2>
+
+					<p className="mb-6 font-montserrat">
+						Finální cena je vždy stanovena individuálně podle
+						rozsahu služeb a délky pronájmu.
+					</p>
 
 					<motion.div
 						initial={{ opacity: 0, y: 30 }}
@@ -108,59 +131,122 @@ export default function WeddingsPage() {
 								<thead>
 									<tr className="border-b-2 border-gold/40">
 										<th className="py-4 px-4 text-left font-marcellus">
-											Služba
+											Ceník
 										</th>
-										<th className="py-4 px-4 text-right font-marcellus">
-											Cena
+										<th className="py-4 px-4 text-left font-marcellus">
+											hodina
+										</th>
+										<th className="py-4 px-4 text-left font-marcellus">
+											půl den
+										</th>
+										<th className="py-4 px-4 text-left font-marcellus">
+											den
+										</th>
+										<th className="py-4 px-4 text-left font-marcellus">
+											vícedenní
 										</th>
 									</tr>
 								</thead>
 								<tbody>
 									<tr className="border-b border-gold/20">
 										<td className="py-4 px-4 font-montserrat">
-											Pronájem vozu
+											Ford Mustang GT
 										</td>
-										<td className="py-4 px-4 text-right font-montserrat">
-											1.999,- Kč/den
+										<td className="py-4 px-4 font-montserrat">
+											490,- Kč
+										</td>
+										<td className="py-4 px-4 font-montserrat">
+											990,- Kč
+										</td>
+										<td className="py-4 px-4 font-montserrat">
+											1.990,- Kč
+										</td>
+										<td className="py-4 px-4 font-montserrat">
+											po domluvě
 										</td>
 									</tr>
 									<tr className="border-b border-gold/20">
 										<td className="py-4 px-4 font-montserrat">
-											Výzdoba na přání zákazníka
+											BMW 2002
 										</td>
-										<td className="py-4 px-4 text-right font-montserrat">
-											1.999,- Kč
+										<td className="py-4 px-4 font-montserrat">
+											290,- Kč
+										</td>
+										<td className="py-4 px-4 font-montserrat">
+											790,- Kč
+										</td>
+										<td className="py-4 px-4 font-montserrat">
+											1.490,- Kč
+										</td>
+										<td className="py-4 px-4 font-montserrat">
+											po domluvě
 										</td>
 									</tr>
 									<tr className="border-b border-gold/20">
 										<td className="py-4 px-4 font-montserrat">
-											Přistavení vozu
+											VW Brouk
 										</td>
-										<td className="py-4 px-4 text-right font-montserrat">
-											15,- Kč/km
+										<td className="py-4 px-4 font-montserrat">
+											290,- Kč
+										</td>
+										<td className="py-4 px-4 font-montserrat">
+											790,- Kč
+										</td>
+										<td className="py-4 px-4 font-montserrat">
+											1.490,- Kč
+										</td>
+										<td className="py-4 px-4 font-montserrat">
+											po domluvě
 										</td>
 									</tr>
 									<tr className="border-b border-gold/20">
 										<td className="py-4 px-4 font-montserrat">
-											Osobní řidič
+											Chevrolet Camaro SS
 										</td>
-										<td className="py-4 px-4 text-right font-montserrat">
-											1.999,- Kč/den
+										<td className="py-4 px-4 font-montserrat">
+											490,- Kč
+										</td>
+										<td className="py-4 px-4 font-montserrat">
+											990,- Kč
+										</td>
+										<td className="py-4 px-4 font-montserrat">
+											1.990,- Kč
+										</td>
+										<td className="py-4 px-4 font-montserrat">
+											po domluvě
 										</td>
 									</tr>
 									<tr className="border-b border-gold/20">
 										<td className="py-4 px-4 font-montserrat">
-											Focení
+											Chevrolet Corvette C3
 										</td>
-										<td className="py-4 px-4 text-right font-montserrat">
-											999,- Kč
+										<td className="py-4 px-4 font-montserrat">
+											490,- Kč
+										</td>
+										<td className="py-4 px-4 font-montserrat">
+											990,- Kč
+										</td>
+										<td className="py-4 px-4 font-montserrat">
+											1.990,- Kč
+										</td>
+										<td className="py-4 px-4 font-montserrat">
+											po domluvě
 										</td>
 									</tr>
 									<tr className="border-b border-gold/20">
 										<td className="py-4 px-4 font-montserrat">
-											Další
+											Cadillac Eldorado
 										</td>
-										<td className="py-4 px-4 text-right font-montserrat">
+										<td className="py-4 px-4 font-montserrat">
+											490,- Kč
+										</td>
+										<td className="py-4 px-4 font-montserrat">
+											990,- Kč
+										</td>
+										<td className="py-4 px-4 font-montserrat">
+											1.990,- Kč
+										</td>
+										<td className="py-4 px-4 font-montserrat">
 											po domluvě
 										</td>
 									</tr>
@@ -168,6 +254,11 @@ export default function WeddingsPage() {
 							</table>
 						</div>
 					</motion.div>
+
+					<p className="mt-4 text-sm italic font-montserrat">
+						V případě svateb jsou k dispozici i doplňkové služby:
+						řidič, výzdoba, fotoportrét.
+					</p>
 
 					<p className="mt-4 text-sm italic font-montserrat">
 						* Ceny jsou orientační a mohou se lišit podle konkrétní
@@ -272,44 +363,130 @@ export default function WeddingsPage() {
 				</section>
 
 				<section ref={galleryRef} className="mb-24">
-					<h2 className="font-marcellus text-2xl md:text-3xl mb-12 vintage-heading">
-						Fotogalerie
-					</h2>
-
-					<div className="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-12 max-w-7xl mx-auto">
-						{weddingCars.slice(0, 3).map((car, index) => (
-							<div
-								key={car.id}
-								className="group flex flex-col h-full"
-							>
-								<div className="art-deco-border overflow-hidden flex flex-col h-full">
-									<div className="relative h-72 overflow-hidden">
-										<Image
-											src={car.mainImage}
-											alt={car.name}
-											fill
-											className="object-cover transition-transform duration-500 group-hover:scale-105"
-										/>
-										<div className="absolute inset-0 bg-gradient-to-t from-brown-dark/70 to-transparent"></div>
-										<div className="absolute inset-0 flex items-center justify-center">
-											<h3 className="font-marcellus text-2xl text-white text-shadow tracking-wider text-center px-4">
-												{car.name}
-											</h3>
-										</div>
-									</div>
-								</div>
-							</div>
-						))}
-					</div>
-
-					<div className="text-center mt-12">
+					<div className="flex items-center justify-between mb-12">
+						<h2 className="font-marcellus text-2xl md:text-3xl vintage-heading">
+							Fotogalerie
+						</h2>
 						<Link
 							href="/fotogalerie/svatby"
-							className="vintage-button"
+							className="group flex items-center text-brown hover:text-gold transition-colors duration-300"
 						>
-							Zobrazit všechny fotky
+							<span className="font-montserrat text-sm mr-2">
+								Zobrazit všechny
+							</span>
+							<ArrowRight className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" />
 						</Link>
 					</div>
+
+					<div className="mb-8 text-center">
+						<p className="font-cormorant text-xl text-brown">
+							Prohlédněte si galerii našich svatebních vozů.
+						</p>
+					</div>
+
+					{(() => {
+						// Get photos from wedding cars
+						const allPhotos = weddingCars
+							.map((car) => ({
+								src: car.mainImage,
+								alt: car.name,
+								category: "Svatby",
+								id: car.id,
+							}))
+							// Remove duplicates based on image src
+							.filter(
+								(photo, index, array) =>
+									array.findIndex(
+										(p) => p.src === photo.src
+									) === index
+							);
+
+						const featuredPhotos = allPhotos.slice(0, 3);
+						const expandedPhotos = allPhotos.slice(0, 15);
+
+						return (
+							<>
+								{!isGalleryExpanded ? (
+									// Initial view - 3 featured photos
+									<div className="grid grid-cols-1 md:grid-cols-3 gap-0 max-w-7xl mx-auto">
+										{featuredPhotos.map((photo, index) => (
+											<Link
+												key={photo.id}
+												href={`/fotogalerie/svatby/${photo.id}`}
+												className="group relative overflow-hidden block"
+											>
+												<div className="art-deco-border overflow-hidden">
+													<div className="relative h-72 overflow-hidden">
+														<Image
+															src={photo.src}
+															alt={photo.alt}
+															fill
+															className="object-cover transition-transform duration-500 group-hover:scale-105"
+														/>
+														<div className="absolute top-2 left-2">
+															<span className="bg-brown-dark/80 text-cream px-2 py-1 text-xs font-montserrat rounded">
+																{photo.category}
+															</span>
+														</div>
+														<div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-brown-dark/70 to-transparent p-4">
+															<h3 className="text-cream font-marcellus text-lg">
+																{photo.alt}
+															</h3>
+														</div>
+													</div>
+												</div>
+											</Link>
+										))}
+									</div>
+								) : (
+									// Expanded view - more photos without gaps
+									<div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-0 max-w-7xl mx-auto">
+										{expandedPhotos.map((photo, index) => (
+											<Link
+												key={photo.id}
+												href={`/fotogalerie/svatby/${photo.id}`}
+												className="group relative overflow-hidden block"
+											>
+												<div className="relative h-48 md:h-56 lg:h-64 overflow-hidden">
+													<Image
+														src={photo.src}
+														alt={photo.alt}
+														fill
+														className="object-cover transition-transform duration-500 group-hover:scale-105"
+													/>
+													<div className="absolute top-2 left-2">
+														<span className="bg-brown-dark/80 text-cream px-2 py-1 text-xs font-montserrat rounded">
+															{photo.category}
+														</span>
+													</div>
+													<div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-brown-dark/70 to-transparent p-2">
+														<h3 className="text-cream font-marcellus text-xs md:text-sm">
+															{photo.alt}
+														</h3>
+													</div>
+												</div>
+											</Link>
+										))}
+									</div>
+								)}
+
+								<div className="text-center mt-12">
+									<button
+										onClick={() =>
+											setIsGalleryExpanded(
+												!isGalleryExpanded
+											)
+										}
+										className="vintage-button"
+									>
+										{isGalleryExpanded
+											? "Sbalit"
+											: "Rozbalit"}
+									</button>
+								</div>
+							</>
+						);
+					})()}
 				</section>
 			</div>
 		</div>

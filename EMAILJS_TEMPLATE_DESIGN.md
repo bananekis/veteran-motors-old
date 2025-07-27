@@ -252,7 +252,7 @@ Nová zpráva z webu Veteran Motors - {{subject}}
 				<p>
 					📍 Bílý Kostel nad Nisou 509, 463 31 Bílý Kostel nad Nisou
 				</p>
-				<p>📞 +420 735 705 601 | ✉️ info@veteranmotors.cz</p>
+				<p>📞 +420 735 705 601 | ✉️ veteran.mot@gmail.com</p>
 				<p style="margin-top: 15px; opacity: 0.8;">
 					Tato zpráva byla odeslána prostřednictvím kontaktního
 					formuláře na webu veteranmotors.cz
@@ -304,7 +304,7 @@ Značka: {{brand}}
 Veteran Motors s.r.o.
 Bílý Kostel nad Nisou 509, 463 31 Bílý Kostel nad Nisou
 Tel: +420 735 705 601
-Email: info@veteranmotors.cz
+Email: veteran.mot@gmail.com
 
 Tato zpráva byla odeslána prostřednictvím kontaktního formuláře na webu veteranmotors.cz
 ```

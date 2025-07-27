@@ -9,19 +9,21 @@ import { motion, useInView } from "framer-motion";
 import ArtDecoHeading from "@/components/art-deco-heading";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { vehicleInterestFormSchema } from "@/lib/validations";
-import { sendEmail, formatVehicleInterestFormData } from "@/lib/emailjs";
+import { weddingFormSchema } from "@/lib/validations";
+import { sendEmail, formatWeddingFormData } from "@/lib/emailjs";
 import { z } from "zod";
 
-interface CarDetailPageProps {
+interface WeddingCarDetailPageProps {
 	params: {
 		id: string;
 	};
 }
 
-type VehicleInterestFormData = z.infer<typeof vehicleInterestFormSchema>;
+type WeddingFormData = z.infer<typeof weddingFormSchema>;
 
-export default function CarDetailPage({ params }: CarDetailPageProps) {
+export default function WeddingCarDetailPage({
+	params,
+}: WeddingCarDetailPageProps) {
 	const car = cars.find((c) => c.id === params.id);
 	const [isSubmitting, setIsSubmitting] = useState(false);
 	const [submitMessage, setSubmitMessage] = useState<string | null>(null);
@@ -32,46 +34,13 @@ export default function CarDetailPage({ params }: CarDetailPageProps) {
 		handleSubmit,
 		formState: { errors },
 		reset,
-	} = useForm<VehicleInterestFormData>({
-		resolver: zodResolver(vehicleInterestFormSchema),
+	} = useForm<WeddingFormData>({
+		resolver: zodResolver(weddingFormSchema),
 	});
 
-	if (!car) {
+	if (!car || (car.category !== "wedding" && car.category !== "all")) {
 		notFound();
 	}
-
-	// Function to clean up description text
-	const cleanDescription = (description: string) => {
-		let cleaned = description;
-
-		// Remove email addresses
-		cleaned = cleaned.replace(/[\w\.-]+@[\w\.-]+\.\w+/g, "");
-
-		// Remove phone numbers (various formats)
-		cleaned = cleaned.replace(/(\+420\s?)?[\d\s]{9,}/g, "");
-		cleaned = cleaned.replace(/7️⃣3️⃣5️⃣\s?7️⃣0️⃣5️⃣\s?6️⃣0️⃣1️⃣/g, "");
-
-		// Remove contact section
-		cleaned = cleaned.replace(/kontakt:\s*\n.*$/gim, "");
-		cleaned = cleaned.replace(/Telefon:.*$/gim, "");
-		cleaned = cleaned.replace(/E-mail:.*$/gim, "");
-
-		// Remove duplicate info that's already in "Další informace"
-		cleaned = cleaned.replace(/Rok výroby:\s*\d{4}/gi, "");
-		cleaned = cleaned.replace(/Motor:\s*[^\n]*/gi, "");
-		cleaned = cleaned.replace(/Převodovka:\s*[^\n]*/gi, "");
-		cleaned = cleaned.replace(/Cena:\s*[^\n]*/gi, "");
-		cleaned = cleaned.replace(/rok výroby:\s*\d{4}/gi, "");
-		cleaned = cleaned.replace(/motor:\s*[^\n]*/gi, "");
-		cleaned = cleaned.replace(/převodovka:\s*[^\n]*/gi, "");
-		cleaned = cleaned.replace(/cena:\s*[^\n]*/gi, "");
-
-		// Remove extra whitespace and newlines
-		cleaned = cleaned.replace(/\n\s*\n\s*\n/g, "\n\n");
-		cleaned = cleaned.replace(/^\s+|\s+$/g, "");
-
-		return cleaned;
-	};
 
 	const mainImageRef = useRef<HTMLDivElement>(null);
 	const infoRef = useRef<HTMLDivElement>(null);
@@ -83,26 +52,26 @@ export default function CarDetailPage({ params }: CarDetailPageProps) {
 	const isInfoInView = useInView(infoRef, { once: true, amount: 0.1 });
 	const isFormInView = useInView(formRef, { once: true, amount: 0.1 });
 
-	const onSubmit = async (data: VehicleInterestFormData) => {
+	const onSubmit = async (data: WeddingFormData) => {
 		setIsSubmitting(true);
 		setSubmitMessage(null);
 		setSubmitError(null);
 
 		try {
-			const emailData = formatVehicleInterestFormData(data, car.name);
+			const emailData = formatWeddingFormData(data, car.name);
 			const success = await sendEmail(emailData);
 
 			if (success) {
-				setSubmitMessage("Váš zájem byl úspěšně odeslán!");
+				setSubmitMessage("Vaše poptávka byla úspěšně odeslána!");
 				reset();
 			} else {
 				setSubmitError(
-					"Nepodařilo se odeslat zprávu. Zkuste to prosím znovu."
+					"Nepodařilo se odeslat poptávku. Zkuste to prosím znovu."
 				);
 			}
 		} catch (error) {
 			console.error("Form submission error:", error);
-			setSubmitError("Došlo k chybě při odesílání zprávy.");
+			setSubmitError("Došlo k chybě při odesílání poptávky.");
 		} finally {
 			setIsSubmitting(false);
 		}
@@ -179,7 +148,7 @@ export default function CarDetailPage({ params }: CarDetailPageProps) {
 							<div className="art-deco-border">
 								<div className="p-4 sm:p-6 bg-cream text-sm">
 									<h2 className="font-marcellus text-xl mb-4 vintage-heading text-center">
-										Mám zájem o vozidlo
+										Poptávka svatebního vozu
 									</h2>
 									<form
 										onSubmit={handleSubmit(onSubmit)}
@@ -240,51 +209,107 @@ export default function CarDetailPage({ params }: CarDetailPageProps) {
 
 										<div>
 											<label className="block text-xs font-medium mb-1 font-montserrat">
-												Termín prohlídky, v případě, že
-												se chcete přijet podívat
+												Datum svatby *
 											</label>
 											<input
-												{...register("viewingDate")}
-												type="text"
+												{...register("weddingDate")}
+												type="date"
 												className="vintage-input text-sm px-3 py-2"
-												placeholder="např. 15.1.2024 odpoledne"
 											/>
-											{errors.viewingDate && (
+											{errors.weddingDate && (
 												<p className="text-red-600 text-xs mt-1">
-													{errors.viewingDate.message}
+													{errors.weddingDate.message}
 												</p>
 											)}
 										</div>
 
 										<div>
 											<label className="block text-xs font-medium mb-1 font-montserrat">
-												Nabízená cena
+												Místo svatby
 											</label>
 											<input
-												{...register("offeredPrice")}
+												{...register("location")}
 												type="text"
 												className="vintage-input text-sm px-3 py-2"
-												placeholder="např. 500 000 Kč"
+												placeholder="např. Praha, kostel sv. Víta"
 											/>
-											{errors.offeredPrice && (
+											{errors.location && (
 												<p className="text-red-600 text-xs mt-1">
-													{
-														errors.offeredPrice
-															.message
-													}
+													{errors.location.message}
 												</p>
 											)}
 										</div>
 
 										<div>
 											<label className="block text-xs font-medium mb-1 font-montserrat">
-												Zpráva *
+												Čas potřeby vozu
+											</label>
+											<input
+												{...register("timeNeeded")}
+												type="text"
+												className="vintage-input text-sm px-3 py-2"
+												placeholder="např. 14:00 - 18:00"
+											/>
+											{errors.timeNeeded && (
+												<p className="text-red-600 text-xs mt-1">
+													{errors.timeNeeded.message}
+												</p>
+											)}
+										</div>
+
+										<div>
+											<label className="block text-xs font-medium mb-1 font-montserrat">
+												Služby
+											</label>
+											<div className="space-y-2">
+												<label className="flex items-center">
+													<input
+														{...register(
+															"services.driver"
+														)}
+														type="checkbox"
+														className="mr-2"
+													/>
+													<span className="text-xs">
+														Řidič
+													</span>
+												</label>
+												<label className="flex items-center">
+													<input
+														{...register(
+															"services.decoration"
+														)}
+														type="checkbox"
+														className="mr-2"
+													/>
+													<span className="text-xs">
+														Výzdoba vozu
+													</span>
+												</label>
+												<label className="flex items-center">
+													<input
+														{...register(
+															"services.transport"
+														)}
+														type="checkbox"
+														className="mr-2"
+													/>
+													<span className="text-xs">
+														Doprava
+													</span>
+												</label>
+											</div>
+										</div>
+
+										<div>
+											<label className="block text-xs font-medium mb-1 font-montserrat">
+												Zpráva
 											</label>
 											<textarea
 												{...register("message")}
 												rows={3}
 												className="vintage-input resize-none text-sm px-3 py-2"
-												placeholder="Vaše zpráva..."
+												placeholder="Vaše zpráva, speciální požadavky..."
 											/>
 											{errors.message && (
 												<p className="text-red-600 text-xs mt-1">
@@ -313,7 +338,7 @@ export default function CarDetailPage({ params }: CarDetailPageProps) {
 											>
 												{isSubmitting
 													? "Odesílám..."
-													: "Odeslat"}
+													: "Odeslat poptávku"}
 											</button>
 										</div>
 										<div
@@ -342,18 +367,7 @@ export default function CarDetailPage({ params }: CarDetailPageProps) {
 						<div className="art-deco-border">
 							<div className="p-6 bg-cream">
 								<h2 className="font-marcellus text-2xl mb-4 vintage-heading">
-									cena k jednání
-								</h2>
-								<p className="text-3xl font-bold text-gold font-marcellus">
-									{car.price.toLocaleString()} Kč
-								</p>
-							</div>
-						</div>
-
-						<div className="art-deco-border">
-							<div className="p-6 bg-cream">
-								<h2 className="font-marcellus text-2xl mb-4 vintage-heading">
-									Další informace
+									Informace o vozidle
 								</h2>
 
 								<ul className="space-y-3 font-montserrat">
@@ -421,10 +435,35 @@ export default function CarDetailPage({ params }: CarDetailPageProps) {
 						<div className="art-deco-border">
 							<div className="p-6 bg-cream">
 								<h2 className="font-marcellus text-2xl mb-4 vintage-heading">
-									Popis
+									Svatební služby
 								</h2>
-								<p className="font-montserrat whitespace-pre-line">
-									{cleanDescription(car.description)}
+								<div className="space-y-3 text-sm font-montserrat">
+									<div className="flex items-start">
+										<span className="inline-block w-2 h-2 bg-gold rounded-full mt-2 mr-3 flex-shrink-0"></span>
+										<span>Zkušený řidič v uniformě</span>
+									</div>
+									<div className="flex items-start">
+										<span className="inline-block w-2 h-2 bg-gold rounded-full mt-2 mr-3 flex-shrink-0"></span>
+										<span>Výzdoba vozu podle přání</span>
+									</div>
+									<div className="flex items-start">
+										<span className="inline-block w-2 h-2 bg-gold rounded-full mt-2 mr-3 flex-shrink-0"></span>
+										<span>
+											Doprava na místo obřadu i hostiny
+										</span>
+									</div>
+									<div className="flex items-start">
+										<span className="inline-block w-2 h-2 bg-gold rounded-full mt-2 mr-3 flex-shrink-0"></span>
+										<span>Čekání po celou dobu svatby</span>
+									</div>
+									<div className="flex items-start">
+										<span className="inline-block w-2 h-2 bg-gold rounded-full mt-2 mr-3 flex-shrink-0"></span>
+										<span>Fotoportrét s vozem</span>
+									</div>
+								</div>
+								<p className="text-xs mt-4 italic font-montserrat">
+									Cena je stanovena individuálně podle rozsahu
+									služeb a délky pronájmu.
 								</p>
 							</div>
 						</div>
@@ -432,8 +471,8 @@ export default function CarDetailPage({ params }: CarDetailPageProps) {
 				</div>
 
 				<div className="text-center">
-					<Link href="/prodej" className="vintage-button">
-						Zpět na nabídku
+					<Link href="/svatby" className="vintage-button">
+						Zpět na svatby
 					</Link>
 				</div>
 			</div>

@@ -42,10 +42,10 @@ export default function Footer() {
 						</p>
 						<p className="mb-2 font-montserrat">
 							<a
-								href="mailto:info@veteranmotors.cz"
+								href="mailto:veteran.mot@gmail.com"
 								className="hover:text-gold transition-colors"
 							>
-								Email: info@veteranmotors.cz
+								Email: veteran.mot@gmail.com
 							</a>
 						</p>
 						<div className="flex justify-center space-x-6 mt-6">

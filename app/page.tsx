@@ -1,3 +1,6 @@
+"use client";
+
+import { useState } from "react";
 import HeroSection from "@/components/hero-section";
 import ServicesSection from "@/components/services-section";
 import AboutSection from "@/components/about-section";
@@ -8,7 +11,30 @@ import Image from "next/image";
 import { Trophy, Users, Clock, Car, Heart } from "lucide-react";
 
 export default function Home() {
+	const [isGalleryExpanded, setIsGalleryExpanded] = useState(false);
 	const featuredCars = cars.filter((car) => car.featured).slice(0, 3);
+
+	// Get photos from all categories for expanded view, removing duplicates
+	const allPhotos = cars
+		.filter((car) => car.featured)
+		.map((car) => ({
+			src: car.mainImage,
+			alt: car.name,
+			category:
+				car.category === "sale"
+					? "Prodej"
+					: car.category === "rental"
+					? "Pronájem"
+					: "Svatby",
+			id: car.id,
+		}))
+		// Remove duplicates based on image src
+		.filter(
+			(photo, index, array) =>
+				array.findIndex((p) => p.src === photo.src) === index
+		);
+
+	const expandedPhotos = allPhotos.slice(0, 15); // Show 15 unique photos when expanded
 
 	return (
 		<div>
@@ -24,30 +50,99 @@ export default function Home() {
 						FOTOGALERIE
 					</h2>
 
-					<div className="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-12 max-w-7xl mx-auto">
-						{featuredCars.map((car, index) => (
-							<div
-								key={car.id}
-								className="group flex flex-col h-full"
-							>
-								<div className="art-deco-border overflow-hidden">
-									<div className="relative h-72 overflow-hidden">
-										<Image
-											src={car.mainImage}
-											alt={car.name}
-											fill
-											className="object-cover transition-transform duration-500 group-hover:scale-105"
-										/>
-									</div>
-								</div>
-							</div>
-						))}
-					</div>
+					{!isGalleryExpanded ? (
+						// Initial view - 3 featured cars
+						<div className="grid grid-cols-1 md:grid-cols-3 gap-0 max-w-7xl mx-auto">
+							{featuredCars.map((car, index) => {
+								const getGalleryUrl = (car: any) => {
+									if (car.category === "sale")
+										return `/fotogalerie/prodej/${car.id}`;
+									if (car.category === "rental")
+										return `/fotogalerie/pronajem/${car.id}`;
+									if (car.category === "wedding")
+										return `/fotogalerie/svatby/${car.id}`;
+									return `/fotogalerie/prodej/${car.id}`; // fallback
+								};
+
+								return (
+									<Link
+										key={car.id}
+										href={getGalleryUrl(car)}
+										className="group flex flex-col h-full block"
+									>
+										<div className="art-deco-border overflow-hidden">
+											<div className="relative h-72 overflow-hidden">
+												<Image
+													src={car.mainImage}
+													alt={car.name}
+													fill
+													className="object-cover transition-transform duration-500 group-hover:scale-105"
+												/>
+											</div>
+										</div>
+									</Link>
+								);
+							})}
+						</div>
+					) : (
+						// Expanded view - more photos without gaps
+						<div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-0 max-w-7xl mx-auto">
+							{expandedPhotos.map((photo, index) => {
+								const getGalleryUrl = (
+									category: string,
+									id: string
+								) => {
+									if (category === "Prodej")
+										return `/fotogalerie/prodej/${id}`;
+									if (category === "Pronájem")
+										return `/fotogalerie/pronajem/${id}`;
+									if (category === "Svatby")
+										return `/fotogalerie/svatby/${id}`;
+									return `/fotogalerie/prodej/${id}`; // fallback
+								};
+
+								return (
+									<Link
+										key={photo.id}
+										href={getGalleryUrl(
+											photo.category,
+											photo.id
+										)}
+										className="group relative overflow-hidden block"
+									>
+										<div className="relative h-48 md:h-56 lg:h-64 overflow-hidden">
+											<Image
+												src={photo.src}
+												alt={photo.alt}
+												fill
+												className="object-cover transition-transform duration-500 group-hover:scale-105"
+											/>
+											<div className="absolute top-2 left-2">
+												<span className="bg-brown-dark/80 text-cream px-2 py-1 text-xs font-montserrat rounded">
+													{photo.category}
+												</span>
+											</div>
+											<div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-brown-dark/70 to-transparent p-2">
+												<h3 className="text-cream font-marcellus text-xs md:text-sm">
+													{photo.alt}
+												</h3>
+											</div>
+										</div>
+									</Link>
+								);
+							})}
+						</div>
+					)}
 
 					<div className="text-center mt-12">
-						<Link href="/fotogalerie" className="vintage-button">
-							Rozbalit
-						</Link>
+						<button
+							onClick={() =>
+								setIsGalleryExpanded(!isGalleryExpanded)
+							}
+							className="vintage-button"
+						>
+							{isGalleryExpanded ? "Sbalit" : "Rozbalit"}
+						</button>
 					</div>
 				</div>
 			</section>

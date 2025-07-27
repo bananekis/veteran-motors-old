@@ -36,7 +36,7 @@ export default function CarCard({ car, type, index = 0 }: CarCardProps) {
 				<div className="absolute inset-0 bg-gradient-to-t from-brown-dark/90 via-brown-dark/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
 				<div className="absolute bottom-0 left-0 right-0 p-4 transform translate-y-full group-hover:translate-y-0 transition-transform duration-300">
 					<div className="vintage-button w-full flex justify-center bg-gold hover:bg-gold/90 text-brown-dark font-semibold shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200 border-2 border-gold hover:border-cream">
-						{type === "sale" ? "Zobrazit detail" : "Detail není dostupný"}
+						{type === "sale" ? "Zobrazit detail" : type === "rental" ? "Rezervovat" : "Poptávka"}
 					</div>
 				</div>
 			</div>
@@ -69,7 +69,7 @@ export default function CarCard({ car, type, index = 0 }: CarCardProps) {
 			onMouseEnter={() => setIsHovered(true)}
 			onMouseLeave={() => setIsHovered(false)}
 		>
-			{type === "sale" ? (
+			{type === "sale" || type === "rental" || type === "wedding" ? (
 				<Link href={href} className="block h-full">
 					{CardContent}
 				</Link>
