@@ -43,7 +43,7 @@ export const saleFormSchema = z.object({
 	engine: z.string().optional(),
 	transmission: z.string().optional(),
 	color: z.string().optional(),
-	price: z.string().min(1, "Cenová představa je povinná"),
+	price: z.string().optional(),
 	condition: z.string().optional(),
 	description: z.string().optional(),
 	phone: phoneSchema,

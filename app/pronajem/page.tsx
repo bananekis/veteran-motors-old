@@ -8,7 +8,7 @@ import ArtDecoHeading from "@/components/art-deco-heading";
 import RentalForm from "@/components/rental-form";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, X, ChevronLeft, ChevronRight } from "lucide-react";
 
 export default function RentalPage() {
 	const rentalCars = cars.filter(
@@ -17,6 +17,89 @@ export default function RentalPage() {
 
 	const [isRentalExpanded, setIsRentalExpanded] = useState(false);
 	const [isGalleryExpanded, setIsGalleryExpanded] = useState(false);
+	const [selectedImage, setSelectedImage] = useState<{
+		src: string;
+		alt: string;
+	} | null>(null);
+	const [currentImageIndex, setCurrentImageIndex] = useState(0);
+
+	// Rental cars images array (moved outside for navigation)
+	const rentalCarsImages = [
+		{
+			src: "/rental-cars/IMG_2311-min.jpg",
+			alt: "Pronajímací vůz 1",
+		},
+		{
+			src: "/rental-cars/IMG_5234 (1)-min.jpg",
+			alt: "Pronajímací vůz 2",
+		},
+		{
+			src: "/rental-cars/IMG_1168-min.jpg",
+			alt: "Pronajímací vůz 3",
+		},
+		{
+			src: "/rental-cars/IMG_0323.JPG",
+			alt: "Pronajímací vůz 4",
+		},
+		{
+			src: "/rental-cars/IMG_0010.jpg",
+			alt: "Pronajímací vůz 5",
+		},
+		{
+			src: "/rental-cars/IMG_2592-min.jpg",
+			alt: "Pronajímací vůz 6",
+		},
+		{
+			src: "/rental-cars/IMG_2098-min.jpg",
+			alt: "Pronajímací vůz 7",
+		},
+		{
+			src: "/rental-cars/IMG_4176-min.jpg",
+			alt: "Pronajímací vůz 8",
+		},
+		{
+			src: "/rental-cars/IMG_2191-min.JPG",
+			alt: "Pronajímací vůz 9",
+		},
+		{
+			src: "/rental-cars/FullSizeRender (1)-min.jpg",
+			alt: "Pronajímací vůz 10",
+		},
+		{
+			src: "/rental-cars/FullSizeRender-min.jpg",
+			alt: "Pronajímací vůz 11",
+		},
+		{
+			src: "/rental-cars/IMG_2488.JPG",
+			alt: "Pronajímací vůz 12",
+		},
+		{
+			src: "/rental-cars/7ac58a08-a380-4729-80db-d7e63c4b19ab.JPG",
+			alt: "Pronajímací vůz 13",
+		},
+		{
+			src: "/rental-cars/IMG_0311.jpg",
+			alt: "Pronajímací vůz 14",
+		},
+	];
+
+	const openImageModal = (photo: { src: string; alt: string }) => {
+		const index = rentalCarsImages.findIndex(
+			(img) => img.src === photo.src
+		);
+		setCurrentImageIndex(index);
+		setSelectedImage(photo);
+	};
+
+	const navigateImage = (direction: "prev" | "next") => {
+		const newIndex =
+			direction === "next"
+				? (currentImageIndex + 1) % rentalCarsImages.length
+				: (currentImageIndex - 1 + rentalCarsImages.length) %
+				  rentalCarsImages.length;
+		setCurrentImageIndex(newIndex);
+		setSelectedImage(rentalCarsImages[newIndex]);
+	};
 
 	const ref = useRef<HTMLDivElement>(null);
 	const tableRef = useRef<HTMLDivElement>(null);
@@ -243,7 +326,7 @@ export default function RentalPage() {
 
 					<p className="mt-4 text-sm italic font-montserrat">
 						V případě pronájmu na focení, do filmů či na akce je
-						cena individuální.
+						cena individuální, pro bližší informace nás kontaktujte.
 					</p>
 				</section>
 
@@ -353,7 +436,7 @@ export default function RentalPage() {
 				<section ref={galleryRef} className="mb-24">
 					<div className="flex items-center justify-between mb-12">
 						<h2 className="font-marcellus text-2xl md:text-3xl vintage-heading">
-							Fotogalerie
+							Galerie pronájmu
 						</h2>
 						<Link
 							href="/fotogalerie/pronajem"
@@ -368,29 +451,13 @@ export default function RentalPage() {
 
 					<div className="mb-8 text-center">
 						<p className="font-cormorant text-xl text-brown">
-							Prohlédněte si galerii našich aut k pronájmu.
+							Inspirujte se snímky z našich pronájmů a akcí.
 						</p>
 					</div>
 
 					{(() => {
-						// Get photos from rental cars
-						const allPhotos = rentalCars
-							.map((car) => ({
-								src: car.mainImage,
-								alt: car.name,
-								category: "Pronájem",
-								id: car.id,
-							}))
-							// Remove duplicates based on image src
-							.filter(
-								(photo, index, array) =>
-									array.findIndex(
-										(p) => p.src === photo.src
-									) === index
-							);
-
-						const featuredPhotos = allPhotos.slice(0, 3);
-						const expandedPhotos = allPhotos.slice(0, 15);
+						const featuredPhotos = rentalCarsImages.slice(0, 3);
+						const expandedPhotos = rentalCarsImages.slice(0, 14);
 
 						return (
 							<>
@@ -398,10 +465,22 @@ export default function RentalPage() {
 									// Initial view - 3 featured photos
 									<div className="grid grid-cols-1 md:grid-cols-3 gap-0 max-w-7xl mx-auto">
 										{featuredPhotos.map((photo, index) => (
-											<Link
-												key={photo.id}
-												href={`/fotogalerie/pronajem/${photo.id}`}
-												className="group relative overflow-hidden block"
+											<motion.div
+												key={`rental-featured-${index}`}
+												initial={{ opacity: 0, y: 20 }}
+												animate={
+													isGalleryInView
+														? { opacity: 1, y: 0 }
+														: { opacity: 0, y: 20 }
+												}
+												transition={{
+													duration: 0.5,
+													delay: index * 0.2,
+												}}
+												className="group relative overflow-hidden block cursor-pointer"
+												onClick={() =>
+													openImageModal(photo)
+												}
 											>
 												<div className="art-deco-border overflow-hidden">
 													<div className="relative h-72 overflow-hidden">
@@ -413,7 +492,7 @@ export default function RentalPage() {
 														/>
 														<div className="absolute top-2 left-2">
 															<span className="bg-brown-dark/80 text-cream px-2 py-1 text-xs font-montserrat rounded">
-																{photo.category}
+																Pronájem
 															</span>
 														</div>
 														<div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-brown-dark/70 to-transparent p-4">
@@ -421,19 +500,39 @@ export default function RentalPage() {
 																{photo.alt}
 															</h3>
 														</div>
+														<div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300 flex items-center justify-center">
+															<div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-white text-center">
+																<p className="text-sm font-montserrat">
+																	Klikněte pro
+																	zvětšení
+																</p>
+															</div>
+														</div>
 													</div>
 												</div>
-											</Link>
+											</motion.div>
 										))}
 									</div>
 								) : (
 									// Expanded view - more photos without gaps
 									<div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-0 max-w-7xl mx-auto">
 										{expandedPhotos.map((photo, index) => (
-											<Link
-												key={photo.id}
-												href={`/fotogalerie/pronajem/${photo.id}`}
-												className="group relative overflow-hidden block"
+											<motion.div
+												key={`rental-expanded-${index}`}
+												initial={{ opacity: 0, y: 20 }}
+												animate={
+													isGalleryInView
+														? { opacity: 1, y: 0 }
+														: { opacity: 0, y: 20 }
+												}
+												transition={{
+													duration: 0.5,
+													delay: index * 0.05,
+												}}
+												className="group relative overflow-hidden block cursor-pointer"
+												onClick={() =>
+													openImageModal(photo)
+												}
 											>
 												<div className="relative h-48 md:h-56 lg:h-64 overflow-hidden">
 													<Image
@@ -444,7 +543,7 @@ export default function RentalPage() {
 													/>
 													<div className="absolute top-2 left-2">
 														<span className="bg-brown-dark/80 text-cream px-2 py-1 text-xs font-montserrat rounded">
-															{photo.category}
+															Pronájem
 														</span>
 													</div>
 													<div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-brown-dark/70 to-transparent p-2">
@@ -452,8 +551,16 @@ export default function RentalPage() {
 															{photo.alt}
 														</h3>
 													</div>
+													<div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300 flex items-center justify-center">
+														<div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-white text-center">
+															<p className="text-xs font-montserrat">
+																Klikněte pro
+																zvětšení
+															</p>
+														</div>
+													</div>
 												</div>
-											</Link>
+											</motion.div>
 										))}
 									</div>
 								)}
@@ -476,6 +583,67 @@ export default function RentalPage() {
 						);
 					})()}
 				</section>
+
+				{/* Fullscreen Image Modal */}
+				{selectedImage && (
+					<div className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-sm">
+						<div className="relative w-full h-full flex items-center justify-center p-4">
+							{/* Close Button */}
+							<button
+								onClick={() => setSelectedImage(null)}
+								className="absolute top-4 right-4 z-10 p-2 bg-black/50 hover:bg-black/70 rounded-full text-white transition-colors duration-300"
+							>
+								<X className="w-6 h-6" />
+							</button>
+
+							{/* Previous Button */}
+							<button
+								onClick={() => navigateImage("prev")}
+								className="absolute left-4 top-1/2 transform -translate-y-1/2 z-10 p-3 bg-black/50 hover:bg-black/70 rounded-full text-white transition-colors duration-300"
+							>
+								<ChevronLeft className="w-8 h-8" />
+							</button>
+
+							{/* Next Button */}
+							<button
+								onClick={() => navigateImage("next")}
+								className="absolute right-4 top-1/2 transform -translate-y-1/2 z-10 p-3 bg-black/50 hover:bg-black/70 rounded-full text-white transition-colors duration-300"
+							>
+								<ChevronRight className="w-8 h-8" />
+							</button>
+
+							{/* Image */}
+							<div className="relative max-w-7xl max-h-full w-full h-full">
+								<Image
+									src={selectedImage.src}
+									alt={selectedImage.alt}
+									fill
+									className="object-contain"
+									priority
+								/>
+							</div>
+
+							{/* Image Counter and Title */}
+							<div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-black/70 px-4 py-2 rounded-lg">
+								<div className="text-center">
+									<p className="text-white/70 text-sm font-montserrat mb-1">
+										{currentImageIndex + 1} /{" "}
+										{rentalCarsImages.length}
+									</p>
+									<h3 className="text-white font-marcellus text-lg">
+										{selectedImage.alt}
+									</h3>
+								</div>
+							</div>
+
+							{/* Click outside to close */}
+							<div
+								className="absolute inset-0 -z-10"
+								onClick={() => setSelectedImage(null)}
+							/>
+						</div>
+					</div>
+				)}
 			</div>
 		</div>
 	);

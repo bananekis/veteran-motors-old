@@ -8,7 +8,7 @@ import ArtDecoHeading from "@/components/art-deco-heading";
 import WeddingForm from "@/components/wedding-form";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, X, ChevronLeft, ChevronRight } from "lucide-react";
 
 export default function WeddingsPage() {
 	const weddingCars = cars.filter(
@@ -17,6 +17,73 @@ export default function WeddingsPage() {
 
 	const [isGalleryExpanded, setIsGalleryExpanded] = useState(false);
 	const [isWeddingCarsExpanded, setIsWeddingCarsExpanded] = useState(false);
+	const [selectedImage, setSelectedImage] = useState<{
+		src: string;
+		alt: string;
+	} | null>(null);
+	const [currentImageIndex, setCurrentImageIndex] = useState(0);
+
+	// Wedding cars images array (moved outside for navigation)
+	const weddingCarsImages = [
+		{
+			src: "/wedding-cars/IMG_9221-min.jpg",
+			alt: "Svatební vůz 1",
+		},
+		{
+			src: "/wedding-cars/IMG_9206-min.jpg",
+			alt: "Svatební vůz 2",
+		},
+		{
+			src: "/wedding-cars/IMG_1327.JPG",
+			alt: "Svatební vůz 3",
+		},
+		{
+			src: "/wedding-cars/IMG_1325.WEBP",
+			alt: "Svatební vůz 4",
+		},
+		{
+			src: "/wedding-cars/IMG_1328.JPG",
+			alt: "Svatební vůz 5",
+		},
+		{
+			src: "/wedding-cars/IMG_1323.JPG",
+			alt: "Svatební vůz 6",
+		},
+		{
+			src: "/wedding-cars/IMG_1326.JPG",
+			alt: "Svatební vůz 7",
+		},
+		{
+			src: "/wedding-cars/IMG_1330.JPG",
+			alt: "Svatební vůz 8",
+		},
+		{
+			src: "/wedding-cars/IMG_1324.JPG",
+			alt: "Svatební vůz 9",
+		},
+		{
+			src: "/wedding-cars/IMG_1501.JPG",
+			alt: "Svatební vůz 10",
+		},
+	];
+
+	const openImageModal = (photo: { src: string; alt: string }) => {
+		const index = weddingCarsImages.findIndex(
+			(img) => img.src === photo.src
+		);
+		setCurrentImageIndex(index);
+		setSelectedImage(photo);
+	};
+
+	const navigateImage = (direction: "prev" | "next") => {
+		const newIndex =
+			direction === "next"
+				? (currentImageIndex + 1) % weddingCarsImages.length
+				: (currentImageIndex - 1 + weddingCarsImages.length) %
+				  weddingCarsImages.length;
+		setCurrentImageIndex(newIndex);
+		setSelectedImage(weddingCarsImages[newIndex]);
+	};
 
 	const servicesRef = useRef<HTMLDivElement>(null);
 	const carsRef = useRef<HTMLDivElement>(null);
@@ -365,7 +432,7 @@ export default function WeddingsPage() {
 				<section ref={galleryRef} className="mb-24">
 					<div className="flex items-center justify-between mb-12">
 						<h2 className="font-marcellus text-2xl md:text-3xl vintage-heading">
-							Fotogalerie
+							Svatební galerie
 						</h2>
 						<Link
 							href="/fotogalerie/svatby"
@@ -380,29 +447,13 @@ export default function WeddingsPage() {
 
 					<div className="mb-8 text-center">
 						<p className="font-cormorant text-xl text-brown">
-							Prohlédněte si galerii našich svatebních vozů.
+							Inspirujte se snímky z našich svatebních akcí.
 						</p>
 					</div>
 
 					{(() => {
-						// Get photos from wedding cars
-						const allPhotos = weddingCars
-							.map((car) => ({
-								src: car.mainImage,
-								alt: car.name,
-								category: "Svatby",
-								id: car.id,
-							}))
-							// Remove duplicates based on image src
-							.filter(
-								(photo, index, array) =>
-									array.findIndex(
-										(p) => p.src === photo.src
-									) === index
-							);
-
-						const featuredPhotos = allPhotos.slice(0, 3);
-						const expandedPhotos = allPhotos.slice(0, 15);
+						const featuredPhotos = weddingCarsImages.slice(0, 3);
+						const expandedPhotos = weddingCarsImages.slice(0, 10);
 
 						return (
 							<>
@@ -410,10 +461,22 @@ export default function WeddingsPage() {
 									// Initial view - 3 featured photos
 									<div className="grid grid-cols-1 md:grid-cols-3 gap-0 max-w-7xl mx-auto">
 										{featuredPhotos.map((photo, index) => (
-											<Link
-												key={photo.id}
-												href={`/fotogalerie/svatby/${photo.id}`}
-												className="group relative overflow-hidden block"
+											<motion.div
+												key={`wedding-featured-${index}`}
+												initial={{ opacity: 0, y: 20 }}
+												animate={
+													isGalleryInView
+														? { opacity: 1, y: 0 }
+														: { opacity: 0, y: 20 }
+												}
+												transition={{
+													duration: 0.5,
+													delay: index * 0.2,
+												}}
+												className="group relative overflow-hidden block cursor-pointer"
+												onClick={() =>
+													openImageModal(photo)
+												}
 											>
 												<div className="art-deco-border overflow-hidden">
 													<div className="relative h-72 overflow-hidden">
@@ -425,7 +488,7 @@ export default function WeddingsPage() {
 														/>
 														<div className="absolute top-2 left-2">
 															<span className="bg-brown-dark/80 text-cream px-2 py-1 text-xs font-montserrat rounded">
-																{photo.category}
+																Svatby
 															</span>
 														</div>
 														<div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-brown-dark/70 to-transparent p-4">
@@ -433,19 +496,39 @@ export default function WeddingsPage() {
 																{photo.alt}
 															</h3>
 														</div>
+														<div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300 flex items-center justify-center">
+															<div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-white text-center">
+																<p className="text-sm font-montserrat">
+																	Klikněte pro
+																	zvětšení
+																</p>
+															</div>
+														</div>
 													</div>
 												</div>
-											</Link>
+											</motion.div>
 										))}
 									</div>
 								) : (
 									// Expanded view - more photos without gaps
 									<div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-0 max-w-7xl mx-auto">
 										{expandedPhotos.map((photo, index) => (
-											<Link
-												key={photo.id}
-												href={`/fotogalerie/svatby/${photo.id}`}
-												className="group relative overflow-hidden block"
+											<motion.div
+												key={`wedding-expanded-${index}`}
+												initial={{ opacity: 0, y: 20 }}
+												animate={
+													isGalleryInView
+														? { opacity: 1, y: 0 }
+														: { opacity: 0, y: 20 }
+												}
+												transition={{
+													duration: 0.5,
+													delay: index * 0.05,
+												}}
+												className="group relative overflow-hidden block cursor-pointer"
+												onClick={() =>
+													openImageModal(photo)
+												}
 											>
 												<div className="relative h-48 md:h-56 lg:h-64 overflow-hidden">
 													<Image
@@ -456,7 +539,7 @@ export default function WeddingsPage() {
 													/>
 													<div className="absolute top-2 left-2">
 														<span className="bg-brown-dark/80 text-cream px-2 py-1 text-xs font-montserrat rounded">
-															{photo.category}
+															Svatby
 														</span>
 													</div>
 													<div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-brown-dark/70 to-transparent p-2">
@@ -464,8 +547,16 @@ export default function WeddingsPage() {
 															{photo.alt}
 														</h3>
 													</div>
+													<div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300 flex items-center justify-center">
+														<div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-white text-center">
+															<p className="text-xs font-montserrat">
+																Klikněte pro
+																zvětšení
+															</p>
+														</div>
+													</div>
 												</div>
-											</Link>
+											</motion.div>
 										))}
 									</div>
 								)}
@@ -488,6 +579,67 @@ export default function WeddingsPage() {
 						);
 					})()}
 				</section>
+
+				{/* Fullscreen Image Modal */}
+				{selectedImage && (
+					<div className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-sm">
+						<div className="relative w-full h-full flex items-center justify-center p-4">
+							{/* Close Button */}
+							<button
+								onClick={() => setSelectedImage(null)}
+								className="absolute top-4 right-4 z-10 p-2 bg-black/50 hover:bg-black/70 rounded-full text-white transition-colors duration-300"
+							>
+								<X className="w-6 h-6" />
+							</button>
+
+							{/* Previous Button */}
+							<button
+								onClick={() => navigateImage("prev")}
+								className="absolute left-4 top-1/2 transform -translate-y-1/2 z-10 p-3 bg-black/50 hover:bg-black/70 rounded-full text-white transition-colors duration-300"
+							>
+								<ChevronLeft className="w-8 h-8" />
+							</button>
+
+							{/* Next Button */}
+							<button
+								onClick={() => navigateImage("next")}
+								className="absolute right-4 top-1/2 transform -translate-y-1/2 z-10 p-3 bg-black/50 hover:bg-black/70 rounded-full text-white transition-colors duration-300"
+							>
+								<ChevronRight className="w-8 h-8" />
+							</button>
+
+							{/* Image */}
+							<div className="relative max-w-7xl max-h-full w-full h-full">
+								<Image
+									src={selectedImage.src}
+									alt={selectedImage.alt}
+									fill
+									className="object-contain"
+									priority
+								/>
+							</div>
+
+							{/* Image Counter and Title */}
+							<div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-black/70 px-4 py-2 rounded-lg">
+								<div className="text-center">
+									<p className="text-white/70 text-sm font-montserrat mb-1">
+										{currentImageIndex + 1} /{" "}
+										{weddingCarsImages.length}
+									</p>
+									<h3 className="text-white font-marcellus text-lg">
+										{selectedImage.alt}
+									</h3>
+								</div>
+							</div>
+
+							{/* Click outside to close */}
+							<div
+								className="absolute inset-0 -z-10"
+								onClick={() => setSelectedImage(null)}
+							/>
+						</div>
+					</div>
+				)}
 			</div>
 		</div>
 	);

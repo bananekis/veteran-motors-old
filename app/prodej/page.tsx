@@ -21,7 +21,7 @@ import Link from "next/link";
 import { cars } from "@/lib/data";
 import ArtDecoHeading from "@/components/art-deco-heading";
 import CarCard from "@/components/car-card";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, X, ChevronLeft, ChevronRight } from "lucide-react";
 import type { z } from "zod";
 
 type SaleFormValues = z.infer<typeof saleFormSchema>;
@@ -60,6 +60,95 @@ export default function SalePage() {
 	const [isInStockExpanded, setIsInStockExpanded] = useState(false);
 	const [isImportExpanded, setIsImportExpanded] = useState(false);
 	const [isGalleryExpanded, setIsGalleryExpanded] = useState(false);
+	const [selectedImage, setSelectedImage] = useState<{
+		src: string;
+		alt: string;
+	} | null>(null);
+	const [currentImageIndex, setCurrentImageIndex] = useState(0);
+
+	// Sold cars images array (moved outside for navigation)
+	const soldCarsImages = [
+		{
+			src: "/sold-cars/IMG_4515-min.jpeg",
+			alt: "Prodaný vůz 1",
+		},
+		{
+			src: "/sold-cars/IMG_3321-min.jpeg",
+			alt: "Prodaný vůz 2",
+		},
+		{
+			src: "/sold-cars/IMG_1165-min.jpeg",
+			alt: "Prodaný vůz 3",
+		},
+		{
+			src: "/sold-cars/IMG_1296-min.jpeg",
+			alt: "Prodaný vůz 4",
+		},
+		{
+			src: "/sold-cars/IMG_1317-min.jpg",
+			alt: "Prodaný vůz 5",
+		},
+		{
+			src: "/sold-cars/IMG_3119-min.jpg",
+			alt: "Prodaný vůz 6",
+		},
+		{
+			src: "/sold-cars/IMG_5234-min.jpg",
+			alt: "Prodaný vůz 7",
+		},
+		{
+			src: "/sold-cars/IMG_9313-min.jpg",
+			alt: "Prodaný vůz 8",
+		},
+		{
+			src: "/sold-cars/IMG_3177-min.jpg",
+			alt: "Prodaný vůz 9",
+		},
+		{
+			src: "/sold-cars/IMG_1251-min.JPEG",
+			alt: "Prodaný vůz 10",
+		},
+		{
+			src: "/sold-cars/IMG_7430.jpg",
+			alt: "Prodaný vůz 11",
+		},
+		{
+			src: "/sold-cars/4dc1a17f-5580-4d8a-8754-e00f7e117379.JPG",
+			alt: "Prodaný vůz 12",
+		},
+		{
+			src: "/sold-cars/f84a1fbe-0464-46d4-872d-8a495c176939.JPG",
+			alt: "Prodaný vůz 13",
+		},
+		{
+			src: "/sold-cars/b839b4dd-99a0-4c80-94cf-ba95a5a2f44f.JPG",
+			alt: "Prodaný vůz 14",
+		},
+		{
+			src: "/sold-cars/IMG_6527.JPG",
+			alt: "Prodaný vůz 15",
+		},
+		{
+			src: "/sold-cars/869b0547-c57f-49e9-b960-8424f24229e8.JPG",
+			alt: "Prodaný vůz 16",
+		},
+	];
+
+	const openImageModal = (photo: { src: string; alt: string }) => {
+		const index = soldCarsImages.findIndex((img) => img.src === photo.src);
+		setCurrentImageIndex(index);
+		setSelectedImage(photo);
+	};
+
+	const navigateImage = (direction: "prev" | "next") => {
+		const newIndex =
+			direction === "next"
+				? (currentImageIndex + 1) % soldCarsImages.length
+				: (currentImageIndex - 1 + soldCarsImages.length) %
+				  soldCarsImages.length;
+		setCurrentImageIndex(newIndex);
+		setSelectedImage(soldCarsImages[newIndex]);
+	};
 
 	const form = useForm<SaleFormValues>({
 		resolver: zodResolver(saleFormSchema),
@@ -287,7 +376,7 @@ export default function SalePage() {
 											render={({ field }) => (
 												<FormItem>
 													<FormLabel>
-														Cenová představa*
+														Cenová představa
 													</FormLabel>
 													<FormControl>
 														<Input
@@ -628,7 +717,7 @@ export default function SalePage() {
 				<section ref={galleryRef} className="mb-24">
 					<div className="flex items-center justify-between mb-12">
 						<h2 className="font-marcellus text-2xl md:text-3xl vintage-heading">
-							Fotogalerie
+							Všechny prodané vozy
 						</h2>
 						<Link
 							href="/fotogalerie/prodej"
@@ -643,32 +732,13 @@ export default function SalePage() {
 
 					<div className="mb-8 text-center">
 						<p className="font-cormorant text-xl text-brown">
-							Prohlédněte si galerii našich úspěšně prodaných
-							vozů.
+							Galerie úspěšně prodaných vozů z našeho autoparku.
 						</p>
 					</div>
 
 					{(() => {
-						// Get photos from sold cars only
-						const allPhotos = soldCars
-							.filter((car) => car.featured)
-							.map((car) => ({
-								src: car.mainImage,
-								alt: car.name,
-								category: "Prodáno",
-								available: car.available,
-								id: car.id,
-							}))
-							// Remove duplicates based on image src
-							.filter(
-								(photo, index, array) =>
-									array.findIndex(
-										(p) => p.src === photo.src
-									) === index
-							);
-
-						const featuredPhotos = allPhotos.slice(0, 3);
-						const expandedPhotos = allPhotos.slice(0, 15);
+						const featuredPhotos = soldCarsImages.slice(0, 3);
+						const expandedPhotos = soldCarsImages.slice(0, 16);
 
 						return (
 							<>
@@ -676,10 +746,22 @@ export default function SalePage() {
 									// Initial view - 3 featured photos
 									<div className="grid grid-cols-1 md:grid-cols-3 gap-0 max-w-7xl mx-auto">
 										{featuredPhotos.map((photo, index) => (
-											<Link
-												key={photo.id}
-												href={`/fotogalerie/prodej/${photo.id}`}
-												className="group relative overflow-hidden block"
+											<motion.div
+												key={`sold-featured-${index}`}
+												initial={{ opacity: 0, y: 20 }}
+												animate={
+													isGalleryInView
+														? { opacity: 1, y: 0 }
+														: { opacity: 0, y: 20 }
+												}
+												transition={{
+													duration: 0.5,
+													delay: index * 0.2,
+												}}
+												className="group relative overflow-hidden block cursor-pointer"
+												onClick={() =>
+													openImageModal(photo)
+												}
 											>
 												<div className="art-deco-border overflow-hidden">
 													<div className="relative h-72 overflow-hidden">
@@ -691,7 +773,7 @@ export default function SalePage() {
 														/>
 														<div className="absolute top-2 left-2">
 															<span className="bg-brown-dark/80 text-cream px-2 py-1 text-xs font-montserrat rounded">
-																{photo.category}
+																Prodáno
 															</span>
 														</div>
 														<div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-brown-dark/70 to-transparent p-4">
@@ -699,19 +781,39 @@ export default function SalePage() {
 																{photo.alt}
 															</h3>
 														</div>
+														<div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300 flex items-center justify-center">
+															<div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-white text-center">
+																<p className="text-sm font-montserrat">
+																	Klikněte pro
+																	zvětšení
+																</p>
+															</div>
+														</div>
 													</div>
 												</div>
-											</Link>
+											</motion.div>
 										))}
 									</div>
 								) : (
 									// Expanded view - more photos without gaps
 									<div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-0 max-w-7xl mx-auto">
 										{expandedPhotos.map((photo, index) => (
-											<Link
-												key={photo.id}
-												href={`/fotogalerie/prodej/${photo.id}`}
-												className="group relative overflow-hidden block"
+											<motion.div
+												key={`sold-expanded-${index}`}
+												initial={{ opacity: 0, y: 20 }}
+												animate={
+													isGalleryInView
+														? { opacity: 1, y: 0 }
+														: { opacity: 0, y: 20 }
+												}
+												transition={{
+													duration: 0.5,
+													delay: index * 0.05,
+												}}
+												className="group relative overflow-hidden block cursor-pointer"
+												onClick={() =>
+													openImageModal(photo)
+												}
 											>
 												<div className="relative h-48 md:h-56 lg:h-64 overflow-hidden">
 													<Image
@@ -722,7 +824,7 @@ export default function SalePage() {
 													/>
 													<div className="absolute top-2 left-2">
 														<span className="bg-brown-dark/80 text-cream px-2 py-1 text-xs font-montserrat rounded">
-															{photo.category}
+															Prodáno
 														</span>
 													</div>
 													<div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-brown-dark/70 to-transparent p-2">
@@ -730,8 +832,16 @@ export default function SalePage() {
 															{photo.alt}
 														</h3>
 													</div>
+													<div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300 flex items-center justify-center">
+														<div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-white text-center">
+															<p className="text-xs font-montserrat">
+																Klikněte pro
+																zvětšení
+															</p>
+														</div>
+													</div>
 												</div>
-											</Link>
+											</motion.div>
 										))}
 									</div>
 								)}
@@ -754,6 +864,67 @@ export default function SalePage() {
 						);
 					})()}
 				</section>
+
+				{/* Fullscreen Image Modal */}
+				{selectedImage && (
+					<div className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-sm">
+						<div className="relative w-full h-full flex items-center justify-center p-4">
+							{/* Close Button */}
+							<button
+								onClick={() => setSelectedImage(null)}
+								className="absolute top-4 right-4 z-10 p-2 bg-black/50 hover:bg-black/70 rounded-full text-white transition-colors duration-300"
+							>
+								<X className="w-6 h-6" />
+							</button>
+
+							{/* Previous Button */}
+							<button
+								onClick={() => navigateImage("prev")}
+								className="absolute left-4 top-1/2 transform -translate-y-1/2 z-10 p-3 bg-black/50 hover:bg-black/70 rounded-full text-white transition-colors duration-300"
+							>
+								<ChevronLeft className="w-8 h-8" />
+							</button>
+
+							{/* Next Button */}
+							<button
+								onClick={() => navigateImage("next")}
+								className="absolute right-4 top-1/2 transform -translate-y-1/2 z-10 p-3 bg-black/50 hover:bg-black/70 rounded-full text-white transition-colors duration-300"
+							>
+								<ChevronRight className="w-8 h-8" />
+							</button>
+
+							{/* Image */}
+							<div className="relative max-w-7xl max-h-full w-full h-full">
+								<Image
+									src={selectedImage.src}
+									alt={selectedImage.alt}
+									fill
+									className="object-contain"
+									priority
+								/>
+							</div>
+
+							{/* Image Counter and Title */}
+							<div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-black/70 px-4 py-2 rounded-lg">
+								<div className="text-center">
+									<p className="text-white/70 text-sm font-montserrat mb-1">
+										{currentImageIndex + 1} /{" "}
+										{soldCarsImages.length}
+									</p>
+									<h3 className="text-white font-marcellus text-lg">
+										{selectedImage.alt}
+									</h3>
+								</div>
+							</div>
+
+							{/* Click outside to close */}
+							<div
+								className="absolute inset-0 -z-10"
+								onClick={() => setSelectedImage(null)}
+							/>
+						</div>
+					</div>
+				)}
 			</div>
 		</div>
 	);
