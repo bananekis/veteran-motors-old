@@ -8,7 +8,8 @@ import ArtDecoHeading from "@/components/art-deco-heading";
 
 export default function AllRentalCarsPage() {
 	const rentalCars = cars.filter(
-		(car) => car.category === "rental" || car.category === "all"
+		(car) =>
+			car.categories.includes("rental") || car.categories.includes("all")
 	);
 
 	const carsRef = useRef<HTMLDivElement>(null);

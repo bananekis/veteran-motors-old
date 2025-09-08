@@ -27,7 +27,7 @@ import type { z } from "zod";
 type SaleFormValues = z.infer<typeof saleFormSchema>;
 
 export default function SalePage() {
-	const carsForSale = cars.filter((car) => car.category === "sale");
+	const carsForSale = cars.filter((car) => car.categories.includes("sale"));
 	const inStockCars = carsForSale.filter(
 		(car) => car.stockType === "skladem"
 	);

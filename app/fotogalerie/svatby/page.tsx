@@ -12,7 +12,9 @@ export default function WeddingGalleryPage() {
 	const isInView = useInView(ref, { once: true, amount: 0.1 });
 
 	// Filter wedding cars and collect only main images
-	const weddingCars = cars.filter((car) => car.category === "wedding");
+	const weddingCars = cars.filter((car) =>
+		car.categories.includes("wedding")
+	);
 	const mainPhotos = weddingCars.map((car) => ({
 		src: car.mainImage,
 		alt: car.name,

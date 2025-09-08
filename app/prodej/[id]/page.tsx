@@ -36,7 +36,7 @@ export default function CarDetailPage({ params }: CarDetailPageProps) {
 		resolver: zodResolver(vehicleInterestFormSchema),
 	});
 
-	if (!car) {
+	if (!car || !car.categories.includes("sale")) {
 		notFound();
 	}
 

@@ -38,7 +38,10 @@ export default function RentalCarDetailPage({
 		resolver: zodResolver(rentalFormSchema),
 	});
 
-	if (!car || (car.category !== "rental" && car.category !== "all")) {
+	if (
+		!car ||
+		(!car.categories.includes("rental") && !car.categories.includes("all"))
+	) {
 		notFound();
 	}
 

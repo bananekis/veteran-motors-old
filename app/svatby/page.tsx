@@ -12,7 +12,8 @@ import { ArrowRight, X, ChevronLeft, ChevronRight } from "lucide-react";
 
 export default function WeddingsPage() {
 	const weddingCars = cars.filter(
-		(car) => car.category === "wedding" || car.category === "all"
+		(car) =>
+			car.categories.includes("wedding") || car.categories.includes("all")
 	);
 
 	const [isGalleryExpanded, setIsGalleryExpanded] = useState(false);

@@ -10,7 +10,7 @@ import Link from "next/link";
 
 export default function InStockPage() {
 	const inStockCars = cars.filter(
-		(car) => car.category === "sale" && car.stockType === "skladem"
+		(car) => car.categories.includes("sale") && car.stockType === "skladem"
 	);
 
 	const carsRef = useRef<HTMLDivElement>(null);
@@ -34,7 +34,6 @@ export default function InStockPage() {
 						Všechny vozy jsou pečlivě vybrané a udržované.
 					</p>
 				</div>
-
 
 				<section ref={carsRef} className="mb-24">
 					<motion.h2
@@ -95,21 +94,28 @@ export default function InStockPage() {
 							<div className="p-6 bg-cream">
 								<div className="space-y-4 font-montserrat">
 									<p>
-										Proces koupě vozu na skladě je přímočarý a transparentní:
+										Proces koupě vozu na skladě je přímočarý
+										a transparentní:
 									</p>
 
 									<ul className="list-disc pl-6 space-y-4">
 										<li>
-											Vyberte si vůz z naší nabídky vozů na skladě nebo nás kontaktujte pro bližší informace
+											Vyberte si vůz z naší nabídky vozů
+											na skladě nebo nás kontaktujte pro
+											bližší informace
 										</li>
 										<li>
-											Domluvte si osobní prohlídku vozu a zkušební jízdu u nás na prodejně
+											Domluvte si osobní prohlídku vozu a
+											zkušební jízdu u nás na prodejně
 										</li>
 										<li>
-											Po kontrole technického stavu a dohodě podmínek sepíšeme kupní smlouvu
+											Po kontrole technického stavu a
+											dohodě podmínek sepíšeme kupní
+											smlouvu
 										</li>
 										<li>
-											Zajistíme kompletní přihlášení vozu a předání v perfektním stavu
+											Zajistíme kompletní přihlášení vozu
+											a předání v perfektním stavu
 										</li>
 									</ul>
 

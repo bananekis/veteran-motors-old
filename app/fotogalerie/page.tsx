@@ -12,9 +12,11 @@ export default function GalleryPage() {
 	const isInView = useInView(ref, { once: true, amount: 0.1 });
 
 	// Filter cars for each category
-	const saleCars = cars.filter((car) => car.category === "sale");
-	const rentalCars = cars.filter((car) => car.category === "rental");
-	const weddingCars = cars.filter((car) => car.category === "wedding");
+	const saleCars = cars.filter((car) => car.categories.includes("sale"));
+	const rentalCars = cars.filter((car) => car.categories.includes("rental"));
+	const weddingCars = cars.filter((car) =>
+		car.categories.includes("wedding")
+	);
 
 	// Create a truly randomized mix from all categories
 	const createRandomMix = () => {

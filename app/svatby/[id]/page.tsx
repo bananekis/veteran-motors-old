@@ -38,7 +38,10 @@ export default function WeddingCarDetailPage({
 		resolver: zodResolver(weddingFormSchema),
 	});
 
-	if (!car || (car.category !== "wedding" && car.category !== "all")) {
+	if (
+		!car ||
+		(!car.categories.includes("wedding") && !car.categories.includes("all"))
+	) {
 		notFound();
 	}
 

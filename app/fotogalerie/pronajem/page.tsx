@@ -12,7 +12,7 @@ export default function RentalGalleryPage() {
 	const isInView = useInView(ref, { once: true, amount: 0.1 });
 
 	// Filter rental cars and collect only main images
-	const rentalCars = cars.filter((car) => car.category === "rental");
+	const rentalCars = cars.filter((car) => car.categories.includes("rental"));
 	const mainPhotos = rentalCars.map((car) => ({
 		src: car.mainImage,
 		alt: car.name,

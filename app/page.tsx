@@ -20,12 +20,11 @@ export default function Home() {
 		.map((car) => ({
 			src: car.mainImage,
 			alt: car.name,
-			category:
-				car.category === "sale"
-					? "Prodej"
-					: car.category === "rental"
-					? "Pronájem"
-					: "Svatby",
+			category: car.categories.includes("sale")
+				? "Prodej"
+				: car.categories.includes("rental")
+				? "Pronájem"
+				: "Svatby",
 			id: car.id,
 		}))
 		// Remove duplicates based on image src
@@ -55,11 +54,11 @@ export default function Home() {
 						<div className="grid grid-cols-1 md:grid-cols-3 gap-0 max-w-7xl mx-auto">
 							{featuredCars.map((car, index) => {
 								const getGalleryUrl = (car: any) => {
-									if (car.category === "sale")
+									if (car.categories.includes("sale"))
 										return `/fotogalerie/prodej/${car.id}`;
-									if (car.category === "rental")
+									if (car.categories.includes("rental"))
 										return `/fotogalerie/pronajem/${car.id}`;
-									if (car.category === "wedding")
+									if (car.categories.includes("wedding"))
 										return `/fotogalerie/svatby/${car.id}`;
 									return `/fotogalerie/prodej/${car.id}`; // fallback
 								};
@@ -68,7 +67,7 @@ export default function Home() {
 									<Link
 										key={car.id}
 										href={getGalleryUrl(car)}
-										className="group flex flex-col h-full block"
+										className="group flex flex-col h-full"
 									>
 										<div className="art-deco-border overflow-hidden">
 											<div className="relative h-72 overflow-hidden">

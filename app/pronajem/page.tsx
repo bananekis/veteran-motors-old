@@ -12,7 +12,8 @@ import { ArrowRight, X, ChevronLeft, ChevronRight } from "lucide-react";
 
 export default function RentalPage() {
 	const rentalCars = cars.filter(
-		(car) => car.category === "rental" || car.category === "all"
+		(car) =>
+			car.categories.includes("rental") || car.categories.includes("all")
 	);
 
 	const [isRentalExpanded, setIsRentalExpanded] = useState(false);

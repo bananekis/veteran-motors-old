@@ -14,7 +14,7 @@ export default function SaleGalleryPage() {
 	const isSoldInView = useInView(soldRef, { once: true, amount: 0.1 });
 
 	// Filter sale cars and collect only their main images
-	const saleCars = cars.filter((car) => car.category === "sale");
+	const saleCars = cars.filter((car) => car.categories.includes("sale"));
 	const mainPhotos = saleCars.map((car) => ({
 		src: car.mainImage,
 		alt: car.name,

@@ -10,7 +10,7 @@ import Link from "next/link";
 
 export default function SoldPage() {
 	const soldCars = cars.filter(
-		(car) => car.category === "sale" && car.available === false
+		(car) => car.categories.includes("sale") && car.available === false
 	);
 
 	const servicesRef = useRef<HTMLDivElement>(null);

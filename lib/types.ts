@@ -17,7 +17,7 @@ export interface Car {
 	};
 	available: boolean;
 	featured?: boolean;
-	category: "sale" | "rental" | "wedding" | "all";
+	categories: ("sale" | "rental" | "wedding" | "all")[];
 	stockType?: "skladem" | "dovoz";
 	bodyType?: string;
 }
