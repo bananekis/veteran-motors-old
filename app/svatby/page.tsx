@@ -176,13 +176,8 @@ export default function WeddingsPage() {
 						transition={{ duration: 0.5 }}
 						className="font-marcellus text-2xl md:text-3xl mb-12 vintage-heading"
 					>
-						Ceník
+						Co všechno umíme zařídit
 					</motion.h2>
-
-					<p className="mb-6 font-montserrat">
-						Finální cena je vždy stanovena individuálně podle
-						rozsahu služeb a délky pronájmu.
-					</p>
 
 					<motion.div
 						initial={{ opacity: 0, y: 30 }}
@@ -194,145 +189,132 @@ export default function WeddingsPage() {
 						transition={{ duration: 0.6, delay: 0.2 }}
 						className="art-deco-border"
 					>
-						<div className="overflow-x-auto bg-cream">
-							<table className="w-full">
-								<thead>
-									<tr className="border-b-2 border-gold/40">
-										<th className="py-4 px-4 text-left font-marcellus">
-											Ceník
-										</th>
-										<th className="py-4 px-4 text-left font-marcellus">
-											hodina
-										</th>
-										<th className="py-4 px-4 text-left font-marcellus">
-											půl den
-										</th>
-										<th className="py-4 px-4 text-left font-marcellus">
-											den
-										</th>
-										<th className="py-4 px-4 text-left font-marcellus">
-											vícedenní
-										</th>
-									</tr>
-								</thead>
-								<tbody>
-									<tr className="border-b border-gold/20">
-										<td className="py-4 px-4 font-montserrat">
-											Ford Mustang GT
-										</td>
-										<td className="py-4 px-4 font-montserrat">
-											490,- Kč
-										</td>
-										<td className="py-4 px-4 font-montserrat">
-											990,- Kč
-										</td>
-										<td className="py-4 px-4 font-montserrat">
-											1.990,- Kč
-										</td>
-										<td className="py-4 px-4 font-montserrat">
-											po domluvě
-										</td>
-									</tr>
-									<tr className="border-b border-gold/20">
-										<td className="py-4 px-4 font-montserrat">
-											BMW 2002
-										</td>
-										<td className="py-4 px-4 font-montserrat">
-											290,- Kč
-										</td>
-										<td className="py-4 px-4 font-montserrat">
-											790,- Kč
-										</td>
-										<td className="py-4 px-4 font-montserrat">
-											1.490,- Kč
-										</td>
-										<td className="py-4 px-4 font-montserrat">
-											po domluvě
-										</td>
-									</tr>
-									<tr className="border-b border-gold/20">
-										<td className="py-4 px-4 font-montserrat">
-											VW Brouk
-										</td>
-										<td className="py-4 px-4 font-montserrat">
-											290,- Kč
-										</td>
-										<td className="py-4 px-4 font-montserrat">
-											790,- Kč
-										</td>
-										<td className="py-4 px-4 font-montserrat">
-											1.490,- Kč
-										</td>
-										<td className="py-4 px-4 font-montserrat">
-											po domluvě
-										</td>
-									</tr>
-									<tr className="border-b border-gold/20">
-										<td className="py-4 px-4 font-montserrat">
-											Chevrolet Camaro SS
-										</td>
-										<td className="py-4 px-4 font-montserrat">
-											490,- Kč
-										</td>
-										<td className="py-4 px-4 font-montserrat">
-											990,- Kč
-										</td>
-										<td className="py-4 px-4 font-montserrat">
-											1.990,- Kč
-										</td>
-										<td className="py-4 px-4 font-montserrat">
-											po domluvě
-										</td>
-									</tr>
-									<tr className="border-b border-gold/20">
-										<td className="py-4 px-4 font-montserrat">
-											Chevrolet Corvette C3
-										</td>
-										<td className="py-4 px-4 font-montserrat">
-											490,- Kč
-										</td>
-										<td className="py-4 px-4 font-montserrat">
-											990,- Kč
-										</td>
-										<td className="py-4 px-4 font-montserrat">
-											1.990,- Kč
-										</td>
-										<td className="py-4 px-4 font-montserrat">
-											po domluvě
-										</td>
-									</tr>
-									<tr className="border-b border-gold/20">
-										<td className="py-4 px-4 font-montserrat">
-											Cadillac Eldorado
-										</td>
-										<td className="py-4 px-4 font-montserrat">
-											490,- Kč
-										</td>
-										<td className="py-4 px-4 font-montserrat">
-											990,- Kč
-										</td>
-										<td className="py-4 px-4 font-montserrat">
-											1.990,- Kč
-										</td>
-										<td className="py-4 px-4 font-montserrat">
-											po domluvě
-										</td>
-									</tr>
-								</tbody>
-							</table>
+						<div className="p-8 bg-cream">
+							<div className="space-y-8 font-montserrat">
+								<div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+									<div className="space-y-4">
+										<h4 className="font-marcellus text-lg text-brown">
+											Základní služby:
+										</h4>
+										<ul className="space-y-2 text-brown">
+											<li>
+												• Pronájem vozu na celou či
+												jenom část svatby
+											</li>
+											<li>
+												• Projížďka vozem (spolujízda
+												nebo řízení pod dohledem)
+											</li>
+											<li>
+												• Vyzvednutí novomanželů z
+												domluveného místa
+											</li>
+											<li>
+												• Dovoz vozu na určené místo
+											</li>
+										</ul>
+									</div>
+									<div className="space-y-4">
+										<h4 className="font-marcellus text-lg text-brown">
+											Doplňkové služby:
+										</h4>
+										<ul className="space-y-2 text-brown">
+											<li>
+												• Výzdoba vozu na přání
+												zákazníka
+											</li>
+											<li>• Focení ve voze a další</li>
+											<li>• Řidič s uniformou</li>
+											<li>• Fotoportrét s vozem</li>
+										</ul>
+									</div>
+								</div>
+
+								<div className="border-t border-gold/30 my-6"></div>
+
+								<div className="space-y-3">
+									<h4 className="font-marcellus text-lg text-brown">
+										Další možnosti:
+									</h4>
+									<p className="text-brown">
+										Přihlašování na Bílé i Veteránské SPZ,
+										opravy, garážování, poptání náhradních
+										dílů, kompletní servis a údržba vozů.
+									</p>
+									<p className="text-brown">
+										Všechny naše vozy jsou pojištěné a po
+										celou dobu pronájmu jsme vám k dispozici
+										na telefonu.
+									</p>
+								</div>
+
+								<div className="border-t border-gold/30 my-6"></div>
+
+								<div className="space-y-4">
+									<h4 className="font-marcellus text-xl text-brown mb-4">
+										Orientační ceník
+									</h4>
+									<div className="space-y-3">
+										<div className="flex justify-between items-center py-2 border-b border-gold/20">
+											<span className="text-brown">
+												Pronájem vozu
+											</span>
+											<span className="font-semibold text-brown">
+												1.999,-/den
+											</span>
+										</div>
+										<div className="flex justify-between items-center py-2 border-b border-gold/20">
+											<span className="text-brown">
+												Výzdoba na přání zákazníka
+											</span>
+											<span className="font-semibold text-brown">
+												1.999,-
+											</span>
+										</div>
+										<div className="flex justify-between items-center py-2 border-b border-gold/20">
+											<span className="text-brown">
+												Přistavení vozu
+											</span>
+											<span className="font-semibold text-brown">
+												15,-/km
+											</span>
+										</div>
+										<div className="flex justify-between items-center py-2 border-b border-gold/20">
+											<span className="text-brown">
+												Osobní řidič
+											</span>
+											<span className="font-semibold text-brown">
+												1.999,-/den
+											</span>
+										</div>
+										<div className="flex justify-between items-center py-2 border-b border-gold/20">
+											<span className="text-brown">
+												Focení
+											</span>
+											<span className="font-semibold text-brown">
+												999,-
+											</span>
+										</div>
+										<div className="flex justify-between items-center py-2">
+											<span className="text-brown">
+												Další
+											</span>
+											<span className="font-semibold text-brown">
+												po domluvě
+											</span>
+										</div>
+									</div>
+								</div>
+
+								<p className="mt-6 text-sm italic text-brown">
+									* Ceny jsou orientační a mohou se lišit
+									podle konkrétní objednávky. Pro přesnou
+									kalkulaci a podmínky pronájmu nás
+									kontaktujte.
+								</p>
+							</div>
 						</div>
 					</motion.div>
-
-					<p className="mt-4 text-sm italic font-montserrat">
-						V případě svateb jsou k dispozici i doplňkové služby:
-						řidič, výzdoba, fotoportrét.
-					</p>
-
-					<p className="mt-4 text-sm italic font-montserrat">
-						* Ceny jsou orientační a mohou se lišit podle konkrétní
-						objednávky. Pro přesnou kalkulaci a podmínky pronájmu
-						nás kontaktujte.
-					</p>
 				</section>
 
 				<WeddingForm
