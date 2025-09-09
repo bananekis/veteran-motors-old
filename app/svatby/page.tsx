@@ -233,14 +233,6 @@ export default function WeddingsPage() {
 								<div className="border-t border-gold/30 my-6"></div>
 
 								<div className="space-y-3">
-									<h4 className="font-marcellus text-lg text-brown">
-										Další možnosti:
-									</h4>
-									<p className="text-brown">
-										Přihlašování na Bílé i Veteránské SPZ,
-										opravy, garážování, poptání náhradních
-										dílů, kompletní servis a údržba vozů.
-									</p>
 									<p className="text-brown">
 										Všechny naše vozy jsou pojištěné a po
 										celou dobu pronájmu jsme vám k dispozici
