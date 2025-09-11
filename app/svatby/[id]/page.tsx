@@ -7,6 +7,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { motion, useInView } from "framer-motion";
 import ArtDecoHeading from "@/components/art-deco-heading";
+import ImagePreview from "@/components/image-preview";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { weddingFormSchema } from "@/lib/validations";
@@ -96,46 +97,11 @@ export default function WeddingCarDetailPage({
 						}
 						transition={{ duration: 0.6 }}
 					>
-						<div className="art-deco-border">
-							<div className="relative h-96 overflow-hidden">
-								<Image
-									src={car.mainImage || "/placeholder.svg"}
-									alt={car.name}
-									fill
-									className="object-cover"
-								/>
-							</div>
-						</div>
-
-						<div className="grid grid-cols-4 gap-2 mt-4">
-							{car.images.map((image, index) => (
-								<motion.div
-									key={index}
-									initial={{ opacity: 0, y: 20 }}
-									animate={
-										isMainImageInView
-											? { opacity: 1, y: 0 }
-											: { opacity: 0, y: 20 }
-									}
-									transition={{
-										duration: 0.4,
-										delay: 0.2 + index * 0.1,
-									}}
-									className="art-deco-border"
-								>
-									<div className="relative h-24 overflow-hidden">
-										<Image
-											src={image || "/placeholder.svg"}
-											alt={`${car.name} - detail ${
-												index + 1
-											}`}
-											fill
-											className="object-cover"
-										/>
-									</div>
-								</motion.div>
-							))}
-						</div>
+						<ImagePreview
+							mainImage={car.mainImage || "/placeholder.svg"}
+							images={car.images}
+							carName={car.name}
+						/>
 
 						<motion.div
 							ref={formRef}
